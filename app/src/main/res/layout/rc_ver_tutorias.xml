@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:layout_marginHorizontal="2sp"
+    android:id="@+id/RCView"
+    android:layout_marginTop="7sp">
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <ImageView
+            android:id="@+id/imgFotoPrev"
+            android:layout_width="144sp"
+            android:layout_height="90sp"
+            app:srcCompat="@drawable/defaultimage"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170sp"
+        android:layout_height="90sp"
+        android:layout_gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtMateria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/materia"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:typeface="serif" />
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:hint="@string/t_tulo"
+            android:typeface="monospace" />
+        <TextView
+            android:id="@+id/txtDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="52sp"
+            android:foregroundGravity="center"
+            android:hint="@string/descripci_n"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="95sp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="90sp"
+        android:background="@color/GrisFondo"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="200sp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtNombreProfesorTutoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint="Profesor"
+                android:textColorHint="@color/Blanco"
+                android:textSize="22dp"
+                />
+            <TextView
+                android:id="@+id/txtFechaTutorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint="Fecha"
+                android:textColorHint="@color/Blanco"
+                android:textSize="16dp"
+                />
+
+            <TextView
+                android:id="@+id/txtHoraTutorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint="Hora"
+                android:textColorHint="@color/Blanco"
+                android:textSize="16dp"
+                />
+
+            <TextView
+                android:id="@+id/txtLugarTurorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint="Lugar"
+                android:textColorHint="@color/Blanco"
+                android:textSize="16dp"
+                />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtTiempoRestante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Blanco"
+            android:hint="Tiempo restante"
+            android:textColorHint="@color/Blanco"
+            android:textSize="16dp"
+            android:textAlignment="textEnd"
+            android:layout_gravity="end"
+            />
+
+
+    </LinearLayout>
+    
+    
+    
+    
+
+</androidx.cardview.widget.CardView>

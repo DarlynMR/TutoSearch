@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rd.dmmr.tutosearch.DetallesTutorias">
+
+    <ImageView
+        android:id="@+id/imgTuto"
+        android:layout_width="match_parent"
+        android:layout_height="150sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/defaultimage">
+
+    </ImageView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cr"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/imgTuto"
+        app:cardCornerRadius="25dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textProf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Profesor"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textRestante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:hint="Tiempo restante"
+                android:textSize="18sp"
+
+                />
+
+
+            <TextView
+                android:id="@+id/textFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textProf"
+                android:hint="Fecha"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textFecha"
+                android:hint="Hora"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textLugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textHora"
+                android:hint="Lugar"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textLugar"
+                android:layout_centerHorizontal="true"
+                android:hint="Titulo"
+                android:textSize="18sp" />
+
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textTitulo">
+
+                <TextView
+                    android:id="@+id/textDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"/>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btnAsistir"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asistir"
+            android:layout_gravity="center_horizontal|center_vertical"
+
+            android:textSize="20sp"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textAsistiran"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnAsistir"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"/>
+
+
+</RelativeLayout>
