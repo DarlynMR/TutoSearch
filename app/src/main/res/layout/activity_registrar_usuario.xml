@@ -12,7 +12,7 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/books"
+        android:background="@mipmap/books"
         android:alpha="0.7"
         android:layout_alignParentTop="true"
         tools:layout_editor_absoluteY="0dp"

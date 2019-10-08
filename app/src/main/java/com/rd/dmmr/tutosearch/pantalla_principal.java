@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
@@ -27,6 +28,8 @@ public class pantalla_principal extends AppCompatActivity
 
     private CardView card_tutorias_generales, card_tutorias_inst, card_tutorias_reservadas, card_mensajes;
 
+    FirebaseAuth FAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,7 @@ public class pantalla_principal extends AppCompatActivity
         card_mensajes = (CardView) findViewById(R.id.card_mensajes);
 
 
-
+        FAuth= FirebaseAuth.getInstance();
 
 
         card_tutorias_generales.setOnClickListener(this);
@@ -51,7 +54,6 @@ public class pantalla_principal extends AppCompatActivity
         card_mensajes.setOnClickListener(this);
 
         //Variables asignar
-
 
 
 
@@ -108,10 +110,12 @@ public class pantalla_principal extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.compartir) {
 
-        } else if (id == R.id.nav_acercade) {
-
+        } else if (id == R.id.logout) {
+            FAuth.signOut();
+            Intent intent = new Intent(pantalla_principal.this, Login.class);
+            pantalla_principal.this.startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

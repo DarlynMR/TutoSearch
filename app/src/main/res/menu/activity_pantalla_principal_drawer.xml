@@ -22,16 +22,16 @@
             android:title="Configuraciones" />
     </group>
 
-    <item android:title="Comunicar">
+    <item android:title="Actividad">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/compartir"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Compartir" />
             <item
-                android:id="@+id/nav_acercade"
-                android:icon="@drawable/ic_info_black_24dp"
-                android:title="Acerca de..." />
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Cerrar sesión" />
         </menu>
     </item>
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegistrarUsuario extends AppCompatActivity {
+public class RegistrarUsuario extends AppCompatActivity implements View.OnClickListener {
 
 
 
@@ -38,6 +39,8 @@ public class RegistrarUsuario extends AppCompatActivity {
     private Button JbtnRegistrar;
 
     private EditText Matricula, NombreCompleto, Telefono, Carrera, Correo, Password, Password2;
+
+    private FloatingActionButton fback_button;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class RegistrarUsuario extends AppCompatActivity {
 
         JbtnRegistrar = (Button) findViewById(R.id.btnRegistrar);
 
+        fback_button = (FloatingActionButton) findViewById(R.id.fBackButton);
+
 
         FInicionIndicdor = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -71,14 +76,9 @@ public class RegistrarUsuario extends AppCompatActivity {
             }
         };
 
+        fback_button.setOnClickListener(this);
 
-       JbtnRegistrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Registrar(Correo.getText().toString(),Password.getText().toString());
-            }
-        });
-
+       JbtnRegistrar.setOnClickListener(this);
 
 
     }
@@ -166,5 +166,17 @@ public class RegistrarUsuario extends AppCompatActivity {
 
         Toast toast= Toast.makeText(RegistrarUsuario.this, mensaje,Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
+        if (view==JbtnRegistrar){
+            Registrar(Correo.getText().toString(),Password.getText().toString());
+        }
+        if (view==fback_button){
+            onBackPressed();
+        }
     }
 }
