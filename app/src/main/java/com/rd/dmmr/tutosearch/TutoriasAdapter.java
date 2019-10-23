@@ -3,6 +3,7 @@ package com.rd.dmmr.tutosearch;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -22,12 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPos> {
 
 
-    private Context mcontext;
+
     private List<ModelTutorias> mList;
-    TutoriasAdapter (Context context, List<ModelTutorias>list){
-        mcontext= context;
-        mList= list;
-    }
+
 
     public TutoriasAdapter(List<ModelTutorias> mList) {
         this.mList = mList;
@@ -56,32 +55,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         holder.item_txtTiempoRestantePrev.setText(itemTutoria.tiemporestante);
 
 
-/*
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Tutorias tutorias= new Tutorias();
-                Context context= tutorias.getApplicationContext();
-                Intent intent = new Intent(mcontext.getApplicationContext(),Tutorias.class);
-
-
-            }
-        });*/
-
-
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context= new FragmentOficial().getContext();
-
-                Intent intent= new Intent(context,DetallesTutorias.class);
-
-            }
-        });
-
-
+        holder.setOnClickListener(position);
 
 
         holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
@@ -103,16 +77,19 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         return mList.size();
     }
 
-    public class  ViewPos extends RecyclerView.ViewHolder{
+    public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView item_imgFotoPrev;
         TextView item_txtMateriaPrev, item_txtTituloPrev, item_txtDescripcionPrev, item_txtProfesorPrev, item_txtFechaPrev, item_txtHoraPrev, item_txtLugarPrev,
                 item_txtTiempoRestantePrev;
+        CardView cardView;
+        Context vcontext;
+        Integer idfila;
 
 
         public ViewPos(View itemView) {
             super(itemView);
-
+            vcontext = itemView.getContext();
             item_imgFotoPrev= itemView.findViewById(R.id.imgFotoPrev);
             item_txtMateriaPrev=itemView.findViewById(R.id.txtMateria);
             item_txtTituloPrev= itemView.findViewById(R.id.txtTitulo);
@@ -122,9 +99,34 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             item_txtHoraPrev= itemView.findViewById(R.id.txtHoraTutorias);
             item_txtLugarPrev=itemView.findViewById(R.id.txtLugarTurorias);
             item_txtTiempoRestantePrev=itemView.findViewById(R.id.txtTiempoRestante);
+            cardView= itemView.findViewById(R.id.RCView);
 
+        }
+        void setOnClickListener(Integer pos){
+            idfila = pos;
+            cardView.setOnClickListener(this);
 
+        }
 
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.RCView:
+                    Intent detalles = new Intent(vcontext, DetallesTutorias.class);
+                    detalles.putExtra("idTuto",mList.get(idfila).idTuto);
+                    Log.i("Prueba",mList.get(idfila).idTuto+" "+idfila);
+                    detalles.putExtra("Materia",mList.get(idfila).materias);
+                    detalles.putExtra("idProf",mList.get(idfila).idProf);
+                    detalles.putExtra("imgTuto",mList.get(idfila).foto);
+                    detalles.putExtra("Titulo", mList.get(idfila).titulo);
+                    detalles.putExtra("Descripcion",mList.get(idfila).descripcion);
+                    detalles.putExtra("Profesor",mList.get(idfila).profesores);
+                    detalles.putExtra("Fecha",mList.get(idfila).fecha);
+                    detalles.putExtra("Hora",mList.get(idfila).hora);
+                    detalles.putExtra("Lugar",mList.get(idfila).lugar);
+                    vcontext.startActivity(detalles);
+                    break;
+            }
         }
     }
 }

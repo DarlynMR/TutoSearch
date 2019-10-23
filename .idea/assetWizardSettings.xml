@@ -33,8 +33,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_settings_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Darlyn\Pictures\Tuto img\header-curve5.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="m_perfil_icon" />
+                            <entry key="sourceFile" value="C:\Users\elsac\Pictures\tuto\iconfinder_b-99_4230281.svg" />
                           </map>
                         </option>
                       </PersistentState>

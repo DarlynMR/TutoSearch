@@ -51,12 +51,12 @@ public class FragmentOficial  extends Fragment {
 
 
         RCAbajo= (RecyclerView) view.findViewById(R.id.RCAbajo);
-        RCAbajo.setHasFixedSize(true);
+        //RCAbajo.setHasFixedSize(true);
 
         mListTutoria= new ArrayList<>();
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
 
         RCAbajo.setLayoutManager(layoutManager);
@@ -67,6 +67,7 @@ public class FragmentOficial  extends Fragment {
 
         RCAbajo.setAdapter(tutoriasAdapter);
         upTutorias();
+        tutoriasAdapter.notifyDataSetChanged();
 
         return view;
     }
@@ -77,9 +78,6 @@ public class FragmentOficial  extends Fragment {
         DBReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //mListTutoria.add(dataSnapshot.getValue(ModelTutorias.class));/
-                Log.i("LLEGANDO",dataSnapshot.toString());
-                Log.i("LLEGANDO",dataSnapshot.getKey());
 
                 String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF,  Lugar;
 
@@ -96,14 +94,9 @@ public class FragmentOficial  extends Fragment {
                 Materia= dataSnapshot.child("Materia").getValue().toString();
                 idTuto= dataSnapshot.getKey();
 
-                Log.i("Prueba", idTuto);
-
                 mListTutoria.add(new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI+" - "+HoraF,Lugar,""));
 
 
-
-
-                tutoriasAdapter.notifyDataSetChanged();
 
             }
 
@@ -153,6 +146,9 @@ public class FragmentOficial  extends Fragment {
 
                 mListTutoria.remove(index);
                 tutoriasAdapter.notifyItemRemoved(index);
+
+                Log.i("Remover","Optimus");
+                Log.i("Remover",dataSnapshot.toString());
             }
 
             @Override
@@ -189,8 +185,6 @@ public class FragmentOficial  extends Fragment {
 
     public void goDetalles(Integer pos){
 
-
-        String palabra;
 
         Intent detalles = new Intent(getContext(),DetallesTutorias.class);
         detalles.putExtra("idTuto",mListTutoria.get(pos).idTuto);
@@ -230,5 +224,6 @@ public class FragmentOficial  extends Fragment {
 
 
     }
+
 
 }

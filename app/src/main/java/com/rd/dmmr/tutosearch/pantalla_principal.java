@@ -102,10 +102,9 @@ public class pantalla_principal extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.perfil) {
+            GoClass(DetallesUsuario.class);
         } else if (id == R.id.nav_gallery) {
-
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_settings) {
@@ -132,5 +131,10 @@ public class pantalla_principal extends AppCompatActivity
             default:break;
         }
 
+    }
+
+    private void GoClass(Class clase){
+        Intent intent = new Intent(this, clase);
+        startActivity(intent);
     }
 }
