@@ -73,25 +73,25 @@
 
 
 
-        <EditText
-            android:id="@+id/txtMatricula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="6sp"
-            android:drawableStart="@drawable/ic_person_black_24dp"
-            android:ems="10"
-            android:hint="@string/matricula"
-            android:inputType="number" />
 
         <EditText
-            android:id="@+id/txtNombreRegistrar"
+            android:id="@+id/txt_nombres_registrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/nombre_completo"
+            android:hint="@string/nombres"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:drawablePadding="6sp"
-            android:inputType="textEmailAddress" />
+            android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/txt_apellidos_registrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/apellidos"
+            android:drawableStart="@drawable/ic_person_black_24dp"
+            android:drawablePadding="6sp"
+            android:inputType="textPersonName" />
         <EditText
             android:id="@+id/txtTelefono"
             android:layout_width="match_parent"
@@ -102,15 +102,6 @@
             android:drawablePadding="6sp"
             android:inputType="phone" />
 
-        <EditText
-            android:id="@+id/txtCarrera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/carrera"
-            android:drawableStart="@drawable/ic_if_11_linkedin_104493"
-            android:drawablePadding="6sp"
-            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/txtCorreo"

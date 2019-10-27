@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class RegistrarUsuario extends AppCompatActivity implements View.OnClickListener {
 
 
-
+    //firebase variables
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
     private DatabaseReference DBReference;
@@ -35,10 +35,12 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
 
     private ProgressDialog progressDialog;
 
-
+    //botones
     private Button JbtnRegistrar;
 
-    private EditText Matricula, NombreCompleto, Telefono, Carrera, Correo, Password, Password2;
+    //campos de datos del profesor
+    private EditText  nombres,apellidos, telefono, correo, password, password2;
+
 
     private FloatingActionButton fback_button;
 
@@ -47,13 +49,12 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_registrar_usuario);
 
 
-        Matricula= (EditText) findViewById(R.id.txtMatricula);
-        NombreCompleto= (EditText) findViewById(R.id.txtNombreRegistrar);
-        Telefono= (EditText) findViewById(R.id.txtTelefono);
-        Carrera= (EditText) findViewById(R.id.txtCarrera);
-        Correo= (EditText) findViewById(R.id.txtCorreo);
-        Password= (EditText) findViewById(R.id.txtPassword);
-        Password2= (EditText) findViewById(R.id.txtPassword2);
+        nombres= (EditText) findViewById(R.id.txt_nombres_registrar);
+        apellidos= (EditText) findViewById(R.id.txt_apellidos_registrar);
+        telefono= (EditText) findViewById(R.id.txtTelefono);
+        correo= (EditText) findViewById(R.id.txtCorreo);
+        password= (EditText) findViewById(R.id.txtPassword);
+        password2= (EditText) findViewById(R.id.txtPassword2);
 
         FAutentic = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -92,11 +93,6 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
         FAutentic.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                String Matr = Matricula.getText().toString();
-                String Nom = NombreCompleto.getText().toString();
-                String Tel = Telefono.getText().toString();
-                String Carr = Carrera.getText().toString();
-                String Mail= Correo.getText().toString();
                 if(!task.isSuccessful()){
                      Alerta("Ocurrio un error", "Direccion de correo en uso, falla de conexión o correo mal escrito.");
                      Log.i("Probando", task.getException().toString());
@@ -107,15 +103,14 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
 
 
                     final FirebaseUser user=FAutentic.getCurrentUser();
-                    DBReference= FirebaseDatabase.getInstance().getReference().child("UCATECI").child("Estudiantes").child(user.getUid());
+                    DBReference= FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(user.getUid());
 
 
                     HashMap<String,String> hashMap= new HashMap<>();
-                    hashMap.put("Nombre",Nom);
-                    hashMap.put("Telefono",Tel);
-                    hashMap.put("Carrera",Carr);
-                    hashMap.put("Correo",Mail);
-                    hashMap.put("Matricula",Matr);
+                    hashMap.put("Nombres",nombres.getText().toString());
+                    hashMap.put("Apellidos",apellidos.getText().toString());
+                    hashMap.put("Telefono",telefono.getText().toString());
+                    hashMap.put("Correo",correo.getText().toString());
 
 
                     DBReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -173,7 +168,12 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
 
         if (view==JbtnRegistrar){
-            Registrar(Correo.getText().toString(),Password.getText().toString());
+            if (password.getText().equals(password2.getText())) {
+                Registrar(correo.getText().toString(), password.getText().toString());
+            }else  {
+                Alerta("Las contraseñas no coinciden","Vuelva a escrbir la contraseña en ambos campos.");
+                password.setError("Las contraseñas no coinciden.");
+            }
         }
         if (view==fback_button){
             onBackPressed();

@@ -142,7 +142,7 @@ public class Login extends AppCompatActivity {
 
                             Toast.makeText(Login.this, "Inicio de sesión exitoso.",
                                     Toast.LENGTH_SHORT).show();
-                            DBreference=FirebaseDatabase.getInstance().getReference().child("Estudiantes").child(user.getUid());
+                            DBreference=FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(user.getUid());
                             DBreference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {

@@ -52,7 +52,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         holder.item_txtFechaPrev.setText(itemTutoria.fecha);
         holder.item_txtHoraPrev.setText(itemTutoria.hora);
         holder.item_txtLugarPrev.setText(itemTutoria.lugar);
-        holder.item_txtTiempoRestantePrev.setText(itemTutoria.tiemporestante);
+        holder.item_txtTiempoRestantePrev.setText("");
 
 
         holder.setOnClickListener(position);

@@ -7,13 +7,13 @@ package com.rd.dmmr.tutosearch;
 public class ModelTutorias {
 
     public String foto;
-    public String idTuto, idProf, materias, titulo, descripcion, profesores, fecha, hora, lugar, tiemporestante;
+    public String idTuto, idProf, materias, titulo, descripcion, profesores, fecha, hora, lugar, tipo_tuto;
 
     public ModelTutorias(){
 
     }
 
-    public  ModelTutorias(String idTuto, String idProf, String foto, String materias, String titulo, String descripcion, String profesores, String fecha, String hora, String lugar, String tiemporestante) {
+    public  ModelTutorias(String idTuto, String idProf, String foto, String materias, String titulo, String descripcion, String profesores, String fecha, String hora, String lugar, String tipo_tuto) {
         this.idTuto=idTuto;
         this.idProf=idProf;
         this.foto = foto;
@@ -24,7 +24,7 @@ public class ModelTutorias {
         this.fecha = fecha;
         this.hora = hora;
         this.lugar = lugar;
-        this.tiemporestante = tiemporestante;
+        this.tipo_tuto = tipo_tuto;
     }
 
 

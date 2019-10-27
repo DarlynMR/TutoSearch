@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +72,8 @@ public class DetallesUsuario extends AppCompatActivity {
             //identificando el id del que tiene la sesion iniciada
             final String current_uid = mCurrentUser.getUid();
             //especificando donde se buscara
-            DBReference = FirebaseDatabase.getInstance().getReference().child("UCATECI").child("Estudiantes").child(current_uid);
+            DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(current_uid);
+            Log.i("Probando id", ""+current_uid);
             DBReference.keepSynced(true);
 
             txtNombre = (TextView) findViewById(R.id.txtNombre);
@@ -101,6 +103,7 @@ public class DetallesUsuario extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // Toast.makeText(Detalles_Usuario.this,dataSnapshot.toString(),Toast.LENGTH_LONG).show();
+                    Log.i("Probando id", ""+dataSnapshot);
                     String name = dataSnapshot.child("Nombre").getValue().toString();
                     String apellido = dataSnapshot.child("Apellido").getValue().toString();
                     String telefono = dataSnapshot.child("Telefono").getValue().toString();

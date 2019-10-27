@@ -47,7 +47,7 @@ public class FragmentOficial  extends Fragment {
         view = inflater.inflate(R.layout.tuto_oficiales_fragment,container,false);
 
         FDatabase= FirebaseDatabase.getInstance();
-        DBReference= FDatabase.getReference("UCATECI").child("Tutorias");
+        DBReference= FDatabase.getReference("tutorias").child("institucionales");
 
 
         RCAbajo= (RecyclerView) view.findViewById(R.id.RCAbajo);
@@ -81,6 +81,7 @@ public class FragmentOficial  extends Fragment {
 
                 String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF,  Lugar;
 
+                Log.i("Probando",dataSnapshot.getChildren().toString());
 
                 imgTuto=dataSnapshot.child("Imagen").getValue().toString();
                 Titulo= dataSnapshot.child("Titulo").getValue().toString();
@@ -94,7 +95,7 @@ public class FragmentOficial  extends Fragment {
                 Materia= dataSnapshot.child("Materia").getValue().toString();
                 idTuto= dataSnapshot.getKey();
 
-                mListTutoria.add(new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI+" - "+HoraF,Lugar,""));
+                mListTutoria.add(new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI+" - "+HoraF,Lugar, ""));
 
 
 

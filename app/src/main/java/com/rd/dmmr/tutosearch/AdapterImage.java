@@ -59,7 +59,7 @@ public class AdapterImage extends PagerAdapter {
         //identificando el id del que tiene la sesion iniciada
         final String current_uid = mCurrentUser.getUid();
         //especificando donde se buscara
-        DBReference = FirebaseDatabase.getInstance().getReference().child("UCATECI").child("Estudiantes").child(current_uid);
+        DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(current_uid);
         DBReference.keepSynced(true);
 
         DBReference.addValueEventListener(new ValueEventListener() {
