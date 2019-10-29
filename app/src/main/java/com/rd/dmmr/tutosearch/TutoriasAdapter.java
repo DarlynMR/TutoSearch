@@ -49,9 +49,9 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         holder.item_txtTituloPrev.setText(itemTutoria.titulo);
         holder.item_txtDescripcionPrev.setText(itemTutoria.descripcion);
         holder.item_txtProfesorPrev.setText(itemTutoria.profesores);
-        holder.item_txtFechaPrev.setText(itemTutoria.fecha);
-        holder.item_txtHoraPrev.setText(itemTutoria.hora);
-        holder.item_txtLugarPrev.setText(itemTutoria.lugar);
+        holder.item_txtFechaPrev.setText("Fecha: "+itemTutoria.fecha);
+        holder.item_txtHoraPrev.setText("Hora: "+itemTutoria.hora);
+        holder.item_txtLugarPrev.setText("Lugar: "+itemTutoria.lugar);
         holder.item_txtTiempoRestantePrev.setText("");
 
 
@@ -124,6 +124,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
                     detalles.putExtra("Fecha",mList.get(idfila).fecha);
                     detalles.putExtra("Hora",mList.get(idfila).hora);
                     detalles.putExtra("Lugar",mList.get(idfila).lugar);
+                    detalles.putExtra("TipoEs", "institucionales");
                     vcontext.startActivity(detalles);
                     break;
             }

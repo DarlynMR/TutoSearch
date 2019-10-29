@@ -95,6 +95,12 @@ public class FragmentOficial  extends Fragment {
                 Materia= dataSnapshot.child("Materia").getValue().toString();
                 idTuto= dataSnapshot.getKey();
 
+                Log.i("Probando", ""+dataSnapshot);
+                Log.i("Probando", ""+dataSnapshot.getChildren());
+                Log.i("Probando", ""+dataSnapshot.getRef().getParent().getKey());
+                Log.i("Probando", ""+dataSnapshot.getKey());
+
+
                 mListTutoria.add(new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI+" - "+HoraF,Lugar, ""));
 
 
@@ -199,6 +205,7 @@ public class FragmentOficial  extends Fragment {
         detalles.putExtra("Fecha",mListTutoria.get(pos).fecha);
         detalles.putExtra("Hora",mListTutoria.get(pos).hora);
         detalles.putExtra("Lugar",mListTutoria.get(pos).lugar);
+        detalles.putExtra("TipoEs", "institucionales");
 
 
         startActivity(detalles);

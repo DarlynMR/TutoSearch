@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -33,7 +34,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
     TextView profesor,fecha,hora, lugar, tiemporestante,titulo, descripcion;
 
-    String idTuto;
+    String idTuto, tutoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,6 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
         Intent intent= getIntent();
 
         datosTuto=intent.getExtras();
-
         if (datosTuto!=null) {
             idTuto = datosTuto.getString("idTuto");
             Log.i("Prueba", idTuto);
@@ -70,6 +70,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
             lugar.setText(datosTuto.getString("Lugar"));
             titulo.setText(datosTuto.getString("Titulo"));
             descripcion.setText(datosTuto.getString("Descripcion"));
+            Log.i("ProbandoAsistir",""+datosTuto.getString("TipoEs"));
         }
 
 
@@ -81,9 +82,15 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
     }
 
     public void Asistir(){
+        //try {
+
+        Intent intent= getIntent();
+
+        datosTuto=intent.getExtras();
+        Log.i("ProbandoAsistir",datosTuto.getString("TipoEs"));
 
         FirebaseUser user= FAuth.getCurrentUser();
-        DBRefence=FirebaseDatabase.getInstance().getReference().child("UCATECI").child("Asistiran").child(idTuto);
+        DBRefence=FirebaseDatabase.getInstance().getReference().child("tutorias_asistir").child(datosTuto.getString("TipoEs")).child(idTuto);
 
         final SharedPreferences pref = getSharedPreferences("EstudiantePref", Context.MODE_PRIVATE);
 
@@ -103,9 +110,20 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
+        /*
+        } catch (Exception e){
+            Mtoast("Ha ocurrido un error al realizar la operación");
+            Alerta("Error", ""+e.toString());
+        }*/
+    }
+    public void Alerta (String Titulo, String Mensaje){
+        AlertDialog alertDialog;
+        alertDialog = new AlertDialog.Builder(DetallesTutorias.this).setNegativeButton("Ok",null).create();
+        alertDialog.setTitle(Titulo);
+        alertDialog.setMessage(Mensaje);
+        alertDialog.show();
 
     }
-
     public void Mtoast(String mensaje){
 
         Toast toast= Toast.makeText(DetallesTutorias.this, mensaje,Toast.LENGTH_LONG);

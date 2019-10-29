@@ -163,17 +163,42 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
         toast.show();
     }
 
+    public void campos_vacios(EditText campo, View view){
+        campo.setError("No puede dejar este campo vacío.");
+        view= campo;
+    }
+
 
     @Override
     public void onClick(View view) {
 
         if (view==JbtnRegistrar){
-            if (password.getText().equals(password2.getText())) {
-                Registrar(correo.getText().toString(), password.getText().toString());
-            }else  {
-                Alerta("Las contraseñas no coinciden","Vuelva a escrbir la contraseña en ambos campos.");
-                password.setError("Las contraseñas no coinciden.");
-            }
+                View ViewFocus = null;
+                String pass,pass2;
+                pass= password.getText().toString(); pass2= password2.getText().toString();
+
+                if (nombres.getText().toString().length() == 0) {
+                    campos_vacios(nombres,ViewFocus);
+                } else if (apellidos.getText().toString().length() == 0) {
+                    campos_vacios(apellidos,ViewFocus);
+                }else if (telefono.getText().toString().length() == 0) {
+                    campos_vacios(telefono,ViewFocus);
+                }else if (correo.getText().toString().length() == 0) {
+                    campos_vacios(correo,ViewFocus);
+                }else if (apellidos.getText().toString().length() == 0) {
+                    campos_vacios(apellidos,ViewFocus);
+                } else if (password.getText().toString().length() == 0) {
+                    campos_vacios(password,ViewFocus);
+                } else if (password2.getText().toString().length() == 0) {
+                    campos_vacios(password2,ViewFocus);
+                }else if (!pass.equals(pass2)) {
+                    Log.i("Prueba", ""+pass.equals(pass2));
+                    password2.setError("Las contraseñas no coinciden.");
+                    ViewFocus =password2;
+                } else {
+                    Registrar(correo.getText().toString(), password.getText().toString());
+                }
+
         }
         if (view==fback_button){
             onBackPressed();
