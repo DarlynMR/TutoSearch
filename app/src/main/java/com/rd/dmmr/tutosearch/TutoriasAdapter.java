@@ -2,6 +2,7 @@ package com.rd.dmmr.tutosearch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -16,6 +17,8 @@ import java.util.List;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 /**
  * Created by Owner on 10/3/2018.
@@ -51,8 +54,26 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         holder.item_txtProfesorPrev.setText(itemTutoria.profesores);
         holder.item_txtFechaPrev.setText("Fecha: "+itemTutoria.fecha);
         holder.item_txtHoraPrev.setText("Hora: "+itemTutoria.hora);
-        holder.item_txtLugarPrev.setText("Lugar: "+itemTutoria.lugar);
+        if (!itemTutoria.lugar.equals("")) {
+            holder.item_txtLugarPrev.setText("Lugar: " + itemTutoria.lugar);
+        }else {
+            holder.item_txtLugarPrev.setText("");
+        }
         holder.item_txtTiempoRestantePrev.setText("");
+
+        if (!itemTutoria.foto.equals("default")){
+            try {
+                Glide.with(holder.itemView.getContext())
+                        .load(itemTutoria.foto)
+                        .fitCenter()
+                        .centerCrop()
+                        .into(holder.item_imgFotoPrev);
+
+            }catch (Exception e){
+                Log.i("Error", ""+e.getMessage());
+            }
+        }
+
 
 
         holder.setOnClickListener(position);
@@ -83,7 +104,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         TextView item_txtMateriaPrev, item_txtTituloPrev, item_txtDescripcionPrev, item_txtProfesorPrev, item_txtFechaPrev, item_txtHoraPrev, item_txtLugarPrev,
                 item_txtTiempoRestantePrev;
         CardView cardView;
-        Context vcontext;
+        private Context vcontext;
         Integer idfila;
 
 

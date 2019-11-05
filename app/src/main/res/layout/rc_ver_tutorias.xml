@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"
-                android:hint="Lugar"
+                android:hint=""
                 android:textColorHint="@color/Blanco"
                 android:textSize="16dp"
                 />
@@ -113,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/Blanco"
-            android:hint="Tiempo restante"
+            android:hint=""
             android:textColorHint="@color/Blanco"
             android:textSize="16dp"
             android:textAlignment="textEnd"
