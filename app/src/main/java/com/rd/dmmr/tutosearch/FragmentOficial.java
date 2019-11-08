@@ -79,7 +79,7 @@ public class FragmentOficial  extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF,  Lugar;
+                String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF,  Lugar, TipoTuto;
 
                 Log.i("Probando",dataSnapshot.getValue().toString());
 
@@ -102,6 +102,7 @@ public class FragmentOficial  extends Fragment {
 
                 idProf= dataSnapshot.child("UIDProfesor").getValue().toString();
                 Materia= dataSnapshot.child("Materia").getValue().toString();
+                TipoTuto= dataSnapshot.child("tipo_tuto").getValue().toString();
                 idTuto= dataSnapshot.getKey();
 
                 Log.i("Probando", ""+dataSnapshot);
@@ -110,9 +111,9 @@ public class FragmentOficial  extends Fragment {
                 Log.i("Probando", ""+dataSnapshot.getKey());
 
                 if (HoraF.equals("")) {
-                    mListTutoria.add(new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI,Lugar, ""));
+                    mListTutoria.add(new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI,Lugar, TipoTuto));
                 }else {
-                    mListTutoria.add(new ModelTutorias(idTuto, idProf, imgTuto, Materia, Titulo, Descripcion, Profesor, Fecha, HoraI + " - " + HoraF, Lugar, ""));
+                    mListTutoria.add(new ModelTutorias(idTuto, idProf, imgTuto, Materia, Titulo, Descripcion, Profesor, Fecha, HoraI + " - " + HoraF, Lugar, TipoTuto));
                 }
                 tutoriasAdapter.notifyDataSetChanged();
 
@@ -125,7 +126,7 @@ public class FragmentOficial  extends Fragment {
 
                 Log.i("CAMBIANDO",dataSnapshot.toString()+" "+s);
 
-                String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF,  Lugar;
+                String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF,  Lugar, TipoTuto;
                 int index=-1;
 
 
@@ -149,14 +150,15 @@ public class FragmentOficial  extends Fragment {
 
                 idProf= dataSnapshot.child("UIDProfesor").getValue().toString();
                 Materia= dataSnapshot.child("Materia").getValue().toString();
+                TipoTuto= dataSnapshot.child("tipo_tuto").getValue().toString();
                 idTuto= dataSnapshot.getKey();
 
                 index= getRCIndex(idTuto);
 
                 if (HoraF.equals("")) {
-                    mListTutoria.set(index, new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI,Lugar,""));
+                    mListTutoria.set(index, new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI,Lugar,TipoTuto));
                 }else {
-                    mListTutoria.set(index, new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI+" - "+HoraF,Lugar,""));
+                    mListTutoria.set(index, new ModelTutorias(idTuto,idProf,imgTuto,Materia,Titulo,Descripcion,Profesor,Fecha,HoraI+" - "+HoraF,Lugar,TipoTuto));
                 }
                 tutoriasAdapter.notifyItemChanged(index);
 

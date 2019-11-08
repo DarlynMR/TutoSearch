@@ -3,14 +3,23 @@ package com.rd.dmmr.tutosearch;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -20,8 +29,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-
+import static com.rd.dmmr.tutosearch.R.id.img_profileEst_nav;
+import static com.rd.dmmr.tutosearch.R.id.txtNav_nombreEst;
+import static com.rd.dmmr.tutosearch.R.id.txtCorreoEst_nav;
 
 public class pantalla_principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -29,6 +43,8 @@ public class pantalla_principal extends AppCompatActivity
     private CardView card_tutorias_generales, card_tutorias_inst, card_tutorias_reservadas, card_mensajes;
 
     FirebaseAuth FAuth;
+    FirebaseUser FUser;
+    DatabaseReference DbReferenceUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +62,8 @@ public class pantalla_principal extends AppCompatActivity
 
 
         FAuth= FirebaseAuth.getInstance();
+        FUser = FAuth.getCurrentUser();
+        DbReferenceUser= FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(FUser.getUid());
 
 
         card_tutorias_generales.setOnClickListener(this);
@@ -123,13 +141,87 @@ public class pantalla_principal extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        try {
+            FUser = FAuth.getCurrentUser();
+            super.onStart();
+            if (FUser==null){
+                VolverInicio();
+            }else{
+                DbReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String nombresEst, apellidosEst, correoEst, url_pic;
+
+                        nombresEst = dataSnapshot.child("Nombres").getValue(String.class);
+                        apellidosEst = dataSnapshot.child("Apellidos").getValue(String.class);
+                        correoEst = dataSnapshot.child("Correo").getValue(String.class);
+                        url_pic= dataSnapshot.child("url_pic").getValue(String.class);
+
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                        View headerview = navigationView.getHeaderView(0);
+
+                        TextView txt_navnombreEstu =(TextView) headerview.findViewById(txtNav_nombreEst);
+                        TextView txt_navcorreoEstu =(TextView) headerview.findViewById(txtCorreoEst_nav);
+                        ImageView img_navEstu = (ImageView) headerview.findViewById(img_profileEst_nav);
+
+                        txt_navnombreEstu.setText(nombresEst + " " + apellidosEst);
+                        txt_navcorreoEstu.setText(correoEst);
+
+                        if (url_pic.equals("defaultPicUser")){
+                            img_navEstu.setImageResource(R.mipmap.profile_default);
+                        } else {
+                            try {
+                                Glide.with(pantalla_principal.this)
+                                        .load(url_pic)
+                                        .fitCenter()
+                                        .centerCrop()
+                                        .into(img_navEstu);
+
+                            }catch (Exception e){
+                                Log.i("Error", ""+e.getMessage());
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(pantalla_principal.this,"Ha ocurrido un problema para obtener la información del usuario", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+
+
+
+
+        }catch (Exception e){
+            Toast.makeText(pantalla_principal.this,"Ha ocurrido un error al tratar de abrir la aplicación", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void VolverInicio() {
+        try {
+            Intent startintent = new Intent(pantalla_principal.this, Login.class);
+            startActivity(startintent);
+            finish();
+        }catch (Exception e){
+            Toast.makeText(pantalla_principal.this,"Ha ocurrido un error al tratar de abrir la aplicación", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
     public void onClick(View v) {
         Intent intent;
 
         switch (v.getId()){
             case R.id.card_tutorias_generales : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
+            case R.id.card_mensajes : intent = new Intent(this,TransmisionLive.class); startActivity(intent); break;
             default:break;
         }
+
 
     }
 

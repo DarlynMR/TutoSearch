@@ -53,7 +53,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="95sp"
         android:layout_gravity="bottom"
@@ -62,6 +62,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/LYInfo"
             android:layout_width="200sp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -118,10 +119,19 @@
             android:textSize="16dp"
             android:textAlignment="textEnd"
             android:layout_gravity="end"
+            android:layout_toRightOf="@id/LYInfo"
+            />
+
+        <ImageView
+            android:id="@+id/imgType"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             />
 
 
-    </LinearLayout>
+    </RelativeLayout>
     
     
     

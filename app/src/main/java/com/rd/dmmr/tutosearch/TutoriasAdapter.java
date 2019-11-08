@@ -2,6 +2,7 @@ package com.rd.dmmr.tutosearch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -61,7 +62,12 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         }
         holder.item_txtTiempoRestantePrev.setText("");
 
-        if (!itemTutoria.foto.equals("default")){
+        if (itemTutoria.foto.equals("defaultPresencial")){
+            holder.item_imgFotoPrev.setImageResource(R.mipmap.presencial_background);
+        } else if(itemTutoria.foto.equals("defaultLive")){
+            holder.item_imgFotoPrev.setImageResource(R.drawable.video_camera_live);
+
+        } else {
             try {
                 Glide.with(holder.itemView.getContext())
                         .load(itemTutoria.foto)
@@ -72,6 +78,14 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             }catch (Exception e){
                 Log.i("Error", ""+e.getMessage());
             }
+
+        }
+
+        if (itemTutoria.tipo_tuto.equals("Live")){
+            holder.item_imgType.setImageResource(R.drawable.ic_iconfinder_facebook_live_icon_1083837);
+
+        }else if (itemTutoria.tipo_tuto.equals("Presencial")){
+            holder.item_imgType.setImageResource(R.drawable.ic_iconfinder_dicument_4115232);
         }
 
 
@@ -100,7 +114,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        ImageView item_imgFotoPrev;
+        ImageView item_imgFotoPrev, item_imgType;
         TextView item_txtMateriaPrev, item_txtTituloPrev, item_txtDescripcionPrev, item_txtProfesorPrev, item_txtFechaPrev, item_txtHoraPrev, item_txtLugarPrev,
                 item_txtTiempoRestantePrev;
         CardView cardView;
@@ -120,6 +134,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             item_txtHoraPrev= itemView.findViewById(R.id.txtHoraTutorias);
             item_txtLugarPrev=itemView.findViewById(R.id.txtLugarTurorias);
             item_txtTiempoRestantePrev=itemView.findViewById(R.id.txtTiempoRestante);
+            item_imgType=itemView.findViewById(R.id.imgType);
             cardView= itemView.findViewById(R.id.RCView);
 
         }

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TutoSearch.iml" filepath="$PROJECT_DIR$/TutoSearch.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbambuser-0.9.18/libbambuser-0.9.18.iml" filepath="$PROJECT_DIR$/libbambuser-0.9.18/libbambuser-0.9.18.iml" />
     </modules>
   </component>
 </project>
