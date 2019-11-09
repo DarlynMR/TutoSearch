@@ -101,7 +101,7 @@ public class TutoriasAsist extends AppCompatActivity {
 
     private void upTutorias(String IdTuto){
 
-
+/*
         DBRefence= FDatabase.getReference().child("UCATECI").child("Tutorias").child(IdTuto);
         DBRefence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -174,7 +174,7 @@ public class TutoriasAsist extends AppCompatActivity {
             }
         });
 
-
+*/
     }
 
 

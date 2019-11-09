@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,6 +20,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -148,6 +153,7 @@ public class pantalla_principal extends AppCompatActivity
             if (FUser==null){
                 VolverInicio();
             }else{
+                /*
                 DbReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -190,6 +196,50 @@ public class pantalla_principal extends AppCompatActivity
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(pantalla_principal.this,"Ha ocurrido un problema para obtener la información del usuario", Toast.LENGTH_SHORT).show();
+                    }
+                });
+*/
+
+                FirebaseFirestore fdb = FirebaseFirestore.getInstance();
+                DocumentReference dc = fdb.collection("Estudiantes").document(FUser.getUid());
+                dc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        String nombresProf, apellidosProf, correoProf, url_pic;
+
+                        DocumentSnapshot docS = task.getResult();
+
+                        nombresProf = docS.getString("nombres");
+                        apellidosProf = docS.getString("apellidos");
+                        correoProf = docS.getString("correo");
+                        url_pic= docS.getString("url_pic");
+
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                        View headerview = navigationView.getHeaderView(0);
+
+                        TextView txt_nombreprofNav =(TextView) headerview.findViewById(txtNav_nombreEst);
+                        TextView txt_correoNav =(TextView) headerview.findViewById(txtCorreoEst_nav);
+                        ImageView img_navEstu = (ImageView) headerview.findViewById(img_profileEst_nav);
+
+                        txt_nombreprofNav.setText(nombresProf + " " + apellidosProf);
+                        txt_correoNav.setText(correoProf);
+
+                        if (url_pic.equals("defaultPicProf")){
+                            img_navEstu.setImageResource(R.mipmap.profile_default);
+                        } else {
+                            try {
+                                Glide.with(pantalla_principal.this)
+                                        .load(url_pic)
+                                        .fitCenter()
+                                        .centerCrop()
+                                        .into(img_navEstu);
+
+                            }catch (Exception e){
+                                Log.i("Error", ""+e.getMessage());
+                            }
+
+                        }
+
                     }
                 });
 

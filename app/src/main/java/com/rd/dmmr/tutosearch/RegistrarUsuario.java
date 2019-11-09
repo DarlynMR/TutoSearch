@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,6 +47,9 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
     private DatabaseReference DBReference;
+
+    //Firestore
+    private FirebaseFirestore fdb;
 
     //Variables Firebase de Storage
     private StorageReference imgStorage;
@@ -83,6 +88,10 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
         password2= (EditText) findViewById(R.id.txtPassword2);
 
         FAutentic = FirebaseAuth.getInstance();
+
+        fdb = FirebaseFirestore.getInstance();
+
+
         progressDialog = new ProgressDialog(this);
 
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
@@ -140,14 +149,43 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
 
 
                     HashMap<String,String> hashMap= new HashMap<>();
-                    hashMap.put("Nombres",nombres.getText().toString());
-                    hashMap.put("Apellidos",apellidos.getText().toString());
-                    hashMap.put("Telefono",telefono.getText().toString());
-                    hashMap.put("Correo",correo.getText().toString());
+                    hashMap.put("nombres",nombres.getText().toString());
+                    hashMap.put("apellidos",apellidos.getText().toString());
+                    hashMap.put("telefono",telefono.getText().toString());
+                    hashMap.put("correo",correo.getText().toString());
                     hashMap.put("url_pic", "defaultPicUser");
                     hashMap.put("url_thumb_pic", "defaultPicUser");
 
+                    fdb.collection("Estudiantes").document(user.getUid())
+                            .set(hashMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    user.sendEmailVerification();
+                                    if (uri!=null){
+                                        SubirImagen(user.getUid());
+                                    } else {
+                                        FAutentic.signOut();
+                                    }
 
+                                    progressDialog.dismiss();
+                                    Intent i = new Intent(RegistrarUsuario.this, Login.class);
+                                    RegistrarUsuario.this.startActivity(i);
+
+                                    Mtoast("Usuario registrado correctamente");
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Mtoast("Ocurrio un error al registrar el usuario");
+                            user.delete();
+                            FAutentic.signOut();
+                            progressDialog.dismiss();
+                        }
+                    });
+
+/*
                     DBReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -177,7 +215,7 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                         }
                     });
 
-
+*/
                 }
                 progressDialog.dismiss();
             }
@@ -186,12 +224,12 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void SubirImagen(final String UIDProf) {
+    private void SubirImagen(final String UIDEstud) {
 
         if (uri != null) {
 
-            StorageReference filePath = imgStorage.child("img_profile").child(UIDProf + ".jpg");
-            final StorageReference thumb_filePath = imgStorage.child("img_profile").child("thumbs").child(UIDProf + ".jpg");
+            StorageReference filePath = imgStorage.child("img_profile").child(UIDEstud + ".jpg");
+            final StorageReference thumb_filePath = imgStorage.child("img_profile").child("thumbs").child(UIDEstud + ".jpg");
 
             progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Cargando imagen...");
@@ -218,7 +256,7 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()) {
 
-                            final StorageReference url_filePath = urlStorage.child("img_profile").child(UIDProf + ".jpg");
+                            final StorageReference url_filePath = urlStorage.child("img_profile").child(UIDEstud + ".jpg");
                             url_filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -226,13 +264,29 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                                     download_url = uri.toString();
                                     Map update_hashmMap=new HashMap();
                                     update_hashmMap.put("url_pic",download_url);
-                                    DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(UIDProf);
+                                    /*
+                                    DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(UIDEstud);
                                     DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
                                                 progressDialog.dismiss();
                                             }
+                                        }
+                                    });
+*/
+
+                                    fdb.collection("Estudiantes").document(UIDEstud)
+                                            .update(update_hashmMap)
+                                            .addOnSuccessListener(new OnSuccessListener() {
+                                                @Override
+                                                public void onSuccess(Object o) {
+                                                    progressDialog.dismiss();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
                                         }
                                     });
 
@@ -246,7 +300,7 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
 
-                                    final StorageReference url_thumb_filePath = urlStorage.child("img_profile").child("thumbs").child(UIDProf + ".jpg");
+                                    final StorageReference url_thumb_filePath = urlStorage.child("img_profile").child("thumbs").child(UIDEstud + ".jpg");
                                     url_thumb_filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
@@ -254,7 +308,8 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                                             thumb_downloadUrl = uri.toString();
                                             Map update_hashmMap=new HashMap();
                                             update_hashmMap.put("url_thumb_pic",thumb_downloadUrl);
-                                            DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(UIDProf);
+                                            /*
+                                            DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(UIDEstud);
                                             DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -266,6 +321,20 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                                                     if (task.isCanceled()){
                                                         Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
                                                     }
+                                                }
+                                            });
+*/
+                                            fdb.collection("Estudiantes").document(UIDEstud)
+                                                    .update(update_hashmMap)
+                                                    .addOnSuccessListener(new OnSuccessListener() {
+                                                        @Override
+                                                        public void onSuccess(Object o) {
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
                                                 }
                                             });
 

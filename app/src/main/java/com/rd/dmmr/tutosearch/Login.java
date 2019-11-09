@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,6 +36,8 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
     private DatabaseReference DBreference;
+
+    private FirebaseFirestore fdb;
 
     private EditText JtxtCorreo;
     private EditText JtxtPassword;
@@ -58,6 +64,7 @@ public class Login extends AppCompatActivity {
         btnEntrar = (Button)   findViewById(R.id.btnEntrarLogin);
         btnRegistrar = (Button) findViewById(R.id.btnRegistroLogin);
 
+        fdb = FirebaseFirestore.getInstance();
 
         progressDialog = new ProgressDialog(this);
 
@@ -164,6 +171,32 @@ public class Login extends AppCompatActivity {
 
                                 }
                             });
+
+                            DocumentReference estudianteRef = fdb.collection("Estudiantes").document(user.getUid());
+                            estudianteRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+
+                                    DocumentSnapshot dc = task.getResult();
+
+                                    Log.i("Prueba",  dc.getString("nombres"));
+                                    editor.putString("Nombre",dc.getString("nombres"));
+                                    editor.putString("Correo",dc.getString("correo"));
+                                    editor.putString("Telefono",dc.getString("telefono"));
+                                    editor.apply();
+                                    // }
+
+                                }
+                            });
+
+
+
+                            Toast.makeText(Login.this, "Inicio de sesión exitoso.",
+                                    Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Intent intent = new Intent(Login.this, pantalla_principal.class);
+                            Login.this.startActivity(intent);
 
 
 

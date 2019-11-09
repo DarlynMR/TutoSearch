@@ -2,8 +2,6 @@ package com.rd.dmmr.tutosearch;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -48,11 +46,12 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
     public void onBindViewHolder(final ViewPos holder, final int position) {
 
         ModelTutorias itemTutoria= mList.get(position);
+        Log.i("Probando lista",mList.get(position).toString()+" Otra: "+itemTutoria.hora);
 
-        holder.item_txtMateriaPrev.setText(itemTutoria.materias);
+        holder.item_txtMateriaPrev.setText(itemTutoria.materia);
         holder.item_txtTituloPrev.setText(itemTutoria.titulo);
         holder.item_txtDescripcionPrev.setText(itemTutoria.descripcion);
-        holder.item_txtProfesorPrev.setText(itemTutoria.profesores);
+        holder.item_txtProfesorPrev.setText(itemTutoria.nombreProf);
         holder.item_txtFechaPrev.setText("Fecha: "+itemTutoria.fecha);
         holder.item_txtHoraPrev.setText("Hora: "+itemTutoria.hora);
         if (!itemTutoria.lugar.equals("")) {
@@ -62,15 +61,15 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         }
         holder.item_txtTiempoRestantePrev.setText("");
 
-        if (itemTutoria.foto.equals("defaultPresencial")){
+        if (itemTutoria.url_imagePortada.equals("defaultPresencial")){
             holder.item_imgFotoPrev.setImageResource(R.mipmap.presencial_background);
-        } else if(itemTutoria.foto.equals("defaultLive")){
+        } else if(itemTutoria.url_imagePortada.equals("defaultLive")){
             holder.item_imgFotoPrev.setImageResource(R.drawable.video_camera_live);
 
         } else {
             try {
                 Glide.with(holder.itemView.getContext())
-                        .load(itemTutoria.foto)
+                        .load(itemTutoria.url_imagePortada)
                         .fitCenter()
                         .centerCrop()
                         .into(holder.item_imgFotoPrev);
@@ -151,12 +150,12 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
                     Intent detalles = new Intent(vcontext, DetallesTutorias.class);
                     detalles.putExtra("idTuto",mList.get(idfila).idTuto);
                     Log.i("Prueba",mList.get(idfila).idTuto+" "+idfila);
-                    detalles.putExtra("Materia",mList.get(idfila).materias);
+                    detalles.putExtra("Materia",mList.get(idfila).materia);
                     detalles.putExtra("idProf",mList.get(idfila).idProf);
-                    detalles.putExtra("imgTuto",mList.get(idfila).foto);
+                    detalles.putExtra("imgTuto",mList.get(idfila).url_imagePortada);
                     detalles.putExtra("Titulo", mList.get(idfila).titulo);
                     detalles.putExtra("Descripcion",mList.get(idfila).descripcion);
-                    detalles.putExtra("Profesor",mList.get(idfila).profesores);
+                    detalles.putExtra("Profesor",mList.get(idfila).nombreProf);
                     detalles.putExtra("Fecha",mList.get(idfila).fecha);
                     detalles.putExtra("Hora",mList.get(idfila).hora);
                     detalles.putExtra("Lugar",mList.get(idfila).lugar);
