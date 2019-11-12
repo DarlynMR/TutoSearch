@@ -268,7 +268,6 @@ public class pantalla_principal extends AppCompatActivity
 
         switch (v.getId()){
             case R.id.card_tutorias_generales : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
-            case R.id.card_mensajes : intent = new Intent(this,TransmisionLive.class); startActivity(intent); break;
             default:break;
         }
 

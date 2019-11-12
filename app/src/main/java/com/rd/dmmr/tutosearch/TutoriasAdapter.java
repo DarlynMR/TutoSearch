@@ -147,7 +147,16 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.RCView:
-                    Intent detalles = new Intent(vcontext, DetallesTutorias.class);
+
+                    Class clase;
+
+                    if (mList.get(idfila).tipo_tuto.equals("Live")){
+                        clase = TransmisionLive.class;
+                    }else{
+                        clase = DetallesTutorias.class;
+                    }
+
+                    Intent detalles = new Intent(vcontext, clase);
                     detalles.putExtra("idTuto",mList.get(idfila).idTuto);
                     Log.i("Prueba",mList.get(idfila).idTuto+" "+idfila);
                     detalles.putExtra("Materia",mList.get(idfila).materia);
@@ -159,7 +168,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
                     detalles.putExtra("Fecha",mList.get(idfila).fecha);
                     detalles.putExtra("Hora",mList.get(idfila).hora);
                     detalles.putExtra("Lugar",mList.get(idfila).lugar);
-                    detalles.putExtra("TipoEs", "institucionales");
+                    detalles.putExtra("TipoEs", mList.get(idfila).tipo_tuto);
                     vcontext.startActivity(detalles);
                     break;
             }
