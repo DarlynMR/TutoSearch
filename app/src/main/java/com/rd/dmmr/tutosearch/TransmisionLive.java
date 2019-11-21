@@ -1,14 +1,24 @@
 package com.rd.dmmr.tutosearch;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,13 +34,18 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,6 +69,13 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
     private Bundle datosTuto;
 
+    //LY Popup varaibles
+    private Dialog mDialog;
+    private List<DownloadModel> mListDown;
+    private DownloadAdapter downloadAdapter;
+    private ImageButton btnAbrirLY;
+
+
     final OkHttpClient mOkHttpClient = new OkHttpClient();
 
     MediaController mMediaController = null;
@@ -72,12 +94,18 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transmision_live);
 
+        mDialog = new Dialog(this);
+
         mVideoSurface = (SurfaceView) findViewById(R.id.VideoSurfaceView);
         mPlayerStatusTextView = (TextView) findViewById(R.id.PlayerStatusTextView);
         btnIniciar = (Button) findViewById(R.id.btnIniciar);
         titulo = (TextView) findViewById(R.id.txtTituloLive);
         logoGif = (ImageView) findViewById(R.id.liveGif);
 
+        btnAbrirLY = (ImageButton) findViewById(R.id.btnAbrirLY);
+
+        mListDown = new ArrayList<>();
+        downloadAdapter = new DownloadAdapter(mListDown);
 
         Intent intent= getIntent();
 
@@ -95,6 +123,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         fdb = FirebaseFirestore.getInstance();
 
         btnIniciar.setOnClickListener(this);
+        btnAbrirLY.setOnClickListener(this);
 
     }
 
@@ -169,6 +198,131 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     };
     // ...
 
+    private boolean hasPermission(String permission) {
+        return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    private void abrirLYPopup() {
+        TextView txtCerrar;
+        RecyclerView rvArchivos;
+        Button btnImagen, btnDocs;
+
+        mDialog.setContentView(R.layout.ly_archivos_tuto);
+        txtCerrar = (TextView) mDialog.findViewById(R.id.txtCerrar);
+        rvArchivos = (RecyclerView) mDialog.findViewById(R.id.RCAbajo);
+
+        //Necesario para mostrar los datos el RecyclerView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(TransmisionLive.this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        rvArchivos.setLayoutManager(layoutManager);
+        downloadAdapter = new DownloadAdapter(mListDown);
+        rvArchivos.setAdapter(downloadAdapter);
+        upFilestoRC();
+        downloadAdapter.notifyDataSetChanged();
+        //
+
+        txtCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialog.dismiss();
+            }
+        });
+
+
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+    }
+
+    private void upFilestoRC() {
+
+
+        CollectionReference ref = fdb.collection("tuto_files").document(idTuto).collection("files");
+        ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.i("ProbandoDBFailed", "Error de base de datos: " + e);
+                    return;
+                }
+                String name, url, idDoc;
+
+
+                for (DocumentChange dc : snapshot.getDocumentChanges()) {
+                    DocumentSnapshot docS = dc.getDocument();
+                    int index = -1;
+                    switch (dc.getType()) {
+                        case ADDED:
+
+
+                            Log.i("ProbandoDBDocs", "" + docS.getData());
+
+
+                            name = docS.getString("file_name");
+                            url = docS.getString("url_file");
+                            idDoc = docS.getId();
+
+                            Log.i("ProbandoLlegada", "" + docS);
+
+
+                            mListDown.add(new DownloadModel(name, url, idDoc, idTuto));
+
+                            downloadAdapter.notifyDataSetChanged();
+
+                            break;
+                        case MODIFIED:
+
+                            Log.i("Probando", "" + docS.getData());
+
+
+                            name = docS.getString("file_name");
+                            url = docS.getString("url_file");
+                            idDoc = docS.getId();
+
+                            Log.i("Probando", "" + docS);
+
+                            index = getRCIndex(docS.getId());
+
+
+                            mListDown.set(index, new DownloadModel(name, url, idDoc, idTuto));
+
+
+                            downloadAdapter.notifyItemChanged(index);
+                            break;
+                        case REMOVED:
+
+
+                            index = getRCIndex(docS.getId());
+
+                            mListDown.remove(index);
+                            downloadAdapter.notifyItemRemoved(index);
+
+                            break;
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    private int getRCIndex(String iDoc) {
+
+        int index = -1;
+        for (int i = 0; i < mListDown.size(); i++) {
+            if (mListDown.get(i).idDoc.equals(iDoc)) {
+
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -187,6 +341,22 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (!hasPermission(Manifest.permission.CAMERA)
+                && !hasPermission(Manifest.permission.RECORD_AUDIO))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO}, 1);
+        else if (!hasPermission(Manifest.permission.RECORD_AUDIO))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+        else if (!hasPermission(Manifest.permission.CAMERA))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        else if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        else if (!hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+
+
         mVideoSurface = (SurfaceView) findViewById(R.id.VideoSurfaceView);
         mPlayerStatusTextView.setText("Loading latest broadcast");
     }
@@ -280,6 +450,10 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view==btnIniciar){
             ObtenerBroadcastID();
+        }
+
+        if (view == btnAbrirLY) {
+            abrirLYPopup();
         }
     }
 }

@@ -15,14 +15,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
-
-
     </com.bambuser.broadcaster.SurfaceViewWithAutoAR>
 
     <TextView
         android:id="@+id/txtTituloLive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Título"
         android:textSize="20sp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/VideoSurfaceView"
@@ -54,6 +53,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_7sdp"
         android:scaleType="fitXY" />
+
+    <ImageButton
+        android:id="@+id/btnAbrirLY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_iconfinder_document"
+        android:background="@drawable/button_style_oval"
+        android:layout_alignParentEnd="true"
+
+        />
 
 
 </RelativeLayout>

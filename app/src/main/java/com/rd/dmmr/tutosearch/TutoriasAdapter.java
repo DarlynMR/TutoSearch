@@ -18,6 +18,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * Created by Owner on 10/3/2018.
@@ -28,6 +30,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
 
     private List<ModelTutorias> mList;
+
 
 
     public TutoriasAdapter(List<ModelTutorias> mList) {
@@ -44,6 +47,8 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(final ViewPos holder, final int position) {
+
+
 
         ModelTutorias itemTutoria= mList.get(position);
         Log.i("Probando lista",mList.get(position).toString()+" Otra: "+itemTutoria.hora);

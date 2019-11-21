@@ -71,6 +71,8 @@ dependencies {
     implementation project(path: ':libbambuser-0.9.18')
     implementation 'com.adair.android:okhttp:1.0.2'
 
+    //Apache commons
+    implementation 'commons-io:commons-io:2.6'
 
 }
 apply plugin: 'com.google.gms.google-services'
