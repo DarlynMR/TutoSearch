@@ -1,5 +1,4 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:design="http://schemas.android.com/tools"
@@ -47,7 +46,8 @@
                         android:id="@+id/pager"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_alignParentTop="true" />
+                        android:layout_alignParentTop="true"
+                        android:background="@mipmap/laptop"/>
 
                 </RelativeLayout>
             </LinearLayout>
@@ -126,7 +126,7 @@
                 android:layout_marginTop="19dp"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
-                android:text="Carrera" />
+                android:text="24/01/1998" />
 
             <TextView
                 android:id="@+id/txtCorreo"
@@ -136,7 +136,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textCorreo"
                 android:paddingLeft="20dp"
-                android:text="Correo" />
+                android:text="carloshlp@gmail.com" />
 
             <TextView
                 android:id="@+id/txtTelefono"
@@ -146,7 +146,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:paddingLeft="20dp"
-                android:text="Telefono" />
+                android:text="849-358-3861" />
 
             <TextView
                 android:id="@+id/textTelefono"
@@ -172,7 +172,7 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="20dp"
                 android:paddingTop="3dp"
-                android:text="Nombre:"
+                android:text="Nombre(s):"
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 
@@ -185,7 +185,7 @@
                 android:layout_below="@+id/textNombre"
                 android:paddingBottom="8dp"
                 android:paddingLeft="20dp"
-                android:text="Nombre" />
+                android:text="Carlos Henrique" />
 
             <TextView
                 android:id="@+id/textMatricula"
@@ -195,7 +195,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtNombre"
                 android:paddingLeft="20dp"
-                android:text="Matrícula:"
+                android:text="Apellido(s)"
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 
@@ -208,7 +208,7 @@
                 android:layout_below="@+id/textMatricula"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
-                android:text="Matrícula" />
+                android:text="López Pérez" />
 
             <TextView
                 android:id="@+id/textCarrera"
@@ -219,7 +219,7 @@
                 android:layout_below="@+id/txtMatricula"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
-                android:text="Carrera:"
+                android:text="Fecha de nacimiento:"
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 

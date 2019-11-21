@@ -6,8 +6,6 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.View;
@@ -15,11 +13,8 @@ import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -126,7 +121,7 @@ public class pantalla_principal extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.perfil) {
-            GoClass(DetallesUsuario.class);
+            GoClass(PerfilEstudiante.class);
         } else if (id == R.id.nav_gallery) {
         } else if (id == R.id.nav_slideshow) {
 
@@ -268,6 +263,7 @@ public class pantalla_principal extends AppCompatActivity
 
         switch (v.getId()){
             case R.id.card_tutorias_generales : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
+            case R.id.card_mensajes : intent = new Intent(this,TipoRegistro.class);startActivity(intent); break;
             default:break;
         }
 

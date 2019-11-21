@@ -20,11 +20,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,7 +44,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import id.zelory.compressor.Compressor;
 
-public class DetallesUsuario extends AppCompatActivity {
+public class PerfilEstudiante extends AppCompatActivity {
 
 
     private DatabaseReference DBReference;
@@ -73,7 +70,7 @@ public class DetallesUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_detalles_usuario);
+            setContentView(R.layout.activity_perfil_estudiante);
             imagen_slider();
 
             urlStorage = FirebaseStorage.getInstance().getReference();
@@ -144,7 +141,7 @@ public class DetallesUsuario extends AppCompatActivity {
            }).addOnFailureListener(new OnFailureListener() {
                @Override
                public void onFailure(@NonNull Exception e) {
-                   Toast.makeText(DetallesUsuario.this, "Error de la base de datos", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(PerfilEstudiante.this, "Error de la base de datos", Toast.LENGTH_SHORT).show();
                }
            });
 
@@ -178,7 +175,7 @@ public class DetallesUsuario extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(DetallesUsuario.this, "Error de la base de datos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PerfilEstudiante.this, "Error de la base de datos", Toast.LENGTH_SHORT).show();
                 }
             });
 */
@@ -204,7 +201,7 @@ public class DetallesUsuario extends AppCompatActivity {
 
         } catch (Exception e) {
 
-            Toast.makeText(DetallesUsuario.this, "Error", Toast.LENGTH_LONG).show();
+            Toast.makeText(PerfilEstudiante.this, "Error", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -218,10 +215,10 @@ public class DetallesUsuario extends AppCompatActivity {
                 imagenes.add(imagen[i]);
 
             mPager = (ViewPager) findViewById(R.id.pager);
-            mPager.setAdapter(new AdapterImage(DetallesUsuario.this, imagenes));
+            mPager.setAdapter(new AdapterImage(PerfilEstudiante.this, imagenes));
 
         }catch (Exception e){
-            Toast.makeText(DetallesUsuario.this,"Error al cargar la imagen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PerfilEstudiante.this,"Error al cargar la imagen", Toast.LENGTH_SHORT).show();
         }
     }
     //para elegir la imagen del usuario
@@ -291,7 +288,7 @@ public class DetallesUsuario extends AppCompatActivity {
                                             }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(DetallesUsuario.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(PerfilEstudiante.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
                                             mProgressDialog.dismiss();
                                         }
                                     });
@@ -324,12 +321,12 @@ public class DetallesUsuario extends AppCompatActivity {
                                                             @Override
                                                             public void onSuccess(Object o) {
                                                                 mProgressDialog.dismiss();
-                                                                Toast.makeText(DetallesUsuario.this,"Imagen Subida.",Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(PerfilEstudiante.this,"Imagen Subida.",Toast.LENGTH_LONG).show();
                                                             }
                                                         }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(DetallesUsuario.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(PerfilEstudiante.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
                                                         mProgressDialog.dismiss();
                                                     }
                                                 });
@@ -345,13 +342,13 @@ public class DetallesUsuario extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     mProgressDialog.dismiss();
-                                                    Toast.makeText(DetallesUsuario.this,"Imagen Subida.",Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(PerfilEstudiante.this,"Imagen Subida.",Toast.LENGTH_LONG).show();
                                                 }
                                             }
                                         });
 */
                                     }else{
-                                        Toast.makeText(DetallesUsuario.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
+                                        Toast.makeText(PerfilEstudiante.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
                                         mProgressDialog.dismiss();
                                     }
 
@@ -359,7 +356,7 @@ public class DetallesUsuario extends AppCompatActivity {
                             });
 
                         }else{
-                            Toast.makeText(DetallesUsuario.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(PerfilEstudiante.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
                             mProgressDialog.dismiss();
                         }
                     }
@@ -367,7 +364,7 @@ public class DetallesUsuario extends AppCompatActivity {
 
             }
         }catch (Exception e){
-            Toast.makeText(DetallesUsuario.this,"No se cambio la imagen!",Toast.LENGTH_LONG).show();
+            Toast.makeText(PerfilEstudiante.this,"No se cambio la imagen!",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -389,11 +386,11 @@ public class DetallesUsuario extends AppCompatActivity {
 
     private void sendToStart() {
         try {
-            Intent startintent = new Intent(DetallesUsuario.this, Login.class);
+            Intent startintent = new Intent(PerfilEstudiante.this, Login.class);
             startActivity(startintent);
             finish();
         }catch (Exception e){
-            Toast.makeText(DetallesUsuario.this,"Error al abrir la app", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PerfilEstudiante.this,"Error al abrir la app", Toast.LENGTH_SHORT).show();
         }
     }
 
