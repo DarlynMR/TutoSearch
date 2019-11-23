@@ -50,6 +50,7 @@
     <string name="nombre_estudiante">Nombre estudiante</string>
     <string name="correoestud_ejemplo_com">correoestud@ejemplo.com</string>
     <string name="apellidos">Apellidos</string>
+    <string name="fecha_de_nacimiento">Fecha de nacimiento</string>
 
 
 </resources>

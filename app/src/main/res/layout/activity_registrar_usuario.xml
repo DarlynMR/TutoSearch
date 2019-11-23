@@ -92,15 +92,26 @@
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:drawablePadding="6sp"
             android:inputType="textPersonName" />
+
         <EditText
-            android:id="@+id/txtTelefono"
+            android:id="@+id/txtFechaNacimientoReg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/telefono"
+            android:hint="@string/fecha_de_nacimiento"
             android:drawableStart="@drawable/ic_contact_phone_black_24dp"
             android:drawablePadding="6sp"
             android:inputType="phone" />
+
+        <EditText
+        android:id="@+id/txtTelefono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/telefono"
+        android:drawableStart="@drawable/ic_contact_phone_black_24dp"
+        android:drawablePadding="6sp"
+        android:inputType="phone" />
 
 
         <EditText

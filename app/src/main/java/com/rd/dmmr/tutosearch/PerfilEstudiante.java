@@ -9,9 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,17 +49,15 @@ import id.zelory.compressor.Compressor;
 public class PerfilEstudiante extends AppCompatActivity {
 
 
-    private DatabaseReference DBReference;
-
     private FirebaseFirestore fdb;
     private StorageReference urlStorage;
 
     private FirebaseUser mCurrentUser;
-    private TextView txtNombre, txtMatricula, txtCarrera, txtCorreo, txtTelefono;
+    private TextView txtNombre, txtApellido, txtFechaNacimiento, txtCorreo, txtTelefono;
     private static int currentPage = 0;
     private static final int GALERRY_PICK = 1;
     private ProgressDialog mProgressDialog;
-    private static ViewPager mPager;
+    private ImageView img_perfil;
 
     //variables
     private String download_url, thumb_downloadUrl;
@@ -71,7 +71,6 @@ public class PerfilEstudiante extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_perfil_estudiante);
-            imagen_slider();
 
             urlStorage = FirebaseStorage.getInstance().getReference();
 
@@ -81,17 +80,16 @@ public class PerfilEstudiante extends AppCompatActivity {
             //identificando el id del que tiene la sesion iniciada
             final String current_uid = mCurrentUser.getUid();
             //especificando donde se buscara
-            DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(current_uid);
-            Log.i("Probando id", ""+current_uid);
-            DBReference.keepSynced(true);
+
 
             fdb = FirebaseFirestore.getInstance();
 
             txtNombre = (TextView) findViewById(R.id.txtNombre);
-            txtMatricula = (TextView) findViewById(R.id.txtMatricula);
+            txtApellido = (TextView) findViewById(R.id.txtApellidos);
+            txtFechaNacimiento = (TextView) findViewById(R.id.txtFechaNacimiento);
             txtCorreo = (TextView) findViewById(R.id.txtCorreo);
-            txtCarrera = (TextView) findViewById(R.id.txtCarrera);
             txtTelefono = (TextView) findViewById(R.id.txtTelefono);
+            img_perfil= (ImageView) findViewById(R.id.imgPerfil);
 
             //LlAMANDO EL TOOLBAR
             final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
@@ -121,8 +119,10 @@ public class PerfilEstudiante extends AppCompatActivity {
 
                    String name = docS.getString("nombres");
                    String apellido = docS.getString("apellidos");
+                   String fechaNacimiento = docS.getString("fecha_nacimiento");
                    String telefono = docS.getString("telefono");
-                   String correo = docS.getString("Correo");
+                   String correo = docS.getString("correo");
+                   String img = docS.getString("url_pic");
 
                    CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
                    collapsingToolbarLayout.setTitle(name + " " + apellido);
@@ -134,8 +134,29 @@ public class PerfilEstudiante extends AppCompatActivity {
                    String cuatro = te.substring(6, 10);
                    String telefonoo = tress + "-" + seis + "-" + cuatro;
 
+                   txtNombre.setText(name);
+                   txtApellido.setText(apellido);
+                   txtFechaNacimiento.setText(fechaNacimiento);
                    txtTelefono.setText(telefonoo);
                    txtCorreo.setText(correo);
+
+                   if (!img.equals("defaultPicUser")){
+                       try {
+                           Glide.with(PerfilEstudiante.this)
+                                   .load(img)
+                                   .fitCenter()
+                                   .centerCrop()
+                                   .into(img_perfil);
+
+                       }catch (Exception e){
+                           Log.i("ErrorImg", ""+e.getMessage());
+                       }
+
+                   }else{
+                       img_perfil.setImageResource(R.mipmap.default_user);
+                   }
+
+
 
                }
            }).addOnFailureListener(new OnFailureListener() {
@@ -145,40 +166,6 @@ public class PerfilEstudiante extends AppCompatActivity {
                }
            });
 
-
-/*
-            DBReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    // Toast.makeText(Detalles_Usuario.this,dataSnapshot.toString(),Toast.LENGTH_LONG).show();
-                    Log.i("Probando id", ""+dataSnapshot);
-                    String name = dataSnapshot.child("Nombre").getValue().toString();
-                    String apellido = dataSnapshot.child("Apellido").getValue().toString();
-                    String telefono = dataSnapshot.child("Telefono").getValue().toString();
-                    String carrera = dataSnapshot.child("Carrera").getValue().toString();
-                    String correo = dataSnapshot.child("Correo").getValue().toString();
-
-                    CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
-                    collapsingToolbarLayout.setTitle(name + " " + apellido);
-
-                    //para separar el numero de telefono
-                    String te = telefono.replace(" ", "");
-                    String tress = te.substring(0, 3);
-                    String seis = te.substring(3, 6);
-                    String cuatro = te.substring(6, 10);
-                    String telefonoo = tress + "-" + seis + "-" + cuatro;
-
-                    txtTelefono.setText(telefonoo);
-                    txtCarrera.setText(carrera);
-                    txtCorreo.setText(correo);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(PerfilEstudiante.this, "Error de la base de datos", Toast.LENGTH_SHORT).show();
-                }
-            });
-*/
 
             //boton agregar imagen
             final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fltImage);
@@ -205,23 +192,7 @@ public class PerfilEstudiante extends AppCompatActivity {
         }
     }
 
-    private void imagen_slider() {
-        try{
 
-            final Integer[] imagen = {R.drawable.defaultimage};
-            ArrayList<Integer> imagenes = new ArrayList<Integer>();
-
-            for (int i = 0; i < imagen.length; i++)
-                imagenes.add(imagen[i]);
-
-            mPager = (ViewPager) findViewById(R.id.pager);
-            mPager.setAdapter(new AdapterImage(PerfilEstudiante.this, imagenes));
-
-        }catch (Exception e){
-            Toast.makeText(PerfilEstudiante.this,"Error al cargar la imagen", Toast.LENGTH_SHORT).show();
-        }
-    }
-    //para elegir la imagen del usuario
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
@@ -336,17 +307,6 @@ public class PerfilEstudiante extends AppCompatActivity {
                                         });
 
 
-/*
-                                        DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful()){
-                                                    mProgressDialog.dismiss();
-                                                    Toast.makeText(PerfilEstudiante.this,"Imagen Subida.",Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
-*/
                                     }else{
                                         Toast.makeText(PerfilEstudiante.this,"Error al subir la imagen.",Toast.LENGTH_LONG).show();
                                         mProgressDialog.dismiss();

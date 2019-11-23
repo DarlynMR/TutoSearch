@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ import static com.rd.dmmr.tutosearch.R.id.txtCorreoEst_nav;
 public class pantalla_principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private CardView card_tutorias_generales, card_tutorias_inst, card_tutorias_reservadas, card_mensajes;
+    private Button btnTutoriasListadas, btnNone, btnTutoriasAceptadas, btnMensajes;
 
     FirebaseAuth FAuth;
     FirebaseUser FUser;
@@ -55,10 +56,10 @@ public class pantalla_principal extends AppCompatActivity
 
         //Variables asignar
 
-        card_tutorias_generales = (CardView) findViewById(R.id.card_tutorias_generales);
-        card_tutorias_inst = (CardView) findViewById(R.id.card_tutorias_inst);
-        card_tutorias_reservadas = (CardView) findViewById(R.id.card_tutorias_reservadas);
-        card_mensajes = (CardView) findViewById(R.id.card_mensajes);
+        btnTutoriasListadas = (Button) findViewById(R.id.btnTutoriasListadas);
+        btnNone = (Button) findViewById(R.id.btnNone);
+        btnTutoriasAceptadas = (Button) findViewById(R.id.btnAceptadas);
+        btnMensajes = (Button) findViewById(R.id.btnMensajes);
 
 
         FAuth= FirebaseAuth.getInstance();
@@ -66,10 +67,10 @@ public class pantalla_principal extends AppCompatActivity
         DbReferenceUser= FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(FUser.getUid());
 
 
-        card_tutorias_generales.setOnClickListener(this);
-        card_tutorias_inst.setOnClickListener(this);
-        card_tutorias_reservadas.setOnClickListener(this);
-        card_mensajes.setOnClickListener(this);
+        btnTutoriasListadas.setOnClickListener(this);
+        btnNone.setOnClickListener(this);
+        btnTutoriasAceptadas.setOnClickListener(this);
+        btnMensajes.setOnClickListener(this);
 
         //Variables asignar
 
@@ -262,8 +263,8 @@ public class pantalla_principal extends AppCompatActivity
         Intent intent;
 
         switch (v.getId()){
-            case R.id.card_tutorias_generales : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
-            case R.id.card_mensajes : intent = new Intent(this,TipoRegistro.class);startActivity(intent); break;
+            case R.id.btnTutoriasListadas : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
+            case R.id.btnMensajes : intent = new Intent(this,TipoRegistro.class);startActivity(intent); break;
             default:break;
         }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,192 +9,371 @@
     tools:context=".pantalla_principal">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        android:clipToPadding="false"
-        android:gravity="center"
-        android:orientation="horizontal">
 
+    <ScrollView
+        android:id="@+id/mainScrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#E9E6E6">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_tutorias_generales"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tutorías generales" />
-
-                <View
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="230dp"
+                    android:background="@mipmap/section_wise"
                     android:gravity="center"
-                    android:text="Ver todas las tutorías disponibles de personas no pertenecientes a una institución." />
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_overlay"/>
+
+                    <ImageView
+                        android:id="@+id/imgTop"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_iconfinder_student_male"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Bienvenido Willy"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/imgTop"
+                        android:layout_centerHorizontal="true"/>
 
 
-            </LinearLayout>
+                </RelativeLayout>
 
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_tutorias_inst"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(Nombre variable)" />
-
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Ver todas las tutorías disponibles a la institución a la que perteneces." />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="215dp"
+                    android:layout_marginEnd="1dp"
+                    android:orientation="vertical">
 
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
-        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_tutorias_generales"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp"
+                            >
 
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
-    </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/imgView11"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_circle" />
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_tutorias_reservadas"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Aceptadas" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Todas las tutorías a las que ha aceptado asistir." />
+                                <ImageView
+                                    android:id="@+id/imgView1"
+                                    android:layout_width="43dp"
+                                    android:layout_height="43dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="17.5dp"
+                                    android:src="@drawable/ic_iconfinder_list_118647" />
 
 
-            </LinearLayout>
+                                <TextView
+                                    android:id="@+id/txtTituloAgregar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView11"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Listado de tutorías"
+                                    android:textStyle="bold"
+                                    />
+
+                                <View
+                                    android:id="@+id/viewAgregar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtTituloAgregar"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewAgregar"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Ver todas las tutorías disponibles de los profesores"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnTutoriasListadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
 
 
-        </androidx.cardview.widget.CardView>
+                            </RelativeLayout>
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_mensajes"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
+                        </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_tutorias_inst"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mensajes" />
+                                <ImageView
+                                    android:id="@+id/imgView2"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_iconfinder_think" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
+                                <TextView
+                                    android:id="@+id/txtAgregadas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView2"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="(Nombre variable)"
+                                    android:textStyle="bold"
+                                    />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" />
+                                <View
+                                    android:id="@+id/viewAgregadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtAgregadas"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewAgregadas"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text=" "
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnNone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
 
 
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+                            </RelativeLayout>
 
 
-    </LinearLayout>
+                        </androidx.cardview.widget.CardView>
 
 
-</LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_tutorias_reservadas"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imgView33"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_circle" />
+
+                                <ImageView
+                                    android:id="@+id/imgView3"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="17.5dp"
+                                    android:src="@drawable/ic_iconfinder_accept" />
+
+                                <TextView
+                                    android:id="@+id/textReservadas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView33"
+                                    android:layout_centerHorizontal="true"
+                                    android:textStyle="bold"
+                                    android:text="Aceptadas" />
+
+                                <View
+                                    android:id="@+id/viewAceptadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/textReservadas"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewAceptadas"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Todas las tutorías a las que ha aceptado asistir."
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnAceptadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
+
+
+                            </RelativeLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_mensajes"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imgView4"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_iconfinder_smartphone_message" />
+
+                                <TextView
+                                    android:id="@+id/txtMensajes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView4"
+                                    android:layout_centerHorizontal="true"
+                                    android:textStyle="bold"
+                                    android:text="Mensajes" />
+
+                                <View
+                                    android:id="@+id/viewMensajes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtMensajes"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewMensajes"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Interactúa con los usuarios"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnMensajes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
+
+
+                            </RelativeLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+</RelativeLayout>

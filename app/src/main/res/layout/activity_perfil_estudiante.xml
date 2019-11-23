@@ -42,12 +42,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/pager"
+                    <ImageView
+                        android:id="@+id/imgPerfil"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_alignParentTop="true"
-                        android:background="@mipmap/laptop"/>
+                        android:layout_alignParentTop="true"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_overlay"/>
+
 
                 </RelativeLayout>
             </LinearLayout>
@@ -117,52 +122,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtCarrera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtMatricula"
-                android:layout_marginTop="19dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:text="24/01/1998" />
-
-            <TextView
-                android:id="@+id/txtCorreo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/textCorreo"
-                android:paddingLeft="20dp"
-                android:text="carloshlp@gmail.com" />
-
-            <TextView
-                android:id="@+id/txtTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textTelefono"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:paddingLeft="20dp"
-                android:text="849-358-3861" />
-
-            <TextView
-                android:id="@+id/textTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtCorreo"
-                android:layout_marginTop="5dp"
-                android:paddingBottom="22dp"
-                android:paddingLeft="20dp"
-                android:text="Telefono:"
-                android:textColor="@color/cardview_dark_background"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/textNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,6 +135,7 @@
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 
+
             <TextView
                 android:id="@+id/txtNombre"
                 android:layout_width="match_parent"
@@ -185,10 +145,11 @@
                 android:layout_below="@+id/textNombre"
                 android:paddingBottom="8dp"
                 android:paddingLeft="20dp"
-                android:text="Carlos Henrique" />
+                android:text="Nombre(s)" />
+
 
             <TextView
-                android:id="@+id/textMatricula"
+                android:id="@+id/textApellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -200,23 +161,24 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtMatricula"
+                android:id="@+id/txtApellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/textMatricula"
+                android:layout_below="@+id/textApellidos"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
-                android:text="López Pérez" />
+                android:text="Apellido(s)" />
+
 
             <TextView
-                android:id="@+id/textCarrera"
+                android:id="@+id/textFechaNacimiento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtMatricula"
+                android:layout_below="@+id/txtApellidos"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
                 android:text="Fecha de nacimiento:"
@@ -224,17 +186,65 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtApellidos"
+                android:layout_marginTop="19dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:text="Fecha de nacimiento" />
+
+            <TextView
                 android:id="@+id/textCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtCarrera"
+                android:layout_below="@+id/txtFechaNacimiento"
                 android:paddingLeft="20dp"
                 android:paddingTop="3dp"
                 android:text="Correo:"
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textCorreo"
+                android:paddingLeft="20dp"
+                android:text="Correo" />
+
+
+            <TextView
+                android:id="@+id/textTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtCorreo"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="22dp"
+                android:paddingLeft="20dp"
+                android:text="Teléfono:"
+                android:textColor="@color/cardview_dark_background"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textTelefono"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="20dp"
+                android:text="Telefono" />
+
 
         </RelativeLayout>
 
