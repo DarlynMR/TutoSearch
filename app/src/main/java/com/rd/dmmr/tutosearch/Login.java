@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Login extends AppCompatActivity {
 
@@ -69,6 +74,15 @@ public class Login extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         FAutentic = FirebaseAuth.getInstance();
+
+
+        //Slider
+        ImageSlider imageSlider= findViewById(R.id.lgnSlider);
+        List<SlideModel> slideModels = new ArrayList<>();
+        slideModels.add(new SlideModel(R.drawable.primer_plano_manos, "Aprende desde tu móvil"));
+        slideModels.add(new SlideModel(R.drawable.tutoria_exterior, "Reúnete y aprende con un maestro"));
+        slideModels.add(new SlideModel(R.drawable.live_stream_tool_blog, "Mira tutorías en vivo"));
+        imageSlider.setImageList(slideModels, true);
 
         FInicionIndicdor = new FirebaseAuth.AuthStateListener() {
             @Override

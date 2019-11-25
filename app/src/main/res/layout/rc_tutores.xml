@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:layout_marginHorizontal="2sp"
+    android:id="@+id/RCTutores"
+    android:layout_marginTop="7sp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:background="@mipmap/cosmos_blur"
+            android:layout_above="@id/RelativeDown"
+            />
+
+        <RelativeLayout
+            android:id="@+id/RelativeTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgCircularProf"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="false"
+                android:cropToPadding="false"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/imageprofile"
+                app:civ_border_color="@android:color/darker_gray"
+                app:civ_border_width="3sp" />
+
+            <TextView
+                android:id="@+id/txtNombreProf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:typeface="serif"
+                android:textColor="@color/Blanco"
+                android:layout_below="@id/imgCircularProf"/>
+
+        </RelativeLayout>
+
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/RelativeDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_below="@id/RelativeTop"
+            android:background="@color/GrisFondo">
+
+
+
+            <TextView
+                android:id="@+id/txtTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:textAlignment="center"
+                android:text="@string/detalles"
+                android:typeface="monospace"
+                android:textColor="@color/colorBlanco"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14sdp"
+                />
+
+            <TextView
+                android:id="@+id/hintProvincia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Provincia"
+                android:layout_below="@+id/txtTitulo"
+                android:textStyle="bold"
+                android:textColorHint="@color/Blanco"
+                android:textSize="@dimen/_13sdp"
+                />
+
+            <TextView
+                android:id="@+id/txtProvinciaRC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:textAlignment="textStart"
+                android:layout_below="@id/hintProvincia"
+                android:textColor="@color/Blanco"
+                android:textSize="@dimen/_13sdp"
+                />
+
+
+            <TextView
+                android:id="@+id/hintMaterias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint="Materias"
+                android:textColorHint="@color/Blanco"
+                android:layout_below="@id/txtProvinciaRC"
+                android:textStyle="bold"
+                android:textSize="@dimen/_13sdp"
+                />
+
+            <TextView
+                android:id="@+id/txtMaterias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint=""
+                android:textColorHint="@color/Blanco"
+                android:textSize="16dp"
+                android:layout_below="@id/hintMaterias"
+                />
+            <TextView
+                android:id="@+id/hintDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:textColorHint="@color/Blanco"
+                android:textSize="@dimen/_13sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_below="@id/txtMaterias"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint=""
+                android:textColorHint="@color/Blanco"
+                android:textSize="@dimen/_13sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_below="@id/hintDescripcion"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                />
+
+
+
+        </RelativeLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>

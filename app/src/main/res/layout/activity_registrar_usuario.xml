@@ -44,7 +44,7 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circularprofileUser"
+            android:id="@+id/imgCircularProf"
             android:layout_width="119dp"
             android:layout_height="129dp"
             android:layout_gravity="center"
@@ -68,7 +68,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:background="@drawable/fondo_trans"
-        android:layout_below="@id/circularprofileUser"
+        android:layout_below="@id/imgCircularProf"
         android:orientation="vertical">
 
 
@@ -99,9 +99,10 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/fecha_de_nacimiento"
-            android:drawableStart="@drawable/ic_contact_phone_black_24dp"
+            android:drawableStart="@drawable/ic_date_range_black_24dp"
             android:drawablePadding="6sp"
-            android:inputType="phone" />
+            android:editable="false"
+            android:inputType="date" />
 
         <EditText
         android:id="@+id/txtTelefono"

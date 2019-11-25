@@ -83,24 +83,6 @@ public class FragmentOficial extends Fragment {
 
     private void upTutorias() {
 
-        //DocumentReference docRef = fdb.collection("Tutorias_institucionales");
-/*
-        fdb.collection("Tutorias_institucionales")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-*/
-
         CollectionReference ref = fdb.collection("Tutorias_institucionales");
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

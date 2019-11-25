@@ -16,84 +16,51 @@
         android:orientation="vertical"
         android:weightSum="2">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@color/colorPrimaryDarkLgn"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txtTituloApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
                 android:text="@string/app_name"
-                android:textColor="@color/Blanco"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textStyle="bold"/>
+                android:textColor="@color/Blanco"
+                android:textStyle="bold" />
 
             <View
+                android:id="@+id/lgnView"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:padding="@dimen/margin_default"
+                android:layout_below="@id/txtTituloApp"
                 android:layout_margin="@dimen/margin_short"
                 android:background="@color/Blanco"
+                android:padding="@dimen/margin_default" />
 
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/lgnSlider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:auto_cycle="true"
+                app:delay="0"
+                app:period="4000"
+                app:corner_radius="20"
+                android:layout_below="@+id/lgnView"
+                app:placeholder="@drawable/bg_grey"
+                app:error_image="@drawable/bg_grey"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_default"
-                android:text="@string/desc"
-                android:textColor="@color/Blanco"
-                android:padding="@dimen/margin_short"
-                android:gravity="center"
-                android:textSize="@dimen/_12sdp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="@dimen/margin_short"
-                android:padding="@dimen/margin_short"
-                android:weightSum="2">
-
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Leer más"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_margin="@dimen/margin_short"
-                    android:backgroundTint="@color/Blanco"
-                    android:background="@drawable/cornered_button"/>
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_margin="@dimen/margin_short"
-                    android:text="Visitar página"
-                    android:background="@drawable/cornered_button"
-                    android:textColor="@color/Blanco"/>
 
 
 
-
-
-
-            </LinearLayout>
-
-
-
-
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +70,9 @@
             android:background="@color/Blanco"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="@dimen/margin_short">
+            android:padding="@dimen/margin_short"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
 
             <com.google.android.material.textfield.TextInputLayout

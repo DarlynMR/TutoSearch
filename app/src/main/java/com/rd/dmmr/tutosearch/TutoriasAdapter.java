@@ -18,8 +18,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * Created by Owner on 10/3/2018.
@@ -132,11 +130,11 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             item_imgFotoPrev= itemView.findViewById(R.id.imgFotoPrev);
             item_txtMateriaPrev=itemView.findViewById(R.id.txtMateria);
             item_txtTituloPrev= itemView.findViewById(R.id.txtTitulo);
-            item_txtDescripcionPrev=itemView.findViewById(R.id.txtDescripcion);
+            item_txtDescripcionPrev=itemView.findViewById(R.id.txtProvinciaRC);
             item_txtProfesorPrev= itemView.findViewById(R.id.txtNombreProfesorTutoria);
-            item_txtFechaPrev=itemView.findViewById(R.id.txtFechaTutorias);
-            item_txtHoraPrev= itemView.findViewById(R.id.txtHoraTutorias);
-            item_txtLugarPrev=itemView.findViewById(R.id.txtLugarTurorias);
+            item_txtFechaPrev=itemView.findViewById(R.id.hintMaterias);
+            item_txtHoraPrev= itemView.findViewById(R.id.txtMaterias);
+            item_txtLugarPrev=itemView.findViewById(R.id.hintDescripcion);
             item_txtTiempoRestantePrev=itemView.findViewById(R.id.txtTiempoRestante);
             item_imgType=itemView.findViewById(R.id.imgType);
             cardView= itemView.findViewById(R.id.RCView);

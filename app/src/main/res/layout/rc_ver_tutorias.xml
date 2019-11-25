@@ -44,7 +44,7 @@
             android:hint="@string/t_tulo"
             android:typeface="monospace" />
         <TextView
-            android:id="@+id/txtDescripcion"
+            android:id="@+id/txtProvinciaRC"
             android:layout_width="match_parent"
             android:layout_height="52sp"
             android:foregroundGravity="center"
@@ -77,7 +77,7 @@
                 android:textSize="22dp"
                 />
             <TextView
-                android:id="@+id/txtFechaTutorias"
+                android:id="@+id/hintMaterias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"
@@ -87,7 +87,7 @@
                 />
 
             <TextView
-                android:id="@+id/txtHoraTutorias"
+                android:id="@+id/txtMaterias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"
@@ -97,7 +97,7 @@
                 />
 
             <TextView
-                android:id="@+id/txtLugarTurorias"
+                android:id="@+id/hintDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"

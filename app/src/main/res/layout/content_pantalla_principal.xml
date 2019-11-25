@@ -152,7 +152,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/card_tutorias_inst"
+                            android:id="@+id/card_buscar_tutores"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -164,29 +164,38 @@
                                 android:layout_height="match_parent">
 
                                 <ImageView
-                                    android:id="@+id/imgView2"
+                                    android:id="@+id/imgView22"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_alignParentTop="true"
                                     android:layout_centerInParent="true"
                                     android:layout_marginTop="10dp"
-                                    android:src="@drawable/ic_iconfinder_think" />
+                                    android:src="@drawable/ic_circle" />
+
+                                <ImageView
+                                    android:id="@+id/imgView2"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="14dp"
+                                    android:src="@drawable/ic_profesor" />
 
                                 <TextView
-                                    android:id="@+id/txtAgregadas"
+                                    android:id="@+id/txtBuscarProf"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/imgView2"
+                                    android:layout_below="@id/imgView22"
                                     android:layout_centerHorizontal="true"
-                                    android:text="(Nombre variable)"
+                                    android:text="Buscar tutores"
                                     android:textStyle="bold"
                                     />
 
                                 <View
-                                    android:id="@+id/viewAgregadas"
+                                    android:id="@+id/viewBuscarProf"
                                     android:layout_width="match_parent"
                                     android:layout_height="3dp"
-                                    android:layout_below="@id/txtAgregadas"
+                                    android:layout_below="@id/txtBuscarProf"
                                     android:layout_marginStart="7dp"
                                     android:layout_marginEnd="7dp"
                                     android:background="@color/lineaGris" />
@@ -194,16 +203,16 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/viewAgregadas"
+                                    android:layout_below="@+id/viewBuscarProf"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginTop="3dp"
                                     android:layout_marginBottom="10dp"
                                     android:gravity="center"
-                                    android:text=" "
+                                    android:text="Busca, analiza y agrega tutores"
                                     android:textSize="16sp" />
 
                                 <Button
-                                    android:id="@+id/btnNone"
+                                    android:id="@+id/btnBuscarProf"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:background="@android:color/transparent" />

@@ -20,6 +20,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion = '28.0.3'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -37,14 +44,14 @@ dependencies {
 
     //Todo lo necesario para login con firebase y adicionales para imagen circular y diseño
     implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation 'com.firebaseui:firebase-ui-database:1.2.0'
 
     //Firestore
-    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+    implementation 'com.google.firebase:firebase-firestore:21.3.0'
 
     implementation 'com.intuit.sdp:sdp-android:1.0.3'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
@@ -53,16 +60,18 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation 'com.iceteck.silicompressorr:silicompressor:2.0'
     implementation 'id.zelory:compressor:2.0.0'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    implementation 'com.github.denzcoskun:imageslideshow:0.0.6'
 
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'

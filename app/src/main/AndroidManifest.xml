@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TipoRegistro"></activity>
+        <activity android:name=".PantallaMensajes"></activity>
+        <activity android:name=".DetallesEstudentToProf" />
+        <activity android:name=".BuscarTutores" />
+        <activity android:name=".TipoRegistro" />
         <activity android:name=".TransmisionLive" />
         <activity
             android:name=".pantalla_principal"

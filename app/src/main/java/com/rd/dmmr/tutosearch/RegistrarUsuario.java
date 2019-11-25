@@ -105,7 +105,7 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
 
         fback_button = (FloatingActionButton) findViewById(R.id.fBackButton);
 
-        imgCircularProfileUser= (ImageView) findViewById(R.id.circularprofileUser);
+        imgCircularProfileUser= (ImageView) findViewById(R.id.imgCircularProf);
 
         imgStorage = FirebaseStorage.getInstance().getReference();
         urlStorage = FirebaseStorage.getInstance().getReference();

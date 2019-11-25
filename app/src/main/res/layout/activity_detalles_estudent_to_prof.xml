@@ -9,7 +9,7 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/MyAppbar"
+        android:id="@+id/MyAppbarProfPerfil"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_alignParentBottom="true"
@@ -20,7 +20,7 @@
         app:expanded="false">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapse_toolbar"
+            android:id="@+id/collapse_toolbarProfPerfil"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -43,16 +43,21 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imgPerfil"
+                        android:id="@+id/imgProfPerfil"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_alignParentTop="true"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_overlay"/>
 
                 </RelativeLayout>
             </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/MyToolbar"
+                android:id="@+id/MyToolbarProfPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentLeft="true"
@@ -79,15 +84,16 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fltImage"
+        android:id="@+id/fltSendRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_menu_camera"
-        app:backgroundTint="@color/cardview_light_background"
+        android:src="@drawable/ic_iconfinder_send_request"
+        app:backgroundTint="@color/Bluelight"
         app:layout_anchor="@+id/contenedor_detalle_item"
         app:layout_anchorGravity="top|end" />
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -95,7 +101,6 @@
         android:layout_gravity="fill_vertical"
         android:background="@color/cardview_light_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -131,7 +136,7 @@
 
 
             <TextView
-                android:id="@+id/txtNombre"
+                android:id="@+id/txtNombreProfDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -148,14 +153,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtNombre"
+                android:layout_below="@+id/txtNombreProfDetalle"
                 android:paddingLeft="20dp"
                 android:text="Apellido(s)"
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtApellidos"
+                android:id="@+id/txtApellidosProfDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -166,81 +171,82 @@
                 android:text="Apellido(s)" />
 
 
+
             <TextView
-                android:id="@+id/textFechaNacimiento"
+                android:id="@+id/textMaterias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtApellidos"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:text="Fecha de nacimiento:"
-                android:textColor="@color/cardview_dark_background"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtFechaNacimiento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtApellidos"
-                android:layout_marginTop="19dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:text="Fecha de nacimiento" />
-
-            <TextView
-                android:id="@+id/textCorreo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtFechaNacimiento"
-                android:paddingLeft="20dp"
-                android:paddingTop="3dp"
-                android:text="Correo:"
-                android:textColor="@color/cardview_dark_background"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtCorreo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/textCorreo"
-                android:paddingLeft="20dp"
-                android:text="Correo" />
-
-
-            <TextView
-                android:id="@+id/textTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtCorreo"
+                android:layout_below="@+id/txtApellidosProfDetalle"
                 android:layout_marginTop="5dp"
                 android:paddingBottom="22dp"
                 android:paddingLeft="20dp"
-                android:text="Teléfono:"
+                android:text="Materias:"
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtTelefono"
+                android:id="@+id/txtMateriasProfDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textTelefono"
+                android:layout_alignBottom="@+id/textMaterias"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:paddingLeft="20dp"
-                android:text="Telefono" />
+                android:text="Materias" />
+
+            <TextView
+                android:id="@+id/textProvinciaProfPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtMateriasProfDetalle"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="22dp"
+                android:paddingLeft="20dp"
+                android:text="Provincia:"
+                android:textColor="@color/cardview_dark_background"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtProvinciaProfPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textProvinciaProfPerfil"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="20dp"
+                android:text="Provincia" />
+
+            <TextView
+                android:id="@+id/textAboutMe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtProvinciaProfPerfil"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="22dp"
+                android:paddingLeft="20dp"
+                android:text="Sobre mí:"
+                android:textColor="@color/cardview_dark_background"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtAboutMeProfDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textAboutMe"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="20dp"
+                android:text="Sobre mí" />
 
 
         </RelativeLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 

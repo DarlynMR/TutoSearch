@@ -20,7 +20,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -41,7 +40,7 @@ import static com.rd.dmmr.tutosearch.R.id.txtCorreoEst_nav;
 public class pantalla_principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private Button btnTutoriasListadas, btnNone, btnTutoriasAceptadas, btnMensajes;
+    private Button btnTutoriasListadas, btnBuscarTutores, btnTutoriasAceptadas, btnMensajes;
 
     FirebaseAuth FAuth;
     FirebaseUser FUser;
@@ -57,7 +56,7 @@ public class pantalla_principal extends AppCompatActivity
         //Variables asignar
 
         btnTutoriasListadas = (Button) findViewById(R.id.btnTutoriasListadas);
-        btnNone = (Button) findViewById(R.id.btnNone);
+        btnBuscarTutores = (Button) findViewById(R.id.btnBuscarProf);
         btnTutoriasAceptadas = (Button) findViewById(R.id.btnAceptadas);
         btnMensajes = (Button) findViewById(R.id.btnMensajes);
 
@@ -68,7 +67,7 @@ public class pantalla_principal extends AppCompatActivity
 
 
         btnTutoriasListadas.setOnClickListener(this);
-        btnNone.setOnClickListener(this);
+        btnBuscarTutores.setOnClickListener(this);
         btnTutoriasAceptadas.setOnClickListener(this);
         btnMensajes.setOnClickListener(this);
 
@@ -265,6 +264,7 @@ public class pantalla_principal extends AppCompatActivity
         switch (v.getId()){
             case R.id.btnTutoriasListadas : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
             case R.id.btnMensajes : intent = new Intent(this,TipoRegistro.class);startActivity(intent); break;
+            case R.id.btnBuscarProf : intent = new Intent(this,BuscarTutores.class);startActivity(intent); break;
             default:break;
         }
 
