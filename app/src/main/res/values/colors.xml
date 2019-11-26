@@ -19,6 +19,7 @@
 
     <color name="lineaGris">#ededed</color>
 
+    <color name="darker_gray">#aaa</color>
 
     <color name="colorPrimaryLgn">#000000</color>
     <color name="colorPrimaryDarkLgn">#212121</color>

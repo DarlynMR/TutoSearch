@@ -37,8 +37,6 @@ public class FragmentOficial extends Fragment {
 
     RecyclerView RCAbajo;
     private TutoriasAdapter tutoriasAdapter;
-    private FirebaseDatabase FDatabase;
-    private DatabaseReference DBReference;
     FirebaseFirestore fdb;
 
     private List<ModelTutorias> mListTutoria;
@@ -52,9 +50,6 @@ public class FragmentOficial extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tuto_oficiales_fragment, container, false);
-
-        FDatabase = FirebaseDatabase.getInstance();
-        DBReference = FDatabase.getReference("tutorias").child("institucionales");
 
 
         RCAbajo = (RecyclerView) view.findViewById(R.id.RCAbajo);
