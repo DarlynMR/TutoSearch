@@ -263,7 +263,7 @@ public class pantalla_principal extends AppCompatActivity
 
         switch (v.getId()){
             case R.id.btnTutoriasListadas : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
-            case R.id.btnMensajes : intent = new Intent(this,TipoRegistro.class);startActivity(intent); break;
+            case R.id.btnMensajes : intent = new Intent(this,PantallaMensajes.class);startActivity(intent); break;
             case R.id.btnBuscarProf : intent = new Intent(this,BuscarTutores.class);startActivity(intent); break;
             default:break;
         }

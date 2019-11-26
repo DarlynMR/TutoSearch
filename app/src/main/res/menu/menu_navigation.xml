@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/iconMensajes"
+        android:title="Mensajes"
+        android:icon="@drawable/ic_message_black_24dp"
+        />
+
+    <item
+        android:id="@+id/iconAmigos"
+        android:title="Amigos"
+        android:icon="@drawable/ic_group_black_24dp"/>
+    <item
+        android:id="@+id/iconSolicitudes"
+        android:title="Solicitudes"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        />
+</menu>

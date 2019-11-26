@@ -62,8 +62,8 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     private SurfaceView mVideoSurface;
     private TextView mPlayerStatusTextView, titulo;
 
-    private static final String APPLICATION_ID = "gn3xWy0C556si80X9aPkTA";
-    private static final String API_KEY = "6kcdkvvycv7tj7dsqnmxx15xm";
+    private static final String APPLICATION_ID = "joXLO734a62LomIVm3uFaQ";
+    private static final String API_KEY = "44vnkd05cgqtchmjnhko6r2ao";
 
     private BroadcastPlayer mBroadcastPlayer;
 

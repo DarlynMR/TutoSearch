@@ -93,6 +93,7 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
         password= (EditText) findViewById(R.id.txtPassword);
         password2= (EditText) findViewById(R.id.txtPassword2);
 
+
         FAutentic = FirebaseAuth.getInstance();
 
         fdb = FirebaseFirestore.getInstance();

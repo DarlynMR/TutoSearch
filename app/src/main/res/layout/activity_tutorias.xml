@@ -114,34 +114,22 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_tutorias"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RCAbajo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabGravity="fill"
-        app:tabMode="fixed"
-        app:tabTextColor="@color/tabTextColor"
-        app:tabIndicator="@color/tabTextColor"
-        android:background="@color/colorAccentLgn"
-
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
         >
 
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pagerTutorias"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 
-    </androidx.viewpager.widget.ViewPager>
 
 
 
-    
 
-    
 
 </LinearLayout>
