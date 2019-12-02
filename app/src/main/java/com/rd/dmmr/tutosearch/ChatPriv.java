@@ -263,7 +263,6 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
     private void enviarMensaje(String mensaje) {
         String timestamp = String.valueOf(System.currentTimeMillis());
-
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("emisor", myUID);
         hashMap.put("receptor", idAmigo);
