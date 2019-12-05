@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatPriv"></activity>
+        <activity android:name=".Acercade"></activity>
+        <activity android:name=".ChatPriv" />
         <activity android:name=".PantallaMensajes" />
         <activity android:name=".DetallesEstudentToProf" />
         <activity android:name=".BuscarTutores" />

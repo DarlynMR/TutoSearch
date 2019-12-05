@@ -496,6 +496,9 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
             Log.i("Fecha", "Fecha: " + dia + "/" + (mes + 1) + "/" + ano);
             datePickerDialog.show();
 
+            Calendar cal  = Calendar.getInstance();
+
+
         }
     }
 }

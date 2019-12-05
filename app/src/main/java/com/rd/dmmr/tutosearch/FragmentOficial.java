@@ -86,7 +86,7 @@ public class FragmentOficial extends Fragment {
                     Log.i("Listen failed.", ""+e);
                     return;
                 }
-                String Materia, idProf, idTuto, url_imagePortada, url_thumbPortada, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF, Lugar, TipoTuto,fecha_pub, hora_pub;
+                String Materia, idProf, idTuto, url_imagePortada, url_thumbPortada, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto;
 
 
 
@@ -105,16 +105,11 @@ public class FragmentOficial extends Fragment {
                             Titulo = docS.getString("titulo");
                             Descripcion = docS.getString("descripcion");
                             Profesor = docS.getString("profesor");
-                            Fecha = docS.getString("fecha");
-                            HoraI = docS.getString("hora_inicial");
-                            HoraF = docS.getString("hora_final");
-                            fecha_pub = docS.getString("fecha_pub");
-                            hora_pub = docS.getString("hora_pub");
-                            if (Objects.equals(docS.getString("hora_final"), "")) {
-                                HoraF = "";
-                            } else {
-                                HoraF = docS.getString("hora_final");
-                            }
+                            timestampI = docS.getString("timestamp_inicial");
+                            timestampF = docS.getString("timestamp_final");
+                            timestampPub = docS.getString("timestamp_pub");
+
+
                             if (docS.getString("Lugar") == null) {
                                 Lugar = "";
                             } else {
@@ -129,11 +124,8 @@ public class FragmentOficial extends Fragment {
                             Log.i("Probando", "" + docS);
 
 
-                            if (Objects.equals(HoraF, null)) {
-                                mListTutoria.add(new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            } else {
-                                mListTutoria.add(new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI+ " - " + HoraF ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            }
+                            mListTutoria.add(new ModelTutorias(url_imagePortada, url_thumbPortada, idTuto, idProf, Materia, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto));
+
                             tutoriasAdapter.notifyDataSetChanged();
 
                             break;
@@ -147,16 +139,10 @@ public class FragmentOficial extends Fragment {
                             Titulo = docS.getString("titulo");
                             Descripcion = docS.getString("descripcion");
                             Profesor = docS.getString("profesor");
-                            Fecha = docS.getString("fecha");
-                            HoraI = docS.getString("hora_inicial");
-                            HoraF = docS.getString("hora_final");
-                            fecha_pub = docS.getString("fecha_pub");
-                            hora_pub = docS.getString("hora_pub");
-                            if (Objects.equals(docS.getString("hora_final"), "")) {
-                                HoraF = "";
-                            } else {
-                                HoraF = docS.getString("hora_final");
-                            }
+                            timestampI = docS.getString("timestamp_inicial");
+                            timestampF = docS.getString("timestamp_final");
+                            timestampPub = docS.getString("timestamp_pub");
+
                             if (docS.getString("Lugar") == null) {
                                 Lugar = "";
                             } else {
@@ -172,11 +158,8 @@ public class FragmentOficial extends Fragment {
 
                             index = getRCIndex(idTuto);
 
-                            if (Objects.equals(HoraF, null)) {
-                                mListTutoria.set(index, new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            } else {
-                                mListTutoria.set(index, new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI+ " - " + HoraF ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            }
+                            mListTutoria.add(new ModelTutorias(url_imagePortada, url_thumbPortada, idTuto, idProf, Materia, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto));
+
 
 
                             tutoriasAdapter.notifyItemChanged(index);
@@ -197,124 +180,6 @@ public class FragmentOficial extends Fragment {
         });
 
 
-
-/*
-        DBReference.addChildEventListener(new ChildEventListener() {
-        @Override
-        public void onChildAdded (DataSnapshot dataSnapshot, String s){
-
-            String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF, Lugar, TipoTuto;
-
-
-            imgTuto = dataSnapshot.child("image").getValue().toString();
-            Titulo = dataSnapshot.child("Titulo").getValue().toString();
-            Descripcion = dataSnapshot.child("Descripción").getValue().toString();
-            Profesor = dataSnapshot.child("Profesor").getValue().toString();
-            Fecha = dataSnapshot.child("Fecha").getValue().toString();
-            HoraI = dataSnapshot.child("Hora inicial").getValue().toString();
-            if (dataSnapshot.child("Hora final").getValue() == null) {
-                HoraF = "";
-            } else {
-                HoraF = dataSnapshot.child("Hora final").getValue().toString();
-            }
-            if (dataSnapshot.child("Lugar").getValue() == null) {
-                Lugar = "";
-            } else {
-                Lugar = dataSnapshot.child("Lugar").getValue().toString();
-            }
-
-            idProf = dataSnapshot.child("UIDProfesor").getValue().toString();
-            Materia = dataSnapshot.child("Materia").getValue().toString();
-            TipoTuto = dataSnapshot.child("tipo_tuto").getValue().toString();
-            idTuto = dataSnapshot.getKey();
-
-            Log.i("Probando", "" + dataSnapshot);
-            Log.i("Probando", "" + dataSnapshot.getChildren());
-            Log.i("Probando", "" + dataSnapshot.getRef().getParent().getKey());
-            Log.i("Probando", "" + dataSnapshot.getKey());
-
-            if (HoraF.equals("")) {
-                mListTutoria.add(new ModelTutorias(idTuto, idProf, imgTuto, Materia, Titulo, Descripcion, Profesor, Fecha, HoraI, Lugar, TipoTuto));
-            } else {
-                mListTutoria.add(new ModelTutorias(idTuto, idProf, imgTuto, Materia, Titulo, Descripcion, Profesor, Fecha, HoraI + " - " + HoraF, Lugar, TipoTuto));
-            }
-            tutoriasAdapter.notifyDataSetChanged();
-
-
-        }
-
-        @Override
-        public void onChildChanged (DataSnapshot dataSnapshot, String s){
-            ModelTutorias modelTutorias = dataSnapshot.getValue(ModelTutorias.class);
-
-            Log.i("CAMBIANDO", dataSnapshot.toString() + " " + s);
-
-            String Materia, idProf, idTuto, imgTuto, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF, Lugar, TipoTuto;
-            int index = -1;
-
-
-            imgTuto = dataSnapshot.child("image").getValue().toString();
-            Titulo = dataSnapshot.child("Titulo").getValue().toString();
-            Descripcion = dataSnapshot.child("Descripción").getValue().toString();
-            Profesor = dataSnapshot.child("Profesor").getValue().toString();
-            Fecha = dataSnapshot.child("Fecha").getValue().toString();
-            HoraI = dataSnapshot.child("Hora inicial").getValue().toString();
-            if (dataSnapshot.child("Hora final").getValue() == null) {
-                HoraF = "";
-            } else {
-                HoraF = dataSnapshot.child("Hora final").getValue().toString();
-            }
-            if (dataSnapshot.child("Lugar").getValue() == null) {
-                Lugar = "";
-            } else {
-                Lugar = dataSnapshot.child("Lugar").getValue().toString();
-            }
-
-            idProf = dataSnapshot.child("UIDProfesor").getValue().toString();
-            Materia = dataSnapshot.child("Materia").getValue().toString();
-            TipoTuto = dataSnapshot.child("tipo_tuto").getValue().toString();
-            idTuto = dataSnapshot.getKey();
-
-            index = getRCIndex(idTuto);
-
-            if (HoraF.equals("")) {
-                mListTutoria.set(index, new ModelTutorias(idTuto, idProf, imgTuto, Materia, Titulo, Descripcion, Profesor, Fecha, HoraI, Lugar, TipoTuto));
-            } else {
-                mListTutoria.set(index, new ModelTutorias(idTuto, idProf, imgTuto, Materia, Titulo, Descripcion, Profesor, Fecha, HoraI + " - " + HoraF, Lugar, TipoTuto));
-            }
-            tutoriasAdapter.notifyItemChanged(index);
-
-
-        }
-
-        @Override
-        public void onChildRemoved (DataSnapshot dataSnapshot){
-
-            Log.i("Remover", "Optimus");
-            Log.i("Remover", dataSnapshot.toString());
-
-            int index = -1;
-            index = getRCIndex(dataSnapshot.getKey());
-
-            mListTutoria.remove(index);
-            tutoriasAdapter.notifyItemRemoved(index);
-
-            Log.i("Remover", "Optimus");
-            Log.i("Remover", dataSnapshot.toString());
-        }
-
-        @Override
-        public void onChildMoved (DataSnapshot dataSnapshot, String s){
-
-        }
-
-        @Override
-        public void onCancelled (DatabaseError databaseError){
-
-        }
-    });
-
- */
 }
 
     private int getRCIndex(String iTuto) {
@@ -349,8 +214,9 @@ public class FragmentOficial extends Fragment {
         detalles.putExtra("Titulo", mListTutoria.get(pos).titulo);
         detalles.putExtra("Descripcion", mListTutoria.get(pos).descripcion);
         detalles.putExtra("Profesor", mListTutoria.get(pos).nombreProf);
-        detalles.putExtra("Fecha", mListTutoria.get(pos).fecha);
-        detalles.putExtra("Hora", mListTutoria.get(pos).hora);
+        detalles.putExtra("timestampI", mListTutoria.get(pos).timestampI);
+        detalles.putExtra("timestampF", mListTutoria.get(pos).timestampF);
+        detalles.putExtra("timestampPub", mListTutoria.get(pos).timestampPub);
         detalles.putExtra("Lugar", mListTutoria.get(pos).lugar);
         detalles.putExtra("TipoEs", "institucionales");
 

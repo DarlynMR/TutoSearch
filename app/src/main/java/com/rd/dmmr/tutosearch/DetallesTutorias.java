@@ -1,9 +1,6 @@
 package com.rd.dmmr.tutosearch;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,17 +17,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 public class DetallesTutorias extends AppCompatActivity implements View.OnClickListener {
 
@@ -63,31 +59,38 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
         imgDetalles= (ImageView) findViewById(R.id.imgTuto);
 
-        profesor=(TextView) findViewById(R.id.textProf);
-        fecha=(TextView) findViewById(R.id.textFecha);
-        hora=(TextView) findViewById(R.id.textHora);
-        lugar=(TextView) findViewById(R.id.textLugar);
-        tiemporestante=(TextView) findViewById(R.id.txtTiempoRestante);
+        profesor=(TextView) findViewById(R.id.textProfLive);
+        fecha=(TextView) findViewById(R.id.textFechaLive);
+        hora=(TextView) findViewById(R.id.textHoraLive);
+        lugar=(TextView) findViewById(R.id.textLugarLive);
+        tiemporestante=(TextView) findViewById(R.id.textRestanteLive);
         titulo=(TextView) findViewById(R.id.textTitulo);
-        descripcion=(TextView) findViewById(R.id.textDescripcion);
+        descripcion=(TextView) findViewById(R.id.textDescripcionLive);
 
-        btnAsistir= (Button) findViewById(R.id.btnAsistir);
+        btnAsistir= (Button) findViewById(R.id.btnAsistirLive);
 
         Intent intent= getIntent();
 
         datosTuto=intent.getExtras();
         if (datosTuto!=null) {
             idTuto = datosTuto.getString("idTuto");
-            Log.i("Prueba", idTuto);
+
+            Calendar calInicial = Calendar.getInstance();
+            Calendar calFinal = Calendar.getInstance();
+
+            calInicial.setTimeInMillis(Long.parseLong(datosTuto.getString("timestampI")));
+
+            String fechaCal =  calInicial.get(Calendar.DAY_OF_MONTH)+"/"+(calInicial.get(Calendar.MONTH)+1)+"/"+calInicial.get(Calendar.YEAR);
+            String horaCal = "", tipoEs=datosTuto.getString("TipoEs");
+
 
 
             profesor.setText(datosTuto.getString("Profesor"));
-            fecha.setText(datosTuto.getString("Fecha"));
-            hora.setText(datosTuto.getString("Hora"));
+            fecha.setText("Fecha: "+fechaCal);
             lugar.setText(datosTuto.getString("Lugar"));
             titulo.setText(datosTuto.getString("Titulo"));
             descripcion.setText(datosTuto.getString("Descripcion"));
-            Log.i("ProbandoAsistir",""+datosTuto.getString("TipoEs"));
+
             urlTuto = datosTuto.getString("imgTuto");
             try {
                 Glide.with(this)
@@ -99,7 +102,18 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
             }catch (Exception e){
                 Toast.makeText(this, "Error al cargar la imagen de portada", Toast.LENGTH_SHORT).show();
             }
+
+            if (tipoEs.equals("Live")){
+                horaCal = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE);
+            }else if (tipoEs.equals("Presencial")){
+                calFinal.setTimeInMillis(Long.parseLong(datosTuto.getString("timestampF")));
+                horaCal = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE)+" - " + calFinal.get(Calendar.HOUR)+":"+ calFinal.get(Calendar.MINUTE);
+            }
+            hora.setText("Hora: "+horaCal);
         }
+
+
+
 
 
         btnAsistir.setOnClickListener(this);
@@ -130,8 +144,6 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
-
-
 
     }
 

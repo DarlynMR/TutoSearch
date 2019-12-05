@@ -6,66 +6,29 @@
     android:focusable="true"
     android:layout_marginHorizontal="2sp"
     android:id="@+id/RCView"
-    android:layout_marginTop="7sp">
-    
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <ImageView
-            android:id="@+id/imgFotoPrev"
-            android:layout_width="144sp"
-            android:layout_height="90sp"
-            app:srcCompat="@drawable/defaultimage"/>
-        
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="170sp"
-        android:layout_height="90sp"
-        android:layout_gravity="end"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/txtMateria"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/materia"
-            android:textAlignment="center"
-            android:textSize="17sp"
-            android:typeface="serif" />
-
-        <TextView
-            android:id="@+id/txtTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="center"
-            android:hint="@string/t_tulo"
-            android:typeface="monospace" />
-        <TextView
-            android:id="@+id/txtProvinciaRC"
-            android:layout_width="match_parent"
-            android:layout_height="52sp"
-            android:foregroundGravity="center"
-            android:hint="@string/descripci_n"
-            />
-
-    </LinearLayout>
+    android:layout_marginTop="7sp"
+    android:layout_marginBottom="@dimen/_10sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="95sp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="90sp"
-        android:background="@color/GrisFondo"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/LYInfo"
-            android:layout_width="200sp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgFotoPrev"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            app:srcCompat="@drawable/defaultimage"
+            android:scaleType="centerInside"/>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_below="@id/imgFotoPrev"
+            android:background="@color/GrisFondo">
 
             <TextView
                 android:id="@+id/txtNombreProfesorTutoria"
@@ -75,66 +38,131 @@
                 android:hint="Profesor"
                 android:textColorHint="@color/Blanco"
                 android:textSize="22dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                />
+
+            <TextView
+                android:id="@+id/txtMateria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Materia"
+                android:textColorHint="@color/Blanco"
+                android:textSize="17sp"
+                android:typeface="serif"
+                android:textColor="@color/Blanco"
+                android:layout_below="@id/txtNombreProfesorTutoria"/>
+
+            <TextView
+                android:id="@+id/textTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:textAlignment="center"
+                android:text="@string/t_tulo"
+                android:typeface="monospace"
+                android:layout_below="@id/txtMateria"
+                android:textColor="@color/Blanco"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/txtTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:textAlignment="center"
+                android:hint="Título"
+                android:textColorHint="@color/Blanco"
+                android:typeface="monospace"
+                android:layout_below="@id/textTitulo"
+                android:textColor="@color/Blanco"
+                android:textSize="@dimen/_16sdp"
                 />
             <TextView
-                android:id="@+id/hintMaterias"
+                android:id="@+id/hintDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:layout_below="@+id/txtTitulo"
+                android:textColorHint="@color/Blanco"
+                />
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="@dimen/_100sdp"
+                android:foregroundGravity="center"
+                android:textAlignment="textStart"
+                android:layout_below="@id/hintDescripcion"
+                android:textColor="@color/Blanco"
+                />
+
+
+            <TextView
+                android:id="@+id/txtFechaTutorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"
                 android:hint="Fecha"
                 android:textColorHint="@color/Blanco"
                 android:textSize="16dp"
+                android:layout_below="@id/txtDescripcion"
                 />
 
             <TextView
-                android:id="@+id/txtMaterias"
+                android:id="@+id/txtHoraTutorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"
                 android:hint="Hora"
                 android:textColorHint="@color/Blanco"
                 android:textSize="16dp"
+                android:layout_below="@id/txtFechaTutorias"
                 />
-
             <TextView
-                android:id="@+id/hintDescripcion"
+                android:id="@+id/txtLugarTurorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Blanco"
                 android:hint=""
                 android:textColorHint="@color/Blanco"
                 android:textSize="16dp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_below="@id/txtHoraTutorias"
                 />
 
+            <TextView
+                android:id="@+id/txtTiempoRestante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blanco"
+                android:hint=""
+                android:textColorHint="@color/Blanco"
+                android:textSize="16dp"
+                android:textAlignment="textEnd"
+                android:layout_below="@id/txtLugarTurorias"
+                />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/imgType"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/txtTiempoRestante"
+                />
 
-        <TextView
-            android:id="@+id/txtTiempoRestante"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/Blanco"
-            android:hint=""
-            android:textColorHint="@color/Blanco"
-            android:textSize="16dp"
-            android:textAlignment="textEnd"
-            android:layout_gravity="end"
-            android:layout_toRightOf="@id/LYInfo"
-            />
+        </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/imgType"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            />
+
+
 
 
     </RelativeLayout>
-    
-    
-    
-    
+
+
 
 </androidx.cardview.widget.CardView>

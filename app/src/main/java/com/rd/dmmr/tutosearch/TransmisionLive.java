@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -29,7 +28,10 @@ import com.bambuser.broadcaster.PlayerState;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,14 +39,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -60,7 +62,7 @@ import android.widget.Toast;
 public class TransmisionLive extends AppCompatActivity implements View.OnClickListener {
 
     private SurfaceView mVideoSurface;
-    private TextView mPlayerStatusTextView, titulo;
+    private TextView mPlayerStatusTextView, txtTitulo, txtDescripcion, txtProfesor, txtFecha, txtHora, txtTiempoRestante;
 
     private static final String APPLICATION_ID = "joXLO734a62LomIVm3uFaQ";
     private static final String API_KEY = "44vnkd05cgqtchmjnhko6r2ao";
@@ -80,13 +82,16 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
     MediaController mMediaController = null;
 
-    private String idTuto,idBroadcast;
+    private String idTuto,idBroadcast, timestampI, timestampPub;
 
     private FirebaseFirestore fdb;
+    FirebaseUser user;
 
-    private Button btnIniciar;
+    private Button btnIniciar, btnAsistir;
 
     private ImageView logoGif;
+    private boolean ini=false;
+    private Boolean vofAsistir;
 
 
     @Override
@@ -98,11 +103,20 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
         mVideoSurface = (SurfaceView) findViewById(R.id.VideoSurfaceView);
         mPlayerStatusTextView = (TextView) findViewById(R.id.PlayerStatusTextView);
+
         btnIniciar = (Button) findViewById(R.id.btnIniciar);
-        titulo = (TextView) findViewById(R.id.txtTituloLive);
+        btnAsistir = (Button) findViewById(R.id.btnAsistirLive);
+
+        txtTitulo = (TextView) findViewById(R.id.txtTituloLive);
+        txtDescripcion = (TextView) findViewById(R.id.txtDescripcionLive);
+        txtProfesor = (TextView) findViewById(R.id.textProfLive);
+        txtFecha = (TextView) findViewById(R.id.textFechaLive);
+        txtHora = (TextView) findViewById(R.id.textHoraLive);
+
         logoGif = (ImageView) findViewById(R.id.liveGif);
 
         btnAbrirLY = (ImageButton) findViewById(R.id.btnAbrirLY);
+
 
         mListDown = new ArrayList<>();
         downloadAdapter = new DownloadAdapter(mListDown);
@@ -114,21 +128,25 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
             idTuto = datosTuto.getString("idTuto");
             Log.i("Prueba", idTuto);
 
-            titulo.setText(datosTuto.getString("Titulo"));
+            txtTitulo.setText(datosTuto.getString("Titulo"));
             Log.i("ProbandoAsistir",""+datosTuto.getString("TipoEs"));
         }
 
 
 
         fdb = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         btnIniciar.setOnClickListener(this);
         btnAbrirLY.setOnClickListener(this);
+        btnAsistir.setOnClickListener(this);
+        ObtenerDatosAndID();
+        Comprobar();
 
     }
 
 
-    private void ObtenerBroadcastID (){
+    private void ObtenerDatosAndID(){
 
 
         DocumentReference dc = fdb.collection("Tutorias_institucionales").document(idTuto);
@@ -136,17 +154,33 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot docS = task.getResult();
-                Log.i("LiveError request", idTuto);
-                idBroadcast = docS.getString("broadcastId");
 
-                if (!idBroadcast.equals("None")) {
-                    getLatestResourceUri();
-                } else{
-                    Toast.makeText(TransmisionLive.this, "Esta transmisión aun no ha iniciado", Toast.LENGTH_SHORT).show();
+                if (ini) {
+                    Log.i("LiveError request", idTuto);
+                    idBroadcast = docS.getString("broadcastId");
+
+                    if (!idBroadcast.equals("None")) {
+                        getLatestResourceUri();
+                    } else {
+                        Toast.makeText(TransmisionLive.this, "Esta transmisión aun no ha iniciado", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    timestampI = docS.getString("timestamp_inicial");
+                    timestampPub = docS.getString("timestamp_pub");
+
+                    Calendar calInicial = Calendar.getInstance();
+                    Calendar calPub = Calendar.getInstance();
+
+                    calInicial.setTimeInMillis(Long.parseLong(timestampI));
+
+                    txtDescripcion.setText(docS.getString("descripcion"));
+                    txtProfesor.setText("Prof. " + docS.getString("profesor"));
+                    txtFecha.setText("Fecha: " + calInicial.get(Calendar.DAY_OF_MONTH) + "/" + (calInicial.get(Calendar.MONTH) + 1) + "/" + calInicial.get(Calendar.YEAR));
+                    txtHora.setText("Hora: " + calInicial.get(Calendar.HOUR) + ":" + calInicial.get(Calendar.MINUTE));
+                    ini=true;
                 }
-
-
             }
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -173,6 +207,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                     mMediaController = new MediaController(TransmisionLive.this);
                     mMediaController.setAnchorView(mVideoSurface);
                     mMediaController.setMediaPlayer(mBroadcastPlayer);
+
                 }
                 if (mMediaController != null) {
                     mMediaController.setEnabled(true);
@@ -191,7 +226,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
             Log.i("ProbandoLiveEstate", ""+live);
             if (live){
                 Glide.with(TransmisionLive.this).load(R.raw.logo_live_no_recording).into(logoGif);
-                logoGif.setVisibility(View.INVISIBLE);
+                logoGif.setVisibility(View.VISIBLE);
             }
         }
 
@@ -234,6 +269,82 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
+    }
+
+    private void Comprobar() {
+
+
+        DocumentReference docRef = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Lista_asistir").document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        vofAsistir= true;
+                        btnAsistir.setText("Abandonar");
+                    } else {
+                        vofAsistir= false;
+                        btnAsistir.setText("Asistir");
+                    }
+                } else {
+                    Log.d("ErrorAsistir", "Failed with: ", task.getException());
+                }
+            }
+        });
+
+    }
+
+    public void Asistir(){
+        //try {
+
+        Intent intent= getIntent();
+
+        datosTuto=intent.getExtras();
+
+
+        HashMap<String,String> hashMap= new HashMap<>();
+
+        hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
+
+        fdb.collection("Tutorias_institucionales").document(idTuto).collection("Lista_asistir").document(user.getUid())
+                .set(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(TransmisionLive.this, "Ha marcado que asistirá a esta tutoría", Toast.LENGTH_SHORT).show();
+                        vofAsistir= true;
+                        btnAsistir.setText("Abandonar");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TransmisionLive.this, "Ocurrió un error, por favor intente de nuevo", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void Abandonar() {
+
+        fdb.collection("Tutorias_institucionales").document(idTuto).collection("Lista_asistir").document(user.getUid())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(TransmisionLive.this, "Ha indicado que no asistirá a esta tutoría", Toast.LENGTH_SHORT).show();
+                        vofAsistir= false;
+                        btnAsistir.setText("Asistir");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TransmisionLive.this, "Ocurrió un error, por favor intente de nuevo", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
     }
 
     private void upFilestoRC() {
@@ -449,13 +560,24 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view==btnIniciar){
-            ObtenerBroadcastID();
+            ObtenerDatosAndID();
         }
 
         if (view == btnAbrirLY) {
             abrirLYPopup();
         }
+
+        if (view== btnAsistir){
+            if (vofAsistir){
+                Abandonar();
+            }else {
+                Asistir();
+            }
+        }
     }
+
+
+
 }
 
 

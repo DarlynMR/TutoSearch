@@ -105,15 +105,15 @@
                     android:layout_marginTop="@dimen/_4sdp">
 
                     <TextView
-                        android:id="@+id/textProf"
+                        android:id="@+id/textProfLive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Profesor"
-                        android:layout_below="@id/textRestante"
+                        android:layout_below="@id/textRestanteLive"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/textRestante"
+                        android:id="@+id/textRestanteLive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -124,26 +124,26 @@
 
 
                     <TextView
-                        android:id="@+id/textFecha"
+                        android:id="@+id/textFechaLive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textProf"
+                        android:layout_below="@+id/textProfLive"
                         android:hint="Fecha"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textHora"
+                        android:id="@+id/textHoraLive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textFecha"
+                        android:layout_below="@+id/textFechaLive"
                         android:hint="Hora"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textLugar"
+                        android:id="@+id/textLugarLive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textHora"
+                        android:layout_below="@+id/textHoraLive"
                         android:hint="Lugar"
                         android:textSize="18sp" />
 
@@ -151,7 +151,7 @@
                         android:id="@+id/textTitulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textLugar"
+                        android:layout_below="@+id/textLugarLive"
                         android:layout_centerHorizontal="true"
                         android:hint="Titulo"
                         android:textSize="18sp" />
@@ -163,7 +163,7 @@
                         android:layout_below="@+id/textTitulo">
 
                         <TextView
-                            android:id="@+id/textDescripcion"
+                            android:id="@+id/textDescripcionLive"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"/>
@@ -171,7 +171,7 @@
                     </ScrollView>
 
                     <Button
-                        android:id="@+id/btnAsistir"
+                        android:id="@+id/btnAsistirLive"
                         android:layout_width="125dp"
                         android:layout_height="40dp"
                         android:layout_marginBottom="10dp"

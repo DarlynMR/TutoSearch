@@ -7,14 +7,14 @@ package com.rd.dmmr.tutosearch;
 public class ModelTutorias {
 
     public String url_imagePortada,url_thumbsPortada;
-    public String idTuto, idProf, materia, titulo, descripcion, nombreProf, fecha, hora, lugar, tipo_tuto, fecha_pub, hora_pub;
+    public String idTuto, idProf, materia, titulo, descripcion, nombreProf, timestampI, timestampF,timestampPub, lugar, tipo_tuto;
 
     public ModelTutorias(){
 
     }
 
-    public ModelTutorias(String url_fotoPortada, String url_thumbsPortada, String idTuto, String idProf, String materia, String titulo, String descripcion, String nombreProf, String fecha, String hora, String lugar, String tipo_tuto, String fecha_pub, String hora_pub) {
-        this.url_imagePortada = url_fotoPortada;
+    public ModelTutorias(String url_imagePortada, String url_thumbsPortada, String idTuto, String idProf, String materia, String titulo, String descripcion, String nombreProf, String timestampI, String timestampF, String timestampPub, String lugar, String tipo_tuto) {
+        this.url_imagePortada = url_imagePortada;
         this.url_thumbsPortada = url_thumbsPortada;
         this.idTuto = idTuto;
         this.idProf = idProf;
@@ -22,11 +22,10 @@ public class ModelTutorias {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.nombreProf = nombreProf;
-        this.fecha = fecha;
-        this.hora = hora;
+        this.timestampI = timestampI;
+        this.timestampF = timestampF;
+        this.timestampPub = timestampPub;
         this.lugar = lugar;
         this.tipo_tuto = tipo_tuto;
-        this.fecha_pub = fecha_pub;
-        this.hora_pub = hora_pub;
     }
 }

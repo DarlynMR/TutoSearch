@@ -130,6 +130,8 @@ public class pantalla_principal extends AppCompatActivity
 
         } else if (id == R.id.compartir) {
 
+        } else if (id == R.id.acercade) {
+            GoClass(Acercade.class);
         } else if (id == R.id.logout) {
             FAuth.signOut();
             Intent intent = new Intent(pantalla_principal.this, Login.class);
@@ -149,52 +151,6 @@ public class pantalla_principal extends AppCompatActivity
             if (FUser==null){
                 VolverInicio();
             }else{
-                /*
-                DbReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        String nombresEst, apellidosEst, correoEst, url_pic;
-
-                        nombresEst = dataSnapshot.child("Nombres").getValue(String.class);
-                        apellidosEst = dataSnapshot.child("Apellidos").getValue(String.class);
-                        correoEst = dataSnapshot.child("Correo").getValue(String.class);
-                        url_pic= dataSnapshot.child("url_pic").getValue(String.class);
-
-                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                        View headerview = navigationView.getHeaderView(0);
-
-                        TextView txt_navnombreEstu =(TextView) headerview.findViewById(txtNav_nombreEst);
-                        TextView txt_navcorreoEstu =(TextView) headerview.findViewById(txtCorreoEst_nav);
-                        ImageView img_navEstu = (ImageView) headerview.findViewById(img_profileEst_nav);
-
-                        txt_navnombreEstu.setText(nombresEst + " " + apellidosEst);
-                        txt_navcorreoEstu.setText(correoEst);
-
-                        if (url_pic.equals("defaultPicUser")){
-                            img_navEstu.setImageResource(R.mipmap.profile_default);
-                        } else {
-                            try {
-                                Glide.with(pantalla_principal.this)
-                                        .load(url_pic)
-                                        .fitCenter()
-                                        .centerCrop()
-                                        .into(img_navEstu);
-
-                            }catch (Exception e){
-                                Log.i("Error", ""+e.getMessage());
-                            }
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(pantalla_principal.this,"Ha ocurrido un problema para obtener la información del usuario", Toast.LENGTH_SHORT).show();
-                    }
-                });
-*/
 
                 FirebaseFirestore fdb = FirebaseFirestore.getInstance();
                 DocumentReference dc = fdb.collection("Estudiantes").document(FUser.getUid());

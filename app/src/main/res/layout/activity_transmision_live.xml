@@ -8,51 +8,133 @@
 
 
 
-    <com.bambuser.broadcaster.SurfaceViewWithAutoAR
-        android:id="@+id/VideoSurfaceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
-
-    </com.bambuser.broadcaster.SurfaceViewWithAutoAR>
-
-    <TextView
-        android:id="@+id/txtTituloLive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Título"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/VideoSurfaceView"
-        android:layout_marginTop="@dimen/_10sdp"/>
-
-    <TextView
-        android:id="@+id/PlayerStatusTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/btnIniciar"
-        android:layout_marginTop="@dimen/_10sdp"/>
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
-    <Button
-        android:id="@+id/btnIniciar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ver transmisión"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        <com.bambuser.broadcaster.SurfaceViewWithAutoAR
+            android:id="@+id/VideoSurfaceView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
 
-    <ImageView
-        android:id="@+id/liveGif"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_7sdp"
-        android:scaleType="fitXY" />
+
+        </com.bambuser.broadcaster.SurfaceViewWithAutoAR>
+
+        <TextView
+            android:id="@+id/PlayerStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/Blanco"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/crLive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlTop"
+        android:layout_above="@id/lyDown"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:cardCornerRadius="25dp">
+
+
+        <RelativeLayout
+            android:id="@+id/rlContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_3sdp">
+
+            <TextView
+                android:id="@+id/txtTituloLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Título"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textDescripcionLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Descripción"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/txtTituloLive"
+                android:textStyle="bold"/>
+
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textDescripcionLive">
+
+                <TextView
+                    android:id="@+id/txtDescripcionLive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </ScrollView>
+
+
+            <TextView
+                android:id="@+id/textProfLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scrollView2"
+                android:hint="Profesor"
+                android:textSize="20sp"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+            <TextView
+                android:id="@+id/textRestanteLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:hint="Tiempo restante"
+                android:textSize="18sp"
+
+                />
+
+
+            <TextView
+                android:id="@+id/textFechaLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textProfLive"
+                android:hint="Fecha"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textHoraLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textFechaLive"
+                android:hint="Hora"
+                android:textSize="20sp" />
+
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
 
     <ImageButton
         android:id="@+id/btnAbrirLY"
@@ -62,8 +144,51 @@
         android:src="@drawable/ic_iconfinder_document"
         android:background="@drawable/button_style_oval"
         android:layout_alignParentEnd="true"
-
+        android:visibility="invisible"
         />
+
+
+
+    <ImageView
+        android:id="@+id/liveGif"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:scaleType="fitXY"/>
+
+    <LinearLayout
+        android:id="@+id/lyDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        >
+
+        <Button
+            android:id="@+id/btnIniciar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Ver transmisión"
+            android:layout_weight="1"
+            android:background="@drawable/button_style"/>
+
+        <Button
+            android:id="@+id/btnAsistirLive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scrollView2"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_style"
+            android:text="Asistir"
+            android:layout_weight="1">
+
+        </Button>
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
@@ -47,16 +48,23 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
     public void onBindViewHolder(final ViewPos holder, final int position) {
 
 
-
         ModelTutorias itemTutoria= mList.get(position);
-        Log.i("Probando lista",mList.get(position).toString()+" Otra: "+itemTutoria.hora);
+
+        Calendar calInicial = Calendar.getInstance();
+        Calendar calFinal = Calendar.getInstance();
+
+
+        calInicial.setTimeInMillis(Long.parseLong(itemTutoria.timestampI));
+
+        String fecha = calInicial.get(Calendar.DAY_OF_MONTH)+"/"+(calInicial.get(Calendar.MONTH)+1)+"/"+calInicial.get(Calendar.YEAR);
+        String hora="";
 
         holder.item_txtMateriaPrev.setText(itemTutoria.materia);
         holder.item_txtTituloPrev.setText(itemTutoria.titulo);
         holder.item_txtDescripcionPrev.setText(itemTutoria.descripcion);
         holder.item_txtProfesorPrev.setText(itemTutoria.nombreProf);
-        holder.item_txtFechaPrev.setText("Fecha: "+itemTutoria.fecha);
-        holder.item_txtHoraPrev.setText("Hora: "+itemTutoria.hora);
+        holder.item_txtFechaPrev.setText("Fecha: "+fecha);
+
         if (!itemTutoria.lugar.equals("")) {
             holder.item_txtLugarPrev.setText("Lugar: " + itemTutoria.lugar);
         }else {
@@ -66,6 +74,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
         if (itemTutoria.url_imagePortada.equals("defaultPresencial")){
             holder.item_imgFotoPrev.setImageResource(R.mipmap.presencial_background);
+
         } else if(itemTutoria.url_imagePortada.equals("defaultLive")){
             holder.item_imgFotoPrev.setImageResource(R.drawable.video_camera_live);
 
@@ -84,12 +93,15 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         }
 
         if (itemTutoria.tipo_tuto.equals("Live")){
+            hora = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE);
             holder.item_imgType.setImageResource(R.drawable.ic_iconfinder_facebook_live_icon_1083837);
 
         }else if (itemTutoria.tipo_tuto.equals("Presencial")){
+            calFinal.setTimeInMillis(Long.parseLong(itemTutoria.timestampF));
+            hora = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE)+" - " + calFinal.get(Calendar.HOUR)+":"+ calFinal.get(Calendar.MINUTE);
             holder.item_imgType.setImageResource(R.drawable.ic_iconfinder_dicument_4115232);
         }
-
+        holder.item_txtHoraPrev.setText("Hora: "+hora);
 
 
         holder.setOnClickListener(position);
@@ -110,8 +122,9 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     @Override
     public int getItemCount() {
-
+        Log.i("ProbandoAdapter",""+ mList.size());
         return mList.size();
+
     }
 
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -130,11 +143,11 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             item_imgFotoPrev= itemView.findViewById(R.id.imgFotoPrev);
             item_txtMateriaPrev=itemView.findViewById(R.id.txtMateria);
             item_txtTituloPrev= itemView.findViewById(R.id.txtTitulo);
-            item_txtDescripcionPrev=itemView.findViewById(R.id.txtProvinciaRC);
+            item_txtDescripcionPrev=itemView.findViewById(R.id.txtDescripcion);
             item_txtProfesorPrev= itemView.findViewById(R.id.txtNombreProfesorTutoria);
-            item_txtFechaPrev=itemView.findViewById(R.id.hintMaterias);
-            item_txtHoraPrev= itemView.findViewById(R.id.txtMaterias);
-            item_txtLugarPrev=itemView.findViewById(R.id.hintDescripcion);
+            item_txtFechaPrev=itemView.findViewById(R.id.txtFechaTutorias);
+            item_txtHoraPrev= itemView.findViewById(R.id.txtHoraTutorias);
+            item_txtLugarPrev=itemView.findViewById(R.id.txtLugarTurorias);
             item_txtTiempoRestantePrev=itemView.findViewById(R.id.txtTiempoRestante);
             item_imgType=itemView.findViewById(R.id.imgType);
             cardView= itemView.findViewById(R.id.RCView);
@@ -168,8 +181,9 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
                     detalles.putExtra("Titulo", mList.get(idfila).titulo);
                     detalles.putExtra("Descripcion",mList.get(idfila).descripcion);
                     detalles.putExtra("Profesor",mList.get(idfila).nombreProf);
-                    detalles.putExtra("Fecha",mList.get(idfila).fecha);
-                    detalles.putExtra("Hora",mList.get(idfila).hora);
+                    detalles.putExtra("timestampI",mList.get(idfila).timestampI);
+                    detalles.putExtra("timestampF",mList.get(idfila).timestampF);
+                    detalles.putExtra("timestampPub",mList.get(idfila).timestampPub);
                     detalles.putExtra("Lugar",mList.get(idfila).lugar);
                     detalles.putExtra("TipoEs", mList.get(idfila).tipo_tuto);
                     vcontext.startActivity(detalles);

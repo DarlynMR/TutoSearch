@@ -34,7 +34,6 @@ import androidx.viewpager.widget.ViewPager;
 public class Tutorias extends AppCompatActivity implements View.OnClickListener {
 
 
-
     //private TabLayout tabLayout;
     //private ViewPager viewPager;
 
@@ -61,8 +60,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         */
-        btnBuscar= (Button) findViewById(R.id.btnBuscar);
-
+        btnBuscar = (Button) findViewById(R.id.btnBuscar);
 
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);
@@ -86,8 +84,6 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         tutoriasAdapter.notifyDataSetChanged();
 
 
-
-
         btnBuscar.setOnClickListener(this);
 
     }
@@ -99,11 +95,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.i("Listen failed.", ""+e);
+                    Log.i("Listen failed.", "" + e);
                     return;
                 }
-                String Materia, idProf, idTuto, url_imagePortada, url_thumbPortada, Titulo, Descripcion, Profesor, Fecha, HoraI, HoraF, Lugar, TipoTuto,fecha_pub, hora_pub;
-
+                String Materia, idProf, idTuto, url_imagePortada, url_thumbPortada, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto;
 
 
                 for (DocumentChange dc : snapshot.getDocumentChanges()) {
@@ -113,7 +108,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                         case ADDED:
 
 
-                            Log.i("Probando", ""+docS.getData());
+                            Log.i("Probando", "" + docS.getData());
 
 
                             url_imagePortada = docS.getString("url_image_portada");
@@ -121,16 +116,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                             Titulo = docS.getString("titulo");
                             Descripcion = docS.getString("descripcion");
                             Profesor = docS.getString("profesor");
-                            Fecha = docS.getString("fecha");
-                            HoraI = docS.getString("hora_inicial");
-                            HoraF = docS.getString("hora_final");
-                            fecha_pub = docS.getString("fecha_pub");
-                            hora_pub = docS.getString("hora_pub");
-                            if (Objects.equals(docS.getString("hora_final"), "")) {
-                                HoraF = "";
-                            } else {
-                                HoraF = docS.getString("hora_final");
-                            }
+                            timestampI = docS.getString("timestamp_inicial");
+                            timestampF = docS.getString("timestamp_final");
+                            timestampPub = docS.getString("timestamp_pub");
+
                             if (docS.getString("Lugar") == null) {
                                 Lugar = "";
                             } else {
@@ -145,17 +134,14 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                             Log.i("Probando", "" + docS);
 
 
-                            if (Objects.equals(HoraF, null)) {
-                                mListTutoria.add(new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            } else {
-                                mListTutoria.add(new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI+ " - " + HoraF ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            }
+                            mListTutoria.add(new ModelTutorias(url_imagePortada, url_thumbPortada, idTuto, idProf, Materia, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto));
+
                             tutoriasAdapter.notifyDataSetChanged();
 
                             break;
                         case MODIFIED:
 
-                            Log.i("Probando", ""+docS.getData());
+                            Log.i("Probando", "" + docS.getData());
 
 
                             url_imagePortada = docS.getString("url_image_portada");
@@ -163,16 +149,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                             Titulo = docS.getString("titulo");
                             Descripcion = docS.getString("descripcion");
                             Profesor = docS.getString("profesor");
-                            Fecha = docS.getString("fecha");
-                            HoraI = docS.getString("hora_inicial");
-                            HoraF = docS.getString("hora_final");
-                            fecha_pub = docS.getString("fecha_pub");
-                            hora_pub = docS.getString("hora_pub");
-                            if (Objects.equals(docS.getString("hora_final"), "")) {
-                                HoraF = "";
-                            } else {
-                                HoraF = docS.getString("hora_final");
-                            }
+                            timestampI = docS.getString("timestamp_inicial");
+                            timestampF = docS.getString("timestamp_final");
+                            timestampPub = docS.getString("timestamp_pub");
+
                             if (docS.getString("Lugar") == null) {
                                 Lugar = "";
                             } else {
@@ -188,11 +168,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
 
                             index = getRCIndex(idTuto);
 
-                            if (Objects.equals(HoraF, null)) {
-                                mListTutoria.set(index, new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            } else {
-                                mListTutoria.set(index, new ModelTutorias(url_imagePortada,  url_thumbPortada,  idTuto,  idProf,  Materia,  Titulo,  Descripcion,  Profesor,  Fecha,  HoraI+ " - " + HoraF ,  Lugar,  TipoTuto,  fecha_pub,  hora_pub));
-                            }
+                            mListTutoria.set(index, new ModelTutorias(url_imagePortada, url_thumbPortada, idTuto, idProf, Materia, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto));
 
 
                             tutoriasAdapter.notifyItemChanged(index);
@@ -247,8 +223,9 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         detalles.putExtra("Titulo", mListTutoria.get(pos).titulo);
         detalles.putExtra("Descripcion", mListTutoria.get(pos).descripcion);
         detalles.putExtra("Profesor", mListTutoria.get(pos).nombreProf);
-        detalles.putExtra("Fecha", mListTutoria.get(pos).fecha);
-        detalles.putExtra("Hora", mListTutoria.get(pos).hora);
+        detalles.putExtra("timestampI", mListTutoria.get(pos).timestampI);
+        detalles.putExtra("timestampF", mListTutoria.get(pos).timestampF);
+        detalles.putExtra("timestampPub", mListTutoria.get(pos).timestampPub);
         detalles.putExtra("Lugar", mListTutoria.get(pos).lugar);
         detalles.putExtra("TipoEs", "institucionales");
 
@@ -281,8 +258,6 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
             limpiarRC();
         }*/
     }
-
-
 
 
 }
