@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -50,7 +52,6 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
     CollectionReference refVisto;
 
-    ValueEventListener valueEventListener;
     List<ModelChat> mChatList;
     AdapterChat adapterChat;
 
@@ -81,7 +82,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
         refVisto = fdb.collection("Mensajes");
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setStackFromEnd(true);
         rcChat.setHasFixedSize(true);
         rcChat.setLayoutManager(linearLayoutManager);
@@ -125,14 +126,13 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                     int index = -1;
                     switch (dc.getType()) {
                         case ADDED:
-                            mChatList.clear();
                             if (modelChat.getReceptor().equals(myUID) && modelChat.getEmisor().equals(idAmigo)){
                                 HashMap<String, Object> hasVisto  = new HashMap<>();
                                 hasVisto.put("visto",true);
 
                             }
 
-                            adapterChat = new AdapterChat(ChatPriv.this, mChatList,suIMG);
+                            adapterChat = new AdapterChat(ChatPriv.this, mChatList);
                             adapterChat.notifyDataSetChanged();
                             rcChat.setAdapter(adapterChat);
 
@@ -153,9 +153,8 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void leerMensajes() {
-        mChatList = new ArrayList<>();
 
-        CollectionReference ref = fdb.collection("Mensajes");
+        Query ref = fdb.collection("Mensajes").orderBy("timestamp", Query.Direction.ASCENDING);
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
@@ -165,26 +164,40 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 for (DocumentChange dc : snapshot.getDocumentChanges()) {
-                    DocumentSnapshot docS = dc.getDocument();
+                    final DocumentSnapshot docS = dc.getDocument();
 
-                    ModelChat modelChat = docS.toObject(ModelChat.class);
+                    final ModelChat modelChat = docS.toObject(ModelChat.class);
                     int index = -1;
                     switch (dc.getType()) {
                         case ADDED:
-                            mChatList.clear();
-                            if (modelChat.getReceptor().equals(myUID) && modelChat.getEmisor().equals(idAmigo) ||
-                                    modelChat.getReceptor().equals(idAmigo) && modelChat.getEmisor().equals(myUID)){
-                                mChatList.add(new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
 
-                            }
-                            adapterChat = new AdapterChat(ChatPriv.this, mChatList,suIMG);
-                            adapterChat.notifyDataSetChanged();
-                            rcChat.setAdapter(adapterChat);
+
+                            Handler handler = new Handler();
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (modelChat.getReceptor().equals(myUID) && modelChat.getEmisor().equals(idAmigo) ||
+                                            modelChat.getReceptor().equals(idAmigo) && modelChat.getEmisor().equals(myUID)) {
+                                        mChatList.add(new ModelChat(docS.getId(), docS.getString("mensaje"), docS.getString("emisor"), docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
+
+                                    }
+                                    adapterChat = new AdapterChat(ChatPriv.this, mChatList);
+                                    adapterChat.notifyDataSetChanged();
+                                    rcChat.setAdapter(adapterChat);
+
+                                }
+                            },500);
+
                             break;
                         case MODIFIED:
 
                             break;
                         case REMOVED:
+
+                            index = getRCIndex(docS.getId());
+                            mChatList.remove(index);
+                            adapterChat.notifyItemRemoved(index);
 
 
                             break;
@@ -246,6 +259,21 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
             finish();
         }
 
+
+    }
+
+    private int getRCIndex(String iMensaje) {
+
+        int index = -1;
+        for (int i = 0; i < mChatList.size(); i++) {
+            if (mChatList.get(i).idMensaje.equals(iMensaje)) {
+
+                index = i;
+                break;
+            }
+        }
+
+        return index;
 
     }
 

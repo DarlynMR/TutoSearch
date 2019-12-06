@@ -26,20 +26,17 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
     private static  final int MSG_TYPE_RIGHT= 1;
     Context context;
     List<ModelChat> chatList;
-    String imageURL;
     FirebaseUser FUser;
 
-    public AdapterChat(Context context, List<ModelChat> chatList, String imageURL) {
+    public AdapterChat(Context context, List<ModelChat> chatList) {
         this.context = context;
         this.chatList = chatList;
-        this.imageURL = imageURL;
     }
 
 
     @NonNull
     @Override
     public HolderChat onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("ProbandoChat", "Probando en creacion "+ viewType);
         if (viewType==MSG_TYPE_RIGHT){
             View view = LayoutInflater.from(context).inflate(R.layout.fila_chat_derecha, parent, false);
             return new HolderChat(view);
@@ -65,18 +62,6 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
 
         holder.mensajeRC.setText(mensaje);
         holder.timeRC.setText(dateTime);
-        if (!imageURL.equals("defaultPicUser") && !imageURL.equals("defaultPicProf")) {
-            try {
-                Glide.with(holder.itemView.getContext())
-                        .load(imageURL)
-                        .fitCenter()
-                        .centerCrop()
-                        .into(holder.imgUser);
-
-            } catch (Exception e) {
-                Log.i("ErrorImg", "" + e.getMessage());
-            }
-        }
 
         if (position==chatList.size()-1){
             if (chatList.get(position).Isvisto){
@@ -120,7 +105,6 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
         public HolderChat(@NonNull View itemView) {
             super(itemView);
 
-            imgUser= itemView.findViewById(R.id.imgCircularUserProfile);
             mensajeRC= itemView.findViewById(R.id.textMensaje);
             timeRC= itemView.findViewById(R.id.tiempo);
             vistoRC= itemView.findViewById(R.id.estado);

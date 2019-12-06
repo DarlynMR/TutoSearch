@@ -83,5 +83,8 @@ dependencies {
     //Apache commons
     implementation 'commons-io:commons-io:2.6'
 
+    //animated icon
+    implementation 'com.github.zagum:Android-SwitchIcon:1.4.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

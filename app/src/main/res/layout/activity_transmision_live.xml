@@ -7,7 +7,6 @@
     tools:context=".TransmisionLive">
 
 
-
     <RelativeLayout
         android:id="@+id/rlTop"
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
 
         <com.bambuser.broadcaster.SurfaceViewWithAutoAR
             android:id="@+id/VideoSurfaceView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true">
@@ -24,30 +23,36 @@
 
         </com.bambuser.broadcaster.SurfaceViewWithAutoAR>
 
-        <TextView
-            android:id="@+id/PlayerStatusTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/btnIniciar"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_75sdp"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@color/Blanco"
-            android:textSize="20sp" />
+            android:background="@null"
+            android:src="@drawable/ic_play_arrow_white_24dp" />
+
+        <ProgressBar
+            android:id="@+id/progresBar"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_75sdp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="invisible" />
 
     </RelativeLayout>
-
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/crLive"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/btnAsistirLive"
         android:layout_below="@id/rlTop"
-        android:layout_above="@id/lyDown"
         android:layout_marginStart="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_3sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="25dp"
+        android:visibility="invisible">
 
 
         <RelativeLayout
@@ -66,17 +71,17 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="Título"
                 android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textDescripcionLive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Descripción"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/txtTituloLive"
-                android:textStyle="bold"/>
+                android:layout_centerHorizontal="true"
+                android:text="Descripción"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <ScrollView
                 android:id="@+id/scrollView2"
@@ -98,9 +103,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/scrollView2"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:hint="Profesor"
-                android:textSize="20sp"
-                android:layout_marginTop="@dimen/_10sdp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textRestanteLive"
@@ -133,20 +138,17 @@
         </RelativeLayout>
 
 
-
     </androidx.cardview.widget.CardView>
 
     <ImageButton
         android:id="@+id/btnAbrirLY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_iconfinder_document"
-        android:background="@drawable/button_style_oval"
         android:layout_alignParentEnd="true"
-        android:visibility="invisible"
-        />
-
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_style_oval"
+        android:src="@drawable/ic_iconfinder_document"
+        android:visibility="invisible" />
 
 
     <ImageView
@@ -155,40 +157,144 @@
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_7sdp"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY" />
 
-    <LinearLayout
-        android:id="@+id/lyDown"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/PlayerStatusTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        >
+        android:layout_below="@id/liveGif"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/Blanco"
+        android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/btnIniciar"
-            android:layout_width="0dp"
+
+    <Button
+        android:id="@+id/btnAsistirLive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_style"
+        android:text="Asistir">
+
+    </Button>
+
+
+    <TextView
+        android:id="@+id/itemEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text=" " />
+
+    <RelativeLayout
+        android:id="@+id/rlChatLive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/itemEmpty"
+        android:layout_marginTop="-65dp"
+        android:visibility="invisible">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RCChatLive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/lyMensaje" />
+
+        <LinearLayout
+            android:id="@+id/lyMensaje"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:text="Ver transmisión"
-            android:layout_weight="1"
-            android:background="@drawable/button_style"/>
+            android:background="@color/Blanco"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnAsistirLive"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/scrollView2"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/button_style"
-            android:text="Asistir"
-            android:layout_weight="1">
 
-        </Button>
+            <EditText
+                android:id="@+id/txtMensajeEnviarLive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Escribir..."
+                android:inputType="textCapSentences|textMultiLine"
+                android:padding="15dp" />
+
+            <ImageButton
+                android:id="@+id/btnEnviarLive"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:src="@drawable/ic_menu_send_black" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lyControls"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:background="#4DFFFFFF"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/btnOpenChatLive"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center">
+
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/swithiconChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="#ff3c00"
+                app:si_enabled="false"
+                app:si_no_dash="true"
+                app:srcCompat="@drawable/ic_iconfinder_icons_message"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnSilencio"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center">
+
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/swicthSilencio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="#ff3c00"
+                app:si_enabled="true"
+                app:si_no_dash="true"
+                app:srcCompat="@drawable/ic_mic_black_24dp"/>
+
+        </LinearLayout>
+
+
+
+
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

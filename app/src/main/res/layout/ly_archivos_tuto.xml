@@ -28,8 +28,6 @@
                 android:textAlignment="center"
                 android:textSize="@dimen/_18sdp" />
 
-
-
             <TextView
                 android:id="@+id/txtCerrar"
                 android:layout_width="30dp"

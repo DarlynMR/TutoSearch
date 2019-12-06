@@ -56,10 +56,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCChatPriv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbarChatPriv"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarChatPriv"
+        android:layout_above="@id/lyDown"
+        />
 
     <LinearLayout
+        android:id="@+id/lyDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

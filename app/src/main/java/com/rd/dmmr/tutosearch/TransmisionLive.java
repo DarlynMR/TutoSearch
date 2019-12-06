@@ -13,12 +13,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.os.Bundle;
@@ -26,6 +30,7 @@ import android.os.Bundle;
 import com.bambuser.broadcaster.BroadcastPlayer;
 import com.bambuser.broadcaster.PlayerState;
 import com.bumptech.glide.Glide;
+import com.github.zagum.switchicon.SwitchIconView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +44,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONObject;
@@ -82,16 +88,29 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
     MediaController mMediaController = null;
 
-    private String idTuto,idBroadcast, timestampI, timestampPub;
+    private String idTuto, idBroadcast, timestampI, timestampPub;
 
     private FirebaseFirestore fdb;
     FirebaseUser user;
 
-    private Button btnIniciar, btnAsistir;
+    private Button btnAsistir;
+    private ImageButton btnIniciar;
 
     private ImageView logoGif;
-    private boolean ini=false;
+    private boolean ini = false;
     private Boolean vofAsistir;
+
+    //Variables para el chat en vivo
+    private RecyclerView rcChatLive;
+    private EditText txtMensaje;
+    private ImageButton btnEnviar;
+
+    private LinearLayout btnOpenChatlive, btnSilencio;
+    private SwitchIconView swichtOpenChat, switchSilencio;
+
+    List<ModelChatLive> mChatList;
+    AdapterChatLive adapterChatLive;
+    //---------
 
 
     @Override
@@ -104,7 +123,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         mVideoSurface = (SurfaceView) findViewById(R.id.VideoSurfaceView);
         mPlayerStatusTextView = (TextView) findViewById(R.id.PlayerStatusTextView);
 
-        btnIniciar = (Button) findViewById(R.id.btnIniciar);
+        btnIniciar = (ImageButton) findViewById(R.id.btnIniciar);
         btnAsistir = (Button) findViewById(R.id.btnAsistirLive);
 
         txtTitulo = (TextView) findViewById(R.id.txtTituloLive);
@@ -112,6 +131,29 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         txtProfesor = (TextView) findViewById(R.id.textProfLive);
         txtFecha = (TextView) findViewById(R.id.textFechaLive);
         txtHora = (TextView) findViewById(R.id.textHoraLive);
+
+        //Variables para el chat en vivo
+        rcChatLive = (RecyclerView) findViewById(R.id.RCChatLive);
+        txtMensaje = (EditText) findViewById(R.id.txtMensajeEnviarLive);
+        btnEnviar = (ImageButton) findViewById(R.id.btnEnviarLive);
+
+        btnOpenChatlive = (LinearLayout) findViewById(R.id.btnOpenChatLive);
+        btnSilencio = (LinearLayout) findViewById(R.id.btnSilencio);
+
+        swichtOpenChat = (SwitchIconView) findViewById(R.id.swithiconChat);
+        switchSilencio = (SwitchIconView) findViewById(R.id.swicthSilencio);
+
+
+        mChatList = new ArrayList<>();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager.setStackFromEnd(true);
+        rcChatLive.setHasFixedSize(true);
+        rcChatLive.setLayoutManager(linearLayoutManager);
+
+
+        //------------------------------------
+
 
         logoGif = (ImageView) findViewById(R.id.liveGif);
 
@@ -121,17 +163,16 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         mListDown = new ArrayList<>();
         downloadAdapter = new DownloadAdapter(mListDown);
 
-        Intent intent= getIntent();
+        Intent intent = getIntent();
 
-        datosTuto=intent.getExtras();
-        if (datosTuto!=null) {
+        datosTuto = intent.getExtras();
+        if (datosTuto != null) {
             idTuto = datosTuto.getString("idTuto");
             Log.i("Prueba", idTuto);
 
             txtTitulo.setText(datosTuto.getString("Titulo"));
-            Log.i("ProbandoAsistir",""+datosTuto.getString("TipoEs"));
+            Log.i("ProbandoAsistir", "" + datosTuto.getString("TipoEs"));
         }
-
 
 
         fdb = FirebaseFirestore.getInstance();
@@ -140,13 +181,17 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         btnIniciar.setOnClickListener(this);
         btnAbrirLY.setOnClickListener(this);
         btnAsistir.setOnClickListener(this);
+        btnEnviar.setOnClickListener(this);
+        btnOpenChatlive.setOnClickListener(this);
+        btnSilencio.setOnClickListener(this);
+
         ObtenerDatosAndID();
         Comprobar();
 
     }
 
 
-    private void ObtenerDatosAndID(){
+    private void ObtenerDatosAndID() {
 
 
         DocumentReference dc = fdb.collection("Tutorias_institucionales").document(idTuto);
@@ -164,7 +209,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                     } else {
                         Toast.makeText(TransmisionLive.this, "Esta transmisión aun no ha iniciado", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     timestampI = docS.getString("timestamp_inicial");
                     timestampPub = docS.getString("timestamp_pub");
 
@@ -177,7 +222,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                     txtProfesor.setText("Prof. " + docS.getString("profesor"));
                     txtFecha.setText("Fecha: " + calInicial.get(Calendar.DAY_OF_MONTH) + "/" + (calInicial.get(Calendar.MONTH) + 1) + "/" + calInicial.get(Calendar.YEAR));
                     txtHora.setText("Hora: " + calInicial.get(Calendar.HOUR) + ":" + calInicial.get(Calendar.MINUTE));
-                    ini=true;
+                    ini = true;
                 }
             }
 
@@ -196,9 +241,10 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         public void onStateChange(PlayerState playerState) {
             if (mPlayerStatusTextView != null)
                 mPlayerStatusTextView.setText("Status: " + playerState);
-            Log.i("BroadcastError Http", ""+playerState);
-            if (playerState.toString().equals("COMPLETED")){
+            Log.i("BroadcastError Http", "" + playerState);
+            if (playerState.toString().equals("COMPLETED")) {
                 logoGif.setVisibility(View.INVISIBLE);
+                btnIniciar.setVisibility(View.VISIBLE);
             }
 
 
@@ -221,10 +267,11 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                 mMediaController = null;
             }
         }
+
         @Override
         public void onBroadcastLoaded(boolean live, int width, int height) {
-            Log.i("ProbandoLiveEstate", ""+live);
-            if (live){
+            Log.i("ProbandoLiveEstate", "" + live);
+            if (live) {
                 Glide.with(TransmisionLive.this).load(R.raw.logo_live_no_recording).into(logoGif);
                 logoGif.setVisibility(View.VISIBLE);
             }
@@ -237,6 +284,86 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
+
+    private void EnviarMensajeLive(String mensaje) {
+
+
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("emisor", user.getUid());
+        hashMap.put("mensaje", mensaje);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("tipo_user", "Estudiantes");
+
+        String keyid = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").document().getId();
+
+        fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").document(keyid)
+                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TransmisionLive.this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    private void LeerMensajeLive() {
+
+        Query ref = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").orderBy("timestamp", Query.Direction.ASCENDING);
+        ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.i("Listen failed.", "" + e);
+                    return;
+                }
+
+                for (DocumentChange dc : snapshot.getDocumentChanges()) {
+                    final DocumentSnapshot docS = dc.getDocument();
+
+                    switch (dc.getType()) {
+                        case ADDED:
+
+
+                            Handler handler = new Handler();
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                    mChatList.add(new ModelChatLive(docS.getId(), docS.getString("mensaje"), docS.getString("emisor"),  docS.getString("timestamp"), docS.getString("tipo_user")));
+                                    Log.i("ProbandoPrincipal", "Tamaño: " + mChatList.size());
+
+
+                                    adapterChatLive = new AdapterChatLive(TransmisionLive.this, mChatList);
+                                    rcChatLive.setAdapter(adapterChatLive);
+                                    adapterChatLive.notifyDataSetChanged();
+
+
+                                }
+                            }, 500);
+
+
+                            break;
+                        case MODIFIED:
+
+                            break;
+                        case REMOVED:
+
+                            break;
+                    }
+                }
+            }
+        });
+
+    }
 
     private void abrirLYPopup() {
         TextView txtCerrar;
@@ -281,10 +408,10 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        vofAsistir= true;
+                        vofAsistir = true;
                         btnAsistir.setText("Abandonar");
                     } else {
-                        vofAsistir= false;
+                        vofAsistir = false;
                         btnAsistir.setText("Asistir");
                     }
                 } else {
@@ -295,17 +422,17 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void Asistir(){
+    public void Asistir() {
         //try {
 
-        Intent intent= getIntent();
+        Intent intent = getIntent();
 
-        datosTuto=intent.getExtras();
+        datosTuto = intent.getExtras();
 
 
-        HashMap<String,String> hashMap= new HashMap<>();
+        HashMap<String, String> hashMap = new HashMap<>();
 
-        hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
+        hashMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 
         fdb.collection("Tutorias_institucionales").document(idTuto).collection("Lista_asistir").document(user.getUid())
                 .set(hashMap)
@@ -313,7 +440,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(TransmisionLive.this, "Ha marcado que asistirá a esta tutoría", Toast.LENGTH_SHORT).show();
-                        vofAsistir= true;
+                        vofAsistir = true;
                         btnAsistir.setText("Abandonar");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -333,7 +460,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(TransmisionLive.this, "Ha indicado que no asistirá a esta tutoría", Toast.LENGTH_SHORT).show();
-                        vofAsistir= false;
+                        vofAsistir = false;
                         btnAsistir.setText("Asistir");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -342,7 +469,6 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(TransmisionLive.this, "Ocurrió un error, por favor intente de nuevo", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }
@@ -467,7 +593,6 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
 
-
         mVideoSurface = (SurfaceView) findViewById(R.id.VideoSurfaceView);
         mPlayerStatusTextView.setText("Loading latest broadcast");
     }
@@ -476,7 +601,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
 
         Request request = new Request.Builder()
-                .url("https://api.bambuser.com/broadcasts/"+idBroadcast)
+                .url("https://api.bambuser.com/broadcasts/" + idBroadcast)
                 .addHeader("Accept", "application/vnd.bambuser.v1+json")
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization", "Bearer " + API_KEY)
@@ -488,18 +613,22 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
-                runOnUiThread(new Runnable() { @Override public void run() {
-                    if (mPlayerStatusTextView != null)
-                        mPlayerStatusTextView.setText("Http exception: " + e);
-                    Log.i("BroadcastError Http", ""+e.getMessage());
-                }});
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mPlayerStatusTextView != null)
+                            mPlayerStatusTextView.setText("Http exception: " + e);
+                        Log.i("BroadcastError Http", "" + e.getMessage());
+                    }
+                });
             }
+
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 String body = response.body().string();
                 String resourceUri = null;
-                Log.i("BroadcastError Call", ""+call);
-                Log.i("BroadcastError Response", ""+response);
+                Log.i("BroadcastError Call", "" + call);
+                Log.i("BroadcastError Response", "" + response);
                 Log.i("BroadcastError Body", body);
 
                 try {
@@ -507,12 +636,15 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                     resourceUri = json.optString("resourceUri");
                     Log.i("LiveError Uri", resourceUri);
                 } catch (Exception ignored) {
-                    Log.i("BroadcastError 2", ""+ignored.getMessage());
+                    Log.i("BroadcastError 2", "" + ignored.getMessage());
                 }
                 final String uri = resourceUri;
-                runOnUiThread(new Runnable() { @Override public void run() {
-                    initPlayer(uri);
-                }});
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initPlayer(uri);
+                    }
+                });
             }
         });
     }
@@ -521,6 +653,8 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         if (resourceUri == null) {
             if (mPlayerStatusTextView != null)
                 mPlayerStatusTextView.setText("Could not get info about latest broadcast");
+                findViewById(R.id.progresBar).setVisibility(View.GONE);
+                btnIniciar.setVisibility(View.VISIBLE);
 
             return;
         }
@@ -534,6 +668,11 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         mBroadcastPlayer = new BroadcastPlayer(this, resourceUri, APPLICATION_ID, mBroadcastPlayerObserver);
         mBroadcastPlayer.setSurfaceView(mVideoSurface);
         mBroadcastPlayer.load();
+        LeerMensajeLive();
+        findViewById(R.id.progresBar).setVisibility(View.GONE);
+        findViewById(R.id.lyControls).setVisibility(View.VISIBLE);
+        btnAsistir.setVisibility(View.INVISIBLE);
+
     }
 
 
@@ -559,7 +698,9 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view==btnIniciar){
+        if (view == btnIniciar) {
+            btnIniciar.setVisibility(View.INVISIBLE);
+            findViewById(R.id.progresBar).setVisibility(View.VISIBLE);
             ObtenerDatosAndID();
         }
 
@@ -567,15 +708,34 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
             abrirLYPopup();
         }
 
-        if (view== btnAsistir){
-            if (vofAsistir){
+        if (view == btnAsistir) {
+            if (vofAsistir) {
                 Abandonar();
-            }else {
+            } else {
                 Asistir();
             }
         }
-    }
+        if (view == btnEnviar) {
+            String mensaje = txtMensaje.getText().toString().trim();
+            txtMensaje.setText("");
 
+            if (TextUtils.isEmpty(mensaje)) {
+                Toast.makeText(this, "No puede enviar un mensaje vacío", Toast.LENGTH_SHORT).show();
+            } else {
+                EnviarMensajeLive(mensaje);
+            }
+        }
+
+        if (view == btnOpenChatlive) {
+            swichtOpenChat.switchState();
+
+            if (swichtOpenChat.isIconEnabled()) {
+                findViewById(R.id.rlChatLive).setVisibility(View.VISIBLE);
+            }else{
+                findViewById(R.id.rlChatLive).setVisibility(View.INVISIBLE);
+            }
+        }
+    }
 
 
 }
