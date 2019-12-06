@@ -51,8 +51,7 @@
         android:layout_marginStart="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_3sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        app:cardCornerRadius="25dp"
-        android:visibility="invisible">
+        app:cardCornerRadius="25dp">
 
 
         <RelativeLayout
@@ -139,16 +138,6 @@
 
 
     </androidx.cardview.widget.CardView>
-
-    <ImageButton
-        android:id="@+id/btnAbrirLY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/button_style_oval"
-        android:src="@drawable/ic_iconfinder_document"
-        android:visibility="invisible" />
 
 
     <ImageView
@@ -290,7 +279,28 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/btnAbrirLY"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center">
 
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/swicthAbrirLY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="#ff3c00"
+                app:si_enabled="false"
+                app:si_no_dash="true"
+                app:srcCompat="@drawable/ic_iconfinder_document_text"/>
+
+        </LinearLayout>
 
 
 

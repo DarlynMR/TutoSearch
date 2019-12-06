@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -81,7 +82,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     private Dialog mDialog;
     private List<DownloadModel> mListDown;
     private DownloadAdapter downloadAdapter;
-    private ImageButton btnAbrirLY;
+    private LinearLayout btnAbrirLY;
 
 
     final OkHttpClient mOkHttpClient = new OkHttpClient();
@@ -91,7 +92,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     private String idTuto, idBroadcast, timestampI, timestampPub;
 
     private FirebaseFirestore fdb;
-    FirebaseUser user;
+    private FirebaseUser user;
 
     private Button btnAsistir;
     private ImageButton btnIniciar;
@@ -105,8 +106,9 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     private EditText txtMensaje;
     private ImageButton btnEnviar;
 
+    //
     private LinearLayout btnOpenChatlive, btnSilencio;
-    private SwitchIconView swichtOpenChat, switchSilencio;
+    private SwitchIconView swichtOpenChat, switchSilencio, swicthAbrirLY;
 
     List<ModelChatLive> mChatList;
     AdapterChatLive adapterChatLive;
@@ -142,6 +144,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
         swichtOpenChat = (SwitchIconView) findViewById(R.id.swithiconChat);
         switchSilencio = (SwitchIconView) findViewById(R.id.swicthSilencio);
+        swicthAbrirLY = (SwitchIconView) findViewById(R.id.swicthAbrirLY);
 
 
         mChatList = new ArrayList<>();
@@ -157,7 +160,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
         logoGif = (ImageView) findViewById(R.id.liveGif);
 
-        btnAbrirLY = (ImageButton) findViewById(R.id.btnAbrirLY);
+        btnAbrirLY = (LinearLayout) findViewById(R.id.btnAbrirLY);
 
 
         mListDown = new ArrayList<>();
@@ -371,6 +374,14 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         Button btnImagen, btnDocs;
 
         mDialog.setContentView(R.layout.ly_archivos_tuto);
+        mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (swicthAbrirLY.isIconEnabled()){
+                    swicthAbrirLY.switchState(false);
+                }
+            }
+        });
         txtCerrar = (TextView) mDialog.findViewById(R.id.txtCerrar);
         rvArchivos = (RecyclerView) mDialog.findViewById(R.id.RCAbajo);
 
@@ -389,6 +400,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 mDialog.dismiss();
+                swicthAbrirLY.switchState();
             }
         });
 
@@ -706,6 +718,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
         if (view == btnAbrirLY) {
             abrirLYPopup();
+            swicthAbrirLY.switchState();
         }
 
         if (view == btnAsistir) {
