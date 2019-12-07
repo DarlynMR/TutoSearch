@@ -8,113 +8,119 @@
     android:fitsSystemWindows="true"
     tools:context="com.rd.dmmr.tutosearch.Tutorias">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_top"
         android:layout_width="match_parent"
-        android:layout_height="125sp"
-        android:background="@color/colorAccentLgn"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="@dimen/_15sdp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spnMateria"
-                android:layout_width="125sp"
+            <TextView
+                android:id="@+id/textBuscar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="start"
-                app:layout_constraintStart_toStartOf="parent"
-                app:ms_arrowColor="#000000"
-                app:ms_arrowSize="16dp"
-                app:ms_floatingLabelColor="#A9A9A9"
-                app:ms_floatingLabelText="Materia"
-                app:ms_hint="Seleccione una materia"
-                app:ms_hintColor="#000000"
-                app:ms_multiline="true"
-                tools:layout_editor_absoluteY="0dp"
-                tools:ignore="MissingConstraints">
+                android:text="Buscar"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                />
 
-            </fr.ganfra.materialspinner.MaterialSpinner>
-
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spnHoraInicio"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/lySpinners"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@+id/spnHoraFinal"
-                app:layout_constraintStart_toEndOf="@id/spnMateria"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:ms_arrowColor="#000000"
-                app:ms_arrowSize="16dp"
-                app:ms_floatingLabelColor="#A9A9A9"
-                app:ms_floatingLabelText="Hora inicial"
-                app:ms_hint="Hora inicial"
-                app:ms_hintColor="#000000"
-                app:ms_multiline="true"
-                tools:layout_editor_absoluteY="0dp"
-                tools:ignore="MissingConstraints">
+                android:orientation="horizontal"
+                android:layout_below="@id/textBuscar">
 
-            </fr.ganfra.materialspinner.MaterialSpinner>
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spnMateria"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:gravity="start"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelColor="#A9A9A9"
+                    app:ms_floatingLabelText="Materia"
+                    app:ms_hint="Seleccione una materia"
+                    app:ms_hintColor="#000000"
+                    app:ms_multiline="true"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:ignore="MissingConstraints">
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spnHoraFinal"
-                android:layout_width="125sp"
+                </fr.ganfra.materialspinner.MaterialSpinner>
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spnHoraInicio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelColor="#A9A9A9"
+                    app:ms_floatingLabelText="Hora inicial"
+                    app:ms_hint="Hora inicial"
+                    app:ms_hintColor="#000000"
+                    app:ms_multiline="true"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:ignore="MissingConstraints">
+
+                </fr.ganfra.materialspinner.MaterialSpinner>
+
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlBuscar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:ms_arrowColor="#000000"
-                app:ms_arrowSize="16dp"
-                app:ms_floatingLabelColor="#A9A9A9"
-                app:ms_floatingLabelText="Hora final"
-                app:ms_hint="Hora final"
-                app:ms_hintColor="#000000"
-                app:ms_multiline="true"
-                tools:layout_editor_absoluteY="0dp"
-                tools:ignore="MissingConstraints">
+                android:orientation="horizontal"
+                android:layout_below="@id/lySpinners">
 
-            </fr.ganfra.materialspinner.MaterialSpinner>
+                <EditText
+                    android:id="@+id/txtBuscar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/buscar"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="5dp"
+                    android:layout_toStartOf="@id/btnBuscar"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="@dimen/_12sdp"/>
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/txtBuscar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/buscar"
-                app:layout_constraintEnd_toStartOf="@+id/btnBuscar"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteY="5dp" />
-
-            <Button
-                android:id="@+id/btnBuscar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/txtBuscar"
-                android:drawableStart="@drawable/ic_search_black_24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteY="5dp" />
+                <Button
+                    android:id="@+id/btnBuscar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:drawableStart="@drawable/ic_search_black_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_alignParentEnd="true"/>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCAbajo"
