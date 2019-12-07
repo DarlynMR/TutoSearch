@@ -68,6 +68,13 @@ import android.widget.Toast;
 
 public class TransmisionLive extends AppCompatActivity implements View.OnClickListener {
 
+    private static Long Mdia = Long.parseLong("86400000");
+    private static Long Mhora = Long.parseLong("3600000");
+    private static Long Mminuto = Long.parseLong("60000");
+    private static Long Msegundo = Long.parseLong("1000");
+
+    private Long milisInicial, milisActual, milisRestantes;
+
     private SurfaceView mVideoSurface;
     private TextView mPlayerStatusTextView, txtTitulo, txtDescripcion, txtProfesor, txtFecha, txtHora, txtTiempoRestante;
 
@@ -133,6 +140,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         txtProfesor = (TextView) findViewById(R.id.textProfLive);
         txtFecha = (TextView) findViewById(R.id.textFechaLive);
         txtHora = (TextView) findViewById(R.id.textHoraLive);
+        txtTiempoRestante = (TextView) findViewById(R.id.textRestanteLive);
 
         //Variables para el chat en vivo
         rcChatLive = (RecyclerView) findViewById(R.id.RCChatLive);
@@ -175,6 +183,19 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
             txtTitulo.setText(datosTuto.getString("Titulo"));
             Log.i("ProbandoAsistir", "" + datosTuto.getString("TipoEs"));
+
+
+            milisInicial = Long.parseLong(datosTuto.getString("timestampI"));
+            milisActual = System.currentTimeMillis();
+            milisRestantes = milisInicial - milisActual;
+
+
+            if (milisRestantes < 0) {
+                txtTiempoRestante.setText("Empezó hace: \n" + obtenerTiempoRestante(milisRestantes * -1));
+                txtTiempoRestante.setTextColor(Color.parseColor("#FFEE4747"));
+            } else {
+                txtTiempoRestante.setText("Tiempo restante: \n" + obtenerTiempoRestante(milisRestantes));
+            }
         }
 
 
@@ -556,6 +577,36 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         });
 
     }
+
+    private String obtenerTiempoRestante(Long milisRestantes) {
+
+        Long di, hor, min, seg;
+        String textRestante="";
+
+        if (milisRestantes>=Mdia){
+            di = milisRestantes / Mdia;
+            milisRestantes -= Mdia*di;
+            textRestante += (milisRestantes >= Mhora ? di+" días, " :  di+" días");
+        }
+        if (milisRestantes>=Mhora){
+            hor = milisRestantes / Mhora;
+            milisRestantes -= Mhora*hor;
+            textRestante += (milisRestantes >= Mminuto ? hor+" horas, " : hor+" horas");
+        }
+        if (milisRestantes>=Mminuto){
+            min = milisRestantes / Mminuto;
+            milisRestantes -= Mminuto*min;
+            textRestante += (milisRestantes >= Msegundo ? min+" minutos y " : min+" minutos");
+        }
+
+        if (milisRestantes>=Msegundo){
+            seg = milisRestantes / Msegundo;
+            textRestante += seg+" segundos";
+        }
+        Log.i("tiempo", textRestante);
+        return textRestante;
+    }
+
 
     private int getRCIndex(String iDoc) {
 

@@ -120,10 +120,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                             timestampF = docS.getString("timestamp_final");
                             timestampPub = docS.getString("timestamp_pub");
 
-                            if (docS.getString("Lugar") == null) {
+                            if (docS.getString("lugar") == null) {
                                 Lugar = "";
                             } else {
-                                Lugar = docS.getString("Lugar");
+                                Lugar = docS.getString("lugar");
                             }
 
                             idProf = docS.getString("UIDProfesor");
@@ -153,10 +153,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                             timestampF = docS.getString("timestamp_final");
                             timestampPub = docS.getString("timestamp_pub");
 
-                            if (docS.getString("Lugar") == null) {
+                            if (docS.getString("lugar") == null) {
                                 Lugar = "";
                             } else {
-                                Lugar = docS.getString("Lugar");
+                                Lugar = docS.getString("lugar");
                             }
 
                             idProf = docS.getString("UIDProfesor");

@@ -1,6 +1,7 @@
 package com.rd.dmmr.tutosearch;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DetallesTutorias extends AppCompatActivity implements View.OnClickListener {
 
+    private static Long Mdia = Long.parseLong("86400000");
+    private static Long Mhora = Long.parseLong("3600000");
+    private static Long Mminuto = Long.parseLong("60000");
+    private static Long Msegundo = Long.parseLong("1000");
+
     Bundle datosTuto;
 
     FirebaseAuth FAuth;
@@ -42,6 +48,8 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
     private TextView profesor,fecha,hora, lugar, tiemporestante,titulo, descripcion;
     private ImageView imgDetalles;
+
+    private Long milisInicial, milisActual, milisRestantes;
 
     private String idTuto, tutoes, urlTuto;
     private Boolean vofAsistir;
@@ -59,15 +67,15 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
         imgDetalles= (ImageView) findViewById(R.id.imgTuto);
 
-        profesor=(TextView) findViewById(R.id.textProfLive);
-        fecha=(TextView) findViewById(R.id.textFechaLive);
-        hora=(TextView) findViewById(R.id.textHoraLive);
-        lugar=(TextView) findViewById(R.id.textLugarLive);
-        tiemporestante=(TextView) findViewById(R.id.textRestanteLive);
+        profesor=(TextView) findViewById(R.id.textProf);
+        fecha=(TextView) findViewById(R.id.textFecha);
+        hora=(TextView) findViewById(R.id.textHora);
+        lugar=(TextView) findViewById(R.id.textLugar);
+        tiemporestante=(TextView) findViewById(R.id.textRestante);
         titulo=(TextView) findViewById(R.id.textTitulo);
-        descripcion=(TextView) findViewById(R.id.textDescripcionLive);
+        descripcion=(TextView) findViewById(R.id.textDescripcion);
 
-        btnAsistir= (Button) findViewById(R.id.btnAsistirLive);
+        btnAsistir= (Button) findViewById(R.id.btnAsistir);
 
         Intent intent= getIntent();
 
@@ -90,6 +98,19 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
             lugar.setText(datosTuto.getString("Lugar"));
             titulo.setText(datosTuto.getString("Titulo"));
             descripcion.setText(datosTuto.getString("Descripcion"));
+
+            milisInicial = Long.parseLong(datosTuto.getString("timestampI"));
+            milisActual = System.currentTimeMillis();
+            milisRestantes = milisInicial - milisActual;
+
+
+            if (milisRestantes < 0) {
+                tiemporestante.setText("Empezó hace: \n" + obtenerTiempoRestante(milisRestantes * -1));
+                tiemporestante.setTextColor(Color.parseColor("#FFEE4747"));
+            } else {
+                tiemporestante.setText("Tiempo restante: \n" + obtenerTiempoRestante(milisRestantes));
+            }
+
 
             urlTuto = datosTuto.getString("imgTuto");
             try {
@@ -115,9 +136,10 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
 
 
-
         btnAsistir.setOnClickListener(this);
         Comprobar();
+        //THilo tHilo = new THilo();
+        //tHilo.start();
 
 
 
@@ -135,9 +157,11 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                     if (document.exists()) {
                         vofAsistir= true;
                         btnAsistir.setText("Abandonar");
+                        //btnAsistir.setBackgroundColor(Color.parseColor("#FFEE4747"));
                     } else {
                         vofAsistir= false;
                         btnAsistir.setText("Asistir");
+                        //btnAsistir.setBackgroundColor(Color.parseColor("#49acd5"));
                     }
                 } else {
                     Log.d("ErrorAsistir", "Failed with: ", task.getException());
@@ -202,6 +226,75 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
     }
 
+    private  class THilo extends Thread{
+
+        @Override
+        public void run() {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    do {
+
+                        milisActual = System.currentTimeMillis();
+
+                        milisRestantes = milisInicial - milisActual;
+
+
+                        if (milisRestantes < 0) {
+                            Log.i("tiempo", "entro");
+                            tiemporestante.setText("Ya empezó");
+                            tiemporestante.setText("Empezó hace: \n" + obtenerTiempoRestante(milisRestantes * -1));
+                            tiemporestante.setTextColor(Color.parseColor("#FFEE4747"));
+                        } else {
+                            tiemporestante.setText("Tiempo restante: \n" + obtenerTiempoRestante(milisRestantes));
+                        }
+
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } while (true);
+                }
+            });
+
+
+        }
+
+
+    }
+
+
+    private String obtenerTiempoRestante(Long milisRestantes) {
+
+        Long di, hor, min, seg;
+        String textRestante="";
+
+        if (milisRestantes>=Mdia){
+            di = milisRestantes / Mdia;
+            milisRestantes -= Mdia*di;
+            textRestante += (milisRestantes >= Mhora ? di+" días, " :  di+" días");
+        }
+        if (milisRestantes>=Mhora){
+            hor = milisRestantes / Mhora;
+            milisRestantes -= Mhora*hor;
+            textRestante += (milisRestantes >= Mminuto ? hor+" horas, " : hor+" horas");
+        }
+        if (milisRestantes>=Mminuto){
+            min = milisRestantes / Mminuto;
+            milisRestantes -= Mminuto*min;
+            textRestante += (milisRestantes >= Msegundo ? min+" minutos y " : min+" minutos");
+        }
+
+        if (milisRestantes>=Msegundo){
+            seg = milisRestantes / Msegundo;
+            textRestante += seg+" segundos";
+        }
+        Log.i("tiempo", textRestante);
+        return textRestante;
+    }
 
     public void Alerta (String Titulo, String Mensaje){
         AlertDialog alertDialog;

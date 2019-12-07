@@ -104,81 +104,100 @@
                     android:layout_marginEnd="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_4sdp">
 
-                    <TextView
-                        android:id="@+id/textProfLive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Profesor"
-                        android:layout_below="@id/textRestanteLive"
-                        android:textSize="24sp" />
 
-                    <TextView
-                        android:id="@+id/textRestanteLive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:hint="Tiempo restante"
-                        android:textSize="18sp"
-
-                        />
-
-
-                    <TextView
-                        android:id="@+id/textFechaLive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textProfLive"
-                        android:hint="Fecha"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/textHoraLive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textFechaLive"
-                        android:hint="Hora"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/textLugarLive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textHoraLive"
-                        android:hint="Lugar"
-                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/textTitulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textLugarLive"
+                        android:layout_marginTop="@dimen/_7sdp"
                         android:layout_centerHorizontal="true"
-                        android:hint="Titulo"
-                        android:textSize="18sp" />
+                        android:text="Titulo"
+                        android:textSize="22sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/descripcion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_centerHorizontal="true"
+                        android:text="Descripción"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/textTitulo"/>
 
                     <ScrollView
                         android:id="@+id/scrollView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textTitulo">
+                        android:layout_below="@+id/descripcion">
 
                         <TextView
-                            android:id="@+id/textDescripcionLive"
+                            android:id="@+id/textDescripcion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textMultiLine"/>
+                            android:inputType="textMultiLine"
+                            android:textSize="20sp"/>
 
                     </ScrollView>
 
+                    <TextView
+                        android:id="@+id/textProf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Profesor"
+                        android:layout_below="@id/scrollView2"
+                        android:textSize="20sp" />
+
+
+                    <TextView
+                        android:id="@+id/textFecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textProf"
+                        android:hint="Fecha"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/textHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textFecha"
+                        android:hint="Hora"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/textLugar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textHora"
+                        android:hint="Lugar"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/textRestante"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Tiempo restante"
+                        android:textSize="19sp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/textLugar"
+                        android:textAlignment="center"
+                        />
+
+
                     <Button
-                        android:id="@+id/btnAsistirLive"
+                        android:id="@+id/btnAsistir"
                         android:layout_width="125dp"
                         android:layout_height="40dp"
                         android:layout_marginBottom="10dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_below="@id/scrollView2"
+                        android:layout_below="@id/textRestante"
                         android:text="Asistir"
-                        android:background="@drawable/button_style">
+                        android:background="@drawable/button_style"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:backgroundTint="@color/Bluelight">
 
                     </Button>
 

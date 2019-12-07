@@ -2,6 +2,7 @@ package com.rd.dmmr.tutosearch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -30,6 +31,10 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     private List<ModelTutorias> mList;
 
+    private static Long dia = Long.parseLong("86400000");
+    private static Long hora = Long.parseLong("3600000");
+    private static Long minuto = Long.parseLong("60000");
+    private static Long segundo = Long.parseLong("1000");
 
 
     public TutoriasAdapter(List<ModelTutorias> mList) {
@@ -53,6 +58,21 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         Calendar calInicial = Calendar.getInstance();
         Calendar calFinal = Calendar.getInstance();
 
+        Long milisInicial, milisActual, milisRestantes;
+
+        milisInicial = Long.parseLong(itemTutoria.timestampI);
+        milisActual = System.currentTimeMillis();
+
+        milisRestantes= milisInicial - milisActual;
+
+        if (milisRestantes<0){
+            Log.i("tiempo", "entro");
+            holder.item_txtTiempoRestantePrev.setText("Empezó hace: \n"+ obtenerTiempoRestante(milisRestantes*-1));
+            holder.item_txtTiempoRestantePrev.setTextColor(Color.parseColor("#FFEE4747"));
+        }else {
+            holder.item_txtTiempoRestantePrev.setText("Tiempo restante: \n"+ obtenerTiempoRestante(milisRestantes));
+        }
+
 
         calInicial.setTimeInMillis(Long.parseLong(itemTutoria.timestampI));
 
@@ -70,7 +90,6 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         }else {
             holder.item_txtLugarPrev.setText("");
         }
-        holder.item_txtTiempoRestantePrev.setText("");
 
         if (itemTutoria.url_imagePortada.equals("defaultPresencial")){
             holder.item_imgFotoPrev.setImageResource(R.mipmap.presencial_background);
@@ -93,12 +112,13 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         }
 
         if (itemTutoria.tipo_tuto.equals("Live")){
-            hora = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE);
+            //hora = calInicial.get(Calendar.HOUR_OF_DAY)+":"+calInicial.get(Calendar.MINUTE);
+            hora =padding_str(calInicial.get(Calendar.HOUR_OF_DAY)) + ":" + padding_str(calInicial.get(Calendar.MINUTE));
             holder.item_imgType.setImageResource(R.drawable.ic_iconfinder_facebook_live_icon_1083837);
 
         }else if (itemTutoria.tipo_tuto.equals("Presencial")){
             calFinal.setTimeInMillis(Long.parseLong(itemTutoria.timestampF));
-            hora = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE)+" - " + calFinal.get(Calendar.HOUR)+":"+ calFinal.get(Calendar.MINUTE);
+            hora = padding_str(calInicial.get(Calendar.HOUR_OF_DAY))+":"+padding_str(calInicial.get(Calendar.MINUTE))+" - " + padding_str(calFinal.get(Calendar.HOUR_OF_DAY))+":"+ padding_str(calFinal.get(Calendar.MINUTE));
             holder.item_imgType.setImageResource(R.drawable.ic_iconfinder_dicument_4115232);
         }
         holder.item_txtHoraPrev.setText("Hora: "+hora);
@@ -120,11 +140,50 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     }
 
+    private String obtenerTiempoRestante(Long milisRestantes) {
+
+        Long di, hor, min, seg;
+        String textRestante="";
+
+        if (milisRestantes>=dia){
+            di = milisRestantes / dia;
+            milisRestantes -= dia*di;
+            textRestante += (milisRestantes >= hora ? di+" días, " :  di+" días");
+        }
+        if (milisRestantes>=hora){
+            hor = milisRestantes / hora;
+            milisRestantes -= hora*hor;
+            textRestante += (milisRestantes >= minuto ? hor+" horas, " : hor+" horas");
+        }
+        if (milisRestantes>=minuto){
+            min = milisRestantes / minuto;
+            milisRestantes -= minuto*min;
+            textRestante += (milisRestantes >= segundo ? min+" minutos y " : min+" minutos");
+        }
+
+        if (milisRestantes>=segundo){
+            seg = milisRestantes / segundo;
+            textRestante += seg+" segundos";
+        }
+        Log.i("tiempo", textRestante);
+        return textRestante;
+    }
+
     @Override
     public int getItemCount() {
         Log.i("ProbandoAdapter",""+ mList.size());
         return mList.size();
 
+    }
+
+    private static String padding_str(int c) {
+
+        if (c >= 10)
+            return String.valueOf(c);
+
+        else
+
+            return "0" + String.valueOf(c);
     }
 
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{

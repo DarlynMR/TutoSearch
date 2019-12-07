@@ -123,8 +123,6 @@ public class pantalla_principal extends AppCompatActivity
 
         if (id == R.id.perfil) {
             GoClass(PerfilEstudiante.class);
-        } else if (id == R.id.nav_gallery) {
-        } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_settings) {
 
