@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -37,8 +38,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatPriv extends AppCompatActivity implements View.OnClickListener {
 
@@ -208,8 +211,86 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         });
     }
 
+    private void enviarMensaje(String mensaje) {
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("emisor", myUID);
+        hashMap.put("receptor", idAmigo);
+        hashMap.put("mensaje", mensaje);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("visto", false);
+
+        String keyid = fdb.collection("Mensajes").document().getId();
+
+        fdb.collection("Mensajes").document(keyid)
+                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ChatPriv.this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
     private void cargarDatosAmigo() {
 
+        DocumentReference docRef = fdb.collection(rutaUser).document(idAmigo);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException FirestoreE) {
+
+
+                String nombreC="", url_thum;
+                if (!documentSnapshot.getString("nombres").equals(nombreC)){
+                    nombreC = documentSnapshot.getString("nombres") + " " + documentSnapshot.getString("apellidos");
+                    txtNombre.setText(nombreC);
+                }
+                if (!documentSnapshot.getString("url_thumb_pic").equals(suIMG)){
+                    suIMG = documentSnapshot.getString("url_thumb_pic");
+
+                    if (!suIMG.equals("defaultPicUser") && !suIMG.equals("defaultPicProf")) {
+                        try {
+                            Glide.with(ChatPriv.this)
+                                    .load(suIMG)
+                                    .fitCenter()
+                                    .centerCrop()
+                                    .into(imgUser);
+
+                        } catch (Exception e) {
+                            Log.i("ErrorImg", "" + e.getMessage());
+                            imgUser.setImageResource(R.drawable.imageprofile);
+                        }
+                    }
+                }
+
+                String estadoOnline = String.valueOf(documentSnapshot.getString("estadoOnline"));
+                Log.i("Chatprov", estadoOnline);
+
+                if (estadoOnline.equals("En linea")) {
+                    txtEstado.setText(estadoOnline);
+                }else {
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(Long.parseLong(estadoOnline));
+                    String datetime= DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
+                    txtEstado.setText(datetime);
+
+                }
+
+
+
+
+            }
+        });
+
+
+
+/*
         DocumentReference docRed = fdb.collection(rutaUser).document(idAmigo);
         docRed.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -244,6 +325,16 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                 Toast.makeText(ChatPriv.this, "Ocurrió un error al cargar los datos del usuario", Toast.LENGTH_SHORT).show();
             }
         });
+        */
+    }
+
+    private void verifOnline(String estado){
+        DocumentReference docRef = fdb.collection("Estudiantes").document(FUser.getUid());
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("estadoOnline", estado);
+
+        docRef.update(hashMap);
     }
 
     private void verifEstadoUser() {
@@ -280,41 +371,23 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onStart() {
         verifEstadoUser();
+        verifOnline("En linea");
         super.onStart();
     }
 
     @Override
     protected void onPause() {
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        verifOnline(timestamp);
         super.onPause();
     }
 
-
-    private void enviarMensaje(String mensaje) {
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("emisor", myUID);
-        hashMap.put("receptor", idAmigo);
-        hashMap.put("mensaje", mensaje);
-        hashMap.put("timestamp", timestamp);
-        hashMap.put("visto", false);
-
-        String keyid = fdb.collection("Mensajes").document().getId();
-
-        fdb.collection("Mensajes").document(keyid)
-                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ChatPriv.this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+    @Override
+    protected void onResume() {
+        verifOnline("En linea");
+        super.onResume();
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

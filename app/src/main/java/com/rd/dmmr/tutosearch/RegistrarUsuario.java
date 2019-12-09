@@ -162,6 +162,7 @@ public class RegistrarUsuario extends AppCompatActivity implements View.OnClickL
                     hashMap.put("fecha_nacimiento",fechaNacimiento.getText().toString());
                     hashMap.put("telefono",telefono.getText().toString());
                     hashMap.put("correo",correo.getText().toString());
+                    hashMap.put("estadoOnline","En linea");
                     hashMap.put("url_pic", "defaultPicUser");
                     hashMap.put("url_thumb_pic", "defaultPicUser");
 
