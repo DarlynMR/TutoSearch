@@ -28,4 +28,56 @@ public class ModelTutorias {
         this.lugar = lugar;
         this.tipo_tuto = tipo_tuto;
     }
+
+    public String getUrl_imagePortada() {
+        return url_imagePortada;
+    }
+
+    public String getUrl_thumbsPortada() {
+        return url_thumbsPortada;
+    }
+
+    public String getIdTuto() {
+        return idTuto;
+    }
+
+    public String getIdProf() {
+        return idProf;
+    }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public String getNombreProf() {
+        return nombreProf;
+    }
+
+    public String getTimestampI() {
+        return timestampI;
+    }
+
+    public String getTimestampF() {
+        return timestampF;
+    }
+
+    public String getTimestampPub() {
+        return timestampPub;
+    }
+
+    public String getLugar() {
+        return lugar;
+    }
+
+    public String getTipo_tuto() {
+        return tipo_tuto;
+    }
 }

@@ -74,9 +74,9 @@
                         android:gravity="start"
                         app:ms_arrowColor="#000000"
                         app:ms_arrowSize="16dp"
-                        app:ms_floatingLabelColor="#A9A9A9"
+                        app:ms_floatingLabelColor="#000000"
                         app:ms_floatingLabelText="Materia"
-                        app:ms_hint="Seleccione una materia"
+                        app:ms_hint="Materia"
                         app:ms_hintColor="#000000"
                         app:ms_multiline="true"
                         tools:layout_editor_absoluteY="0dp"
@@ -98,7 +98,7 @@
                     app:cardCornerRadius="5dp">
 
                     <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/spnHoraInicio"
+                        android:id="@+id/spnTipoTuto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -106,9 +106,9 @@
                         android:layout_marginEnd="10dp"
                         app:ms_arrowColor="#000000"
                         app:ms_arrowSize="16dp"
-                        app:ms_floatingLabelColor="#A9A9A9"
-                        app:ms_floatingLabelText="Hora inicial"
-                        app:ms_hint="Hora inicial"
+                        app:ms_floatingLabelColor="#000000"
+                        app:ms_floatingLabelText="Tipo tutoría"
+                        app:ms_hint="Tipo tutoría"
                         app:ms_hintColor="#000000"
                         app:ms_multiline="true"
                         tools:layout_editor_absoluteY="0dp"
@@ -138,7 +138,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_50sdp"
                     android:elevation="10dp"
                     app:cardBackgroundColor="#48FFFFFF"
                     app:cardCornerRadius="15dp"
@@ -147,7 +147,7 @@
                     <SearchView
                         android:id="@+id/txtBuscar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/_50sdp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_alignParentStart="true"

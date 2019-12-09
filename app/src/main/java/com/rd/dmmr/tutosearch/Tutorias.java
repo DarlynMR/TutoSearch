@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -34,13 +37,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-public class Tutorias extends AppCompatActivity implements View.OnClickListener {
+public class Tutorias extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
     //private TabLayout tabLayout;
     //private ViewPager viewPager;
 
-    Button btnBuscar;
 
     RecyclerView RCAbajo;
     private TutoriasAdapter tutoriasAdapter;
@@ -50,6 +52,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
     private FloatingActionButton fBack;
 
     private SearchView searchView;
+
+    private Spinner spnMaterias, spnTipoTuto;
+
+    boolean create = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +72,12 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         */
-        btnBuscar = (Button) findViewById(R.id.btnBuscar);
         fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
+        spnMaterias = (Spinner) findViewById(R.id.spnMateria);
+        spnTipoTuto = (Spinner) findViewById(R.id.spnTipoTuto);
+
+        spnMaterias.setOnItemSelectedListener(this);
+        spnTipoTuto.setOnItemSelectedListener(this);
 
         //Para buscar tutorias por texto
 
@@ -77,7 +87,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                tutoriasAdapter.getFilter().filter(s);
+                //tutoriasAdapter.getFilter().filter(s);
                 return false;
             }
 
@@ -89,9 +99,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         });
 
 
-
         //-----------------------
-
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);
         //RCAbajo.setHasFixedSize(true);
@@ -114,7 +122,6 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         tutoriasAdapter.notifyDataSetChanged();
 
 
-        btnBuscar.setOnClickListener(this);
         fBack.setOnClickListener(this);
 
     }
@@ -130,6 +137,21 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                     return;
                 }
                 String Materia, idProf, idTuto, url_imagePortada, url_thumbPortada, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto;
+
+                final List<String> materias = new ArrayList<>();
+                final List<String> tipotupo = new ArrayList<>();
+                tipotupo.add("Live");
+                tipotupo.add("Presencial");
+
+                spnMaterias = (Spinner) findViewById(R.id.spnMateria);
+                ArrayAdapter<String> materiasAdapter = new ArrayAdapter<String>(Tutorias.this, android.R.layout.simple_spinner_item, materias);
+                materiasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnMaterias.setAdapter(materiasAdapter);
+
+                spnTipoTuto = (Spinner) findViewById(R.id.spnTipoTuto);
+                ArrayAdapter<String> tipotutoAdapter = new ArrayAdapter<String>(Tutorias.this, android.R.layout.simple_spinner_item, tipotupo);
+                tipotutoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnTipoTuto.setAdapter(tipotutoAdapter);
 
 
                 for (DocumentChange dc : snapshot.getDocumentChanges()) {
@@ -163,6 +185,12 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
                             idTuto = docS.getId();
 
                             Log.i("Probando", "" + docS);
+
+
+                            if (!materias.contains(Materia)) {
+                                materias.add(Materia);
+                                materiasAdapter.notifyDataSetChanged();
+                            }
 
 
                             mListTutoria.add(new ModelTutorias(url_imagePortada, url_thumbPortada, idTuto, idProf, Materia, Titulo, Descripcion, Profesor, timestampI, timestampF, timestampPub, Lugar, TipoTuto));
@@ -285,14 +313,47 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-       /* if (view==btnBuscar){
-            limpiarRC();
-        }*/
 
-        if (view==fBack){
-          onBackPressed();
+
+        if (view == fBack) {
+            onBackPressed();
         }
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (!create) {
+            create = true;
+            return;
+        }
+
+        switch (adapterView.getId()) {
+            case R.id.spnMateria:
+                if (spnMaterias.getSelectedItem() != null) {
+                    tutoriasAdapter.getFilter().filter(spnMaterias.getSelectedItem().toString());
+                } else {
+                    tutoriasAdapter.getFilter().filter("");
+                }
+                Log.i("ProbandoSPN", "Entro a la condicion");
+                break;
+            case R.id.spnTipoTuto:
+                Log.i("ProbandoSPNProv", "Entro a la provincia");
+                if (spnTipoTuto.getSelectedItem() != null) {
+                    tutoriasAdapter.getFilter().filter(spnTipoTuto.getSelectedItem().toString());
+
+                } else {
+                    tutoriasAdapter.getFilter().filter("");
+                }
+                Log.i("ProbandoSPN", "Entro a la condicion");
+                break;
+
+        }
+        Log.i("ProbandoSPN", "Entro pero posiblemente se volo la condicion");
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

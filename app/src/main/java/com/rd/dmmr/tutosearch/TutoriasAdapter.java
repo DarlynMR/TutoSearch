@@ -43,7 +43,8 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     public TutoriasAdapter(List<ModelTutorias> mList) {
         this.mList = mList;
-        mListCopy = mList;
+        this.mListCopy = mList;
+
     }
 
     @Override
@@ -141,7 +142,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         });
 
 
-
+        Log.i("probandoBuscador", "Anadiendo lista: "+mListCopy.size());
 
     }
 
@@ -191,40 +192,43 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     @Override
     public Filter getFilter() {
-        return filter;
+        return new Filter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (mList!=null) {
+                    mList = (List<ModelTutorias>) results.values;
+                    notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<ModelTutorias> filteredResults = null;
+                if (constraint.length() == 0) {
+                    filteredResults = mListCopy;
+                } else {
+                    filteredResults = getFilteredResults(constraint.toString());
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+
+                return results;
+            }
+        };
     }
 
+    protected List<ModelTutorias> getFilteredResults(String constraint) {
+        List<ModelTutorias> results = new ArrayList<>();
+        for (ModelTutorias item : mListCopy) {
+            if (item.getTitulo().contains(constraint) || item.getTipo_tuto().contains(constraint) || item.getMateria().contains(constraint)) {
+                results.add(item);
+            }
 
-    private Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-           List<ModelTutorias> filterList = new ArrayList<>();
-
-           if (charSequence == null || charSequence.length()==0 ){
-               filterList.addAll(mListCopy);
-           }else{
-               String filterStr = charSequence.toString().toLowerCase().trim();
-
-               for (ModelTutorias item: mListCopy){
-                   if (item.titulo.toLowerCase().contains(filterStr)){
-                       filterList.add(item);
-                   }
-               }
-           }
-
-           FilterResults filterResults = new FilterResults();
-           filterResults.values = filterList;
-
-           return filterResults;
         }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mList.clear();
-            mList.addAll((List) filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
+        return results;
+    }
 
 
 
