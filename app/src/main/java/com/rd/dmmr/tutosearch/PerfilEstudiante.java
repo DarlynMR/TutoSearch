@@ -65,6 +65,8 @@ public class PerfilEstudiante extends AppCompatActivity {
 
     private StorageReference mImageStorage;
 
+    private FloatingActionButton fBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,14 @@ public class PerfilEstudiante extends AppCompatActivity {
             final String current_uid = mCurrentUser.getUid();
             //especificando donde se buscara
 
+            fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
+            fBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+
 
             fdb = FirebaseFirestore.getInstance();
 
@@ -95,7 +105,7 @@ public class PerfilEstudiante extends AppCompatActivity {
             final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
             //  toolbar.setTitleTextColor(Color.parseColor("#00FF00"));
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             //Colapsando la barra
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);

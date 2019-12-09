@@ -127,6 +127,11 @@ public class AdapterTutores extends RecyclerView.Adapter<AdapterTutores.ViewHold
                 results.add(item);
                 Log.i("ProbandoSPN", item.getNombres());
             }
+            if (item.getProvincia().contains(constraint)) {
+                Log.i("ProbandoSPN", "Entra al a la condicion 2");
+                results.add(item);
+                Log.i("ProbandoSPN", item.getNombres());
+            }
         }
         return results;
     }

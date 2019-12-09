@@ -8,6 +8,17 @@
     tools:context=".PantallaMensajes">
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+        android:backgroundTint="@color/colorBlanco"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:id="@+id/frameLY"

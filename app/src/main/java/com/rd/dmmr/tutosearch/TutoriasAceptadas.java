@@ -3,6 +3,7 @@ package com.rd.dmmr.tutosearch;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -40,6 +42,7 @@ public class TutoriasAceptadas extends AppCompatActivity {
     private TutoriasAceptadasAdapter tutoriasAceptadasAdapter;
 
     private List<ModelTutoriasEst> mListTutoria;
+    private FloatingActionButton fBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,13 @@ public class TutoriasAceptadas extends AppCompatActivity {
         setContentView(R.layout.activity_tutorias_aceptadas);
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);
+        fBack= (FloatingActionButton) findViewById(R.id.fBackButton);
+        fBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
 
         fdb = FirebaseFirestore.getInstance();

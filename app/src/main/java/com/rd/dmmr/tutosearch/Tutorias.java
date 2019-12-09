@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +45,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
     FirebaseFirestore fdb;
 
     private List<ModelTutorias> mListTutoria;
+    private FloatingActionButton fBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         tabLayout.setupWithViewPager(viewPager);
         */
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
+        fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
 
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);
@@ -85,6 +88,7 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
 
 
         btnBuscar.setOnClickListener(this);
+        fBack.setOnClickListener(this);
 
     }
 
@@ -257,6 +261,10 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
        /* if (view==btnBuscar){
             limpiarRC();
         }*/
+
+        if (view==fBack){
+          onBackPressed();
+        }
     }
 
 

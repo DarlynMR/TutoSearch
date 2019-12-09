@@ -14,8 +14,6 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         app:srcCompat="@drawable/ic_arrow_back_black_24dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="1dp"
         android:backgroundTint="@color/colorBlanco"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"

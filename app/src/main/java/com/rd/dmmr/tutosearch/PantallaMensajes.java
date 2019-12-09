@@ -7,9 +7,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PantallaMensajes extends AppCompatActivity {
 
@@ -21,6 +23,8 @@ public class PantallaMensajes extends AppCompatActivity {
     private fragment_amigos fragment_amigos;
     private fragment_solicitudes fragment_solicitudes;
 
+    private FloatingActionButton fBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,15 @@ public class PantallaMensajes extends AppCompatActivity {
 
         frameLayout = (FrameLayout) findViewById(R.id.frameLY);
         btnBottonNavView = (BottomNavigationView) findViewById(R.id.btnButtonNavView);
+
+        fBack = (FloatingActionButton) findViewById(R.id.fBackButton) ;
+
+        fBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         fragment_mensajes = new fragment_mensajes();
         fragment_amigos = new fragment_amigos();

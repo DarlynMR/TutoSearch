@@ -8,6 +8,18 @@
     android:fitsSystemWindows="true">
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+        android:backgroundTint="@color/colorBlanco"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        />
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/MyAppbar"
         android:layout_width="match_parent"
@@ -55,7 +67,6 @@
                 android:id="@+id/MyToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:elevation="0dp"
                 android:minHeight="185dp"
@@ -64,7 +75,10 @@
                 app:layout_collapseMode="pin"
                 app:layout_collapseParallaxMultiplier="0.8"
                 app:popupTheme="@style/AppTheme"
-                app:titleTextColor="@color/colorBlanco" />
+                app:titleTextColor="@color/colorBlanco" >
+
+
+            </androidx.appcompat.widget.Toolbar>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

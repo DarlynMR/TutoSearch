@@ -71,6 +71,7 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
         //CrearTTutorias();
 
         spnMateriasBuscar.setOnItemSelectedListener(this);
+        spnProvinciasBuscar.setOnItemSelectedListener(this);
 
         adapterTutores = new AdapterTutores(mListTutores);
         RCTutores.setAdapter(adapterTutores);
@@ -79,6 +80,7 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
         fdb = FirebaseFirestore.getInstance();
 
         fBack.setOnClickListener(this);
+        btnLimpiar.setOnClickListener(this);
     }
 
 
@@ -94,12 +96,18 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
                 }
 
                 final List<String> materias = new ArrayList<>();
+                final List<String> provincias = new ArrayList<>();
 
 
                 spnMateriasBuscar = (Spinner) findViewById(R.id.spnMateriaBuscar);
                 ArrayAdapter<String> materiasAdapter = new ArrayAdapter<String>(BuscarTutores.this, android.R.layout.simple_spinner_item, materias);
                 materiasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnMateriasBuscar.setAdapter(materiasAdapter);
+
+                spnProvinciasBuscar = (Spinner) findViewById(R.id.spnProvinciaBuscar);
+                ArrayAdapter<String> provinciasAdapter = new ArrayAdapter<String>(BuscarTutores.this, android.R.layout.simple_spinner_item, provincias);
+                provinciasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnProvinciasBuscar.setAdapter(provinciasAdapter);
 
                 for (DocumentChange dc : snapshot.getDocumentChanges()) {
                     DocumentSnapshot docS = dc.getDocument();
@@ -120,6 +128,13 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
                                         materiasAdapter.notifyDataSetChanged();
                                     }
                                 }
+                            }
+                            if (modelTutores.getProvincia()!=null){
+                                    if (!provincias.contains(modelTutores.getProvincia())){
+                                        provincias.add(modelTutores.getProvincia());
+                                        provinciasAdapter.notifyDataSetChanged();
+                                    }
+
                             }
 
                             //ArrayList<String> list = (ArrayList) docS.get("Materias");
@@ -170,6 +185,19 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
             case R.id.spnMateriaBuscar:
                 if (spnMateriasBuscar.getSelectedItem()!=null) {
                     adapterTutores.getFilter().filter(spnMateriasBuscar.getSelectedItem().toString());
+                    spnProvinciasBuscar.setSelection(0);
+                }else {
+                    adapterTutores.getFilter().filter("");
+                }
+                Log.i("ProbandoSPN", "Entro a la condicion");
+                break;
+            case R.id.spnProvinciaBuscar:
+                Log.i("ProbandoSPNProv", "Entro a la provincia");
+                if (spnProvinciasBuscar.getSelectedItem()!=null) {
+                    adapterTutores.getFilter().filter(spnProvinciasBuscar.getSelectedItem().toString());
+                    spnMateriasBuscar.setSelection(0);
+                }else {
+                    adapterTutores.getFilter().filter("");
                 }
                 Log.i("ProbandoSPN", "Entro a la condicion");
                 break;
@@ -202,8 +230,11 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
     public void onClick(View view) {
         Intent intent;
 
-        if (view.getId() == R.id.fBackButton) {
+        if (view== fBack) {
             onBackPressed();
+        }
+        if (view == btnLimpiar) {
+            adapterTutores.getFilter().filter("");
         }
     }
 
