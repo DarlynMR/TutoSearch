@@ -455,33 +455,48 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void Asistir() {
+    public void Asistir(){
         //try {
 
-        Intent intent = getIntent();
+        Intent intent= getIntent();
 
-        datosTuto = intent.getExtras();
+        datosTuto=intent.getExtras();
 
 
-        HashMap<String, String> hashMap = new HashMap<>();
+        final HashMap<String,String> hashMap= new HashMap<>();
 
-        hashMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+        hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
 
         fdb.collection("Tutorias_institucionales").document(idTuto).collection("Lista_asistir").document(user.getUid())
                 .set(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(TransmisionLive.this, "Ha marcado que asistirá a esta tutoría", Toast.LENGTH_SHORT).show();
-                        vofAsistir = true;
-                        btnAsistir.setText("Abandonar");
+                        fdb.collection("Estudiantes").document(user.getUid()).collection("Lista_asistir").document(idTuto)
+                                .set(hashMap)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Mtoast("Ha marcado que asistirá a esta tutoría");
+                                        vofAsistir= true;
+                                        btnAsistir.setText("Abandonar");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Mtoast("Ocurrió un error, por favor intente de nuevo");
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(TransmisionLive.this, "Ocurrió un error, por favor intente de nuevo", Toast.LENGTH_SHORT).show();
+                Mtoast("Ocurrió un error, por favor intente de nuevo");
             }
         });
+
+
+
 
     }
 
@@ -492,16 +507,29 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(TransmisionLive.this, "Ha indicado que no asistirá a esta tutoría", Toast.LENGTH_SHORT).show();
-                        vofAsistir = false;
-                        btnAsistir.setText("Asistir");
+                        fdb.collection("Estudiantes").document(user.getUid()).collection("Lista_asistir").document(idTuto)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Mtoast("Ha indicado que no asistirá a esta tutoría");
+                                        vofAsistir= false;
+                                        btnAsistir.setText("Asistir");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Mtoast("Ocurrió un error, por favor intente de nuevo");
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(TransmisionLive.this, "Ocurrió un error, por favor intente de nuevo", Toast.LENGTH_SHORT).show();
+                Mtoast("Ocurrió un error, por favor intente de nuevo");
             }
         });
+
 
 
     }
@@ -757,6 +785,12 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         }
         return false;
     }
+    public void Mtoast(String mensaje){
+
+        Toast toast= Toast.makeText(TransmisionLive.this, mensaje,Toast.LENGTH_LONG);
+        toast.show();
+    }
+
 
 
     @Override

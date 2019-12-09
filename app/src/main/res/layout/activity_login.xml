@@ -156,13 +156,12 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtRecuperarPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="He olvidado mi contraseña"
                 android:textColor="@color/colorAccentLgn"
-
                 android:textSize="@dimen/_12sdp"/>
-
 
         </LinearLayout>
 

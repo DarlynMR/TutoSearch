@@ -180,7 +180,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
         datosTuto=intent.getExtras();
 
 
-        HashMap<String,String> hashMap= new HashMap<>();
+        final HashMap<String,String> hashMap= new HashMap<>();
 
         hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
 
@@ -189,9 +189,21 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Mtoast("Ha marcado que asistirá a esta tutoría");
-                        vofAsistir= true;
-                        btnAsistir.setText("Abandonar");
+                        fdb.collection("Estudiantes").document(user.getUid()).collection("Lista_asistir").document(idTuto)
+                                .set(hashMap)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Mtoast("Ha marcado que asistirá a esta tutoría");
+                                        vofAsistir= true;
+                                        btnAsistir.setText("Abandonar");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Mtoast("Ocurrió un error, por favor intente de nuevo");
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -199,6 +211,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                 Mtoast("Ocurrió un error, por favor intente de nuevo");
             }
         });
+
 
 
 
@@ -211,9 +224,21 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Mtoast("Ha indicado que no asistirá a esta tutoría");
-                        vofAsistir= false;
-                        btnAsistir.setText("Asistir");
+                        fdb.collection("Estudiantes").document(user.getUid()).collection("Lista_asistir").document(idTuto)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Mtoast("Ha indicado que no asistirá a esta tutoría");
+                                        vofAsistir= false;
+                                        btnAsistir.setText("Asistir");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Mtoast("Ocurrió un error, por favor intente de nuevo");
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

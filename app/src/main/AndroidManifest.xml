@@ -18,6 +18,7 @@
         <activity android:name=".PantallaMensajes" />
         <activity android:name=".DetallesEstudentToProf" />
         <activity android:name=".BuscarTutores" />
+        <activity android:name=".TutoriasAceptadas" />
         <activity android:name=".TipoRegistro" />
         <activity android:name=".TransmisionLive" />
         <activity

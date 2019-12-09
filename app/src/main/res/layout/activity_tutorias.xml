@@ -25,6 +25,19 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="1dp"
+                android:backgroundTint="@color/colorBlanco"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                />
+
             <TextView
                 android:id="@+id/textBuscar"
                 android:layout_width="wrap_content"
@@ -41,45 +54,72 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@id/textBuscar">
+                android:layout_below="@id/textBuscar"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginEnd="5dp">
 
-                <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/spnMateria"
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:gravity="start"
-                    app:ms_arrowColor="#000000"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="#A9A9A9"
-                    app:ms_floatingLabelText="Materia"
-                    app:ms_hint="Seleccione una materia"
-                    app:ms_hintColor="#000000"
-                    app:ms_multiline="true"
-                    tools:layout_editor_absoluteY="0dp"
-                    tools:ignore="MissingConstraints">
+                    android:elevation="10dp"
+                    app:cardBackgroundColor="#48FFFFFF"
+                    app:cardCornerRadius="5dp">
 
-                </fr.ganfra.materialspinner.MaterialSpinner>
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spnMateria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:gravity="start"
+                        app:ms_arrowColor="#000000"
+                        app:ms_arrowSize="16dp"
+                        app:ms_floatingLabelColor="#A9A9A9"
+                        app:ms_floatingLabelText="Materia"
+                        app:ms_hint="Seleccione una materia"
+                        app:ms_hintColor="#000000"
+                        app:ms_multiline="true"
+                        tools:layout_editor_absoluteY="0dp"
+                        tools:ignore="MissingConstraints">
 
-                <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/spnHoraInicio"
+                    </fr.ganfra.materialspinner.MaterialSpinner>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    app:ms_arrowColor="#000000"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="#A9A9A9"
-                    app:ms_floatingLabelText="Hora inicial"
-                    app:ms_hint="Hora inicial"
-                    app:ms_hintColor="#000000"
-                    app:ms_multiline="true"
-                    tools:layout_editor_absoluteY="0dp"
-                    tools:ignore="MissingConstraints">
+                    android:background="@color/colorPrimary"
+                    android:elevation="10dp"
+                    app:cardBackgroundColor="#48FFFFFF"
+                    app:cardCornerRadius="5dp">
 
-                </fr.ganfra.materialspinner.MaterialSpinner>
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spnHoraInicio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        app:ms_arrowColor="#000000"
+                        app:ms_arrowSize="16dp"
+                        app:ms_floatingLabelColor="#A9A9A9"
+                        app:ms_floatingLabelText="Hora inicial"
+                        app:ms_hint="Hora inicial"
+                        app:ms_hintColor="#000000"
+                        app:ms_multiline="true"
+                        tools:layout_editor_absoluteY="0dp"
+                        tools:ignore="MissingConstraints">
+
+                    </fr.ganfra.materialspinner.MaterialSpinner>
+
+                </androidx.cardview.widget.CardView>
+
+
+
 
 
             </LinearLayout>

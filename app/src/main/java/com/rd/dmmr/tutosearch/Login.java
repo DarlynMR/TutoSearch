@@ -2,20 +2,25 @@ package com.rd.dmmr.tutosearch;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
@@ -51,6 +56,7 @@ public class Login extends AppCompatActivity {
 
 
     private ProgressDialog progressDialog;
+    private TextView txtRecuperarPass;
 
     private Button btnEntrar;
     private Button btnRegistrar;
@@ -68,6 +74,8 @@ public class Login extends AppCompatActivity {
 
         btnEntrar = (Button)   findViewById(R.id.btnEntrarLogin);
         btnRegistrar = (Button) findViewById(R.id.btnRegistroLogin);
+
+        txtRecuperarPass = (TextView) findViewById(R.id.txtRecuperarPass);
 
         fdb = FirebaseFirestore.getInstance();
 
@@ -109,6 +117,7 @@ public class Login extends AppCompatActivity {
                 Login.this.startActivity(activityChangeIntent);
             }
         });
+        txtRecuperarPass.setOnClickListener(this);
 
 
 
@@ -232,7 +241,61 @@ public class Login extends AppCompatActivity {
 
     }
 
+    private void abrirDialogRecuperarPass() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Recuperar contraseña");
 
+
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        final EditText txtEmailSent = new EditText(this);
+        txtEmailSent.setHint("Correo");
+        txtEmailSent.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        txtEmailSent.setMinEms(16);
+
+        linearLayout.addView(txtEmailSent);
+        linearLayout.setPadding(10,10,10,10);
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Solicitar recuperación", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String email = txtEmailSent.getText().toString().trim();
+                startRecoveEmail(email);
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
+
+    }
+
+    private void startRecoveEmail(String email) {
+        progressDialog.setMessage("Enviando correo recuperación...");
+        progressDialog.show();
+        FAutentic.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                progressDialog.dismiss();
+                if (task.isSuccessful()){
+                    Toast.makeText(Login.this, "Se envio un correo de recuperación, por favor revise su correo", Toast.LENGTH_LONG).show();
+                }else  {
+                    Toast.makeText(Login.this, "Fallo al enviar el correo de recuperación", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Login.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
 
     @Override
     protected void onStart() {
@@ -270,4 +333,10 @@ public class Login extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        if (view==txtRecuperarPass){
+            abrirDialogRecuperarPass();
+        }
+    }
 }

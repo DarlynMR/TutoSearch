@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BuscarTutores extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class BuscarTutores extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     FirebaseFirestore fdb;
 
@@ -37,6 +39,7 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
 
     private Spinner spnProvinciasBuscar, spnMateriasBuscar;
     private Button btnLimpiar;
+    private FloatingActionButton fBack;
 
     private List<ModelTutores> mListTutores;
     private boolean create = false;
@@ -52,6 +55,8 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
         spnMateriasBuscar = (Spinner) findViewById(R.id.spnMateriaBuscar);
         btnLimpiar = (Button) findViewById(R.id.btnLimpiar);
         RCTutores = (RecyclerView) findViewById(R.id.RCProfesores);
+        fBack= (FloatingActionButton) findViewById(R.id.fBackButton);
+
         //RCAbajo.setHasFixedSize(true);
 
         mListTutores = new ArrayList<>();
@@ -73,6 +78,7 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
         adapterTutores.notifyDataSetChanged();
         fdb = FirebaseFirestore.getInstance();
 
+        fBack.setOnClickListener(this);
     }
 
 
@@ -192,38 +198,13 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-   /* protected class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
+    @Override
+    public void onClick(View view) {
+        Intent intent;
 
-        private SpinnerSelectedListener() {
-            super();
-        }
-
-        public SpinnerSelectedListener(String initialValue) {
-            this();
-            this.initialValue = initialValue;
-        }
-
-        private String initialValue;
-
-        // getter and setter removed.
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            final String newValue = (String) spinHeight.getItemAtPosition(position);
-            if (newValue.equals(initialValue) == false) {
-                // Add your code here.  The spinner has changed value.
-
-                // Maybe useful.
-                // initialValue = newValue;
-            }
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Maybe useful.
-            // initialValue = null;
+        if (view.getId() == R.id.fBackButton) {
+            onBackPressed();
         }
     }
-*/
+
 }

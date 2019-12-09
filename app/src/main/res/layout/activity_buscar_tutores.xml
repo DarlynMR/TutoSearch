@@ -8,6 +8,19 @@
     android:orientation="vertical"
     >
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="1dp"
+        android:backgroundTint="@color/colorBlanco"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_top"
         android:layout_width="match_parent"
@@ -18,51 +31,51 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
 
             <TextView
                 android:id="@+id/textBuscar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buscar"
-                android:textStyle="bold"
-                android:textSize="25dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                />
+                android:text="Buscar"
+                android:textSize="25dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/LYInformacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/textBuscar"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginEnd="5dp"
-                android:orientation="horizontal"
-                android:layout_below="@id/textBuscar"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/crd_Top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="#48FFFFFF"
-                    app:cardCornerRadius="5dp"
+                    android:layout_weight="1"
                     android:elevation="10dp"
-                    android:layout_weight="1">
+                    app:cardBackgroundColor="#48FFFFFF"
+                    app:cardCornerRadius="5dp">
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spnProvinciaBuscar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         app:ms_arrowColor="@color/GrisFondo"
                         app:ms_floatingLabelColor="#E4000000"
                         app:ms_floatingLabelText="Provincia"
                         app:ms_hint="Seleccione provincia a buscar"
                         app:ms_hintColor="#000000"
                         app:ms_multiline="true"
-                        android:layout_marginEnd="5dp"
 
                         >
 
@@ -73,12 +86,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    app:cardCornerRadius="5dp"
-                    app:cardBackgroundColor="#48FFFFFF"
-                    android:elevation="10dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="5dp">
+                    android:background="@color/colorPrimary"
+                    android:elevation="10dp"
+                    app:cardBackgroundColor="#48FFFFFF"
+                    app:cardCornerRadius="5dp">
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spnMateriaBuscar"
@@ -89,16 +102,11 @@
                         app:ms_floatingLabelText="Materia"
                         app:ms_hint="Seleccione materia a buscar"
                         app:ms_hintColor="#000000"
-                        app:ms_multiline="true"
-                        >
+                        app:ms_multiline="true">
 
                     </fr.ganfra.materialspinner.MaterialSpinner>
 
                 </androidx.cardview.widget.CardView>
-
-
-
-
 
 
             </LinearLayout>
@@ -107,18 +115,16 @@
                 android:id="@+id/btnLimpiar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mostrar todos"
                 android:layout_below="@id/LYInformacion"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_style"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:layout_marginBottom="10dp"/>
+                android:text="Mostrar todos" />
 
 
         </RelativeLayout>
-
-
 
 
     </androidx.cardview.widget.CardView>

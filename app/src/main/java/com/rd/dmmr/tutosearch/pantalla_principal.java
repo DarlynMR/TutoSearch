@@ -42,6 +42,7 @@ public class pantalla_principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private Button btnTutoriasListadas, btnBuscarTutores, btnTutoriasAceptadas, btnMensajes;
+    private TextView txtNamePrincipal;
 
     FirebaseAuth FAuth;
     FirebaseUser FUser;
@@ -60,6 +61,8 @@ public class pantalla_principal extends AppCompatActivity
         btnBuscarTutores = (Button) findViewById(R.id.btnBuscarProf);
         btnTutoriasAceptadas = (Button) findViewById(R.id.btnAceptadas);
         btnMensajes = (Button) findViewById(R.id.btnMensajes);
+
+        txtNamePrincipal = (TextView) findViewById(R.id.namePrincipal);
 
 
         FAuth= FirebaseAuth.getInstance();
@@ -168,10 +171,11 @@ public class pantalla_principal extends AppCompatActivity
                         View headerview = navigationView.getHeaderView(0);
 
                         TextView txt_nombreprofNav =(TextView) headerview.findViewById(txtNav_nombreEst);
+
                         TextView txt_correoNav =(TextView) headerview.findViewById(txtCorreoEst_nav);
                         ImageView img_navEstu = (ImageView) headerview.findViewById(img_profileEst_nav);
-
                         txt_nombreprofNav.setText(nombresProf + " " + apellidosProf);
+                        txtNamePrincipal.setText(nombresProf + " " + apellidosProf);
                         txt_correoNav.setText(correoProf);
 
                         if (url_pic.equals("defaultPicProf")){
@@ -219,6 +223,7 @@ public class pantalla_principal extends AppCompatActivity
         switch (v.getId()){
             case R.id.btnTutoriasListadas : intent = new Intent(this,Tutorias.class);startActivity(intent); break;
             case R.id.btnMensajes : intent = new Intent(this,PantallaMensajes.class);startActivity(intent); break;
+            case R.id.btnAceptadas : intent = new Intent(this,TutoriasAceptadas.class);startActivity(intent); break;
             case R.id.btnBuscarProf : intent = new Intent(this,BuscarTutores.class);startActivity(intent); break;
             default:break;
         }
