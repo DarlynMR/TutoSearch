@@ -9,9 +9,12 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,11 +28,12 @@ import com.bumptech.glide.Glide;
  * Created by Owner on 10/3/2018.
  */
 
-public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPos> {
+public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPos> implements Filterable {
 
 
 
     private List<ModelTutorias> mList;
+    private List<ModelTutorias> mListCopy;
 
     private static Long dia = Long.parseLong("86400000");
     private static Long hora = Long.parseLong("3600000");
@@ -39,6 +43,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     public TutoriasAdapter(List<ModelTutorias> mList) {
         this.mList = mList;
+        mListCopy = mList;
     }
 
     @Override
@@ -70,6 +75,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             holder.item_txtTiempoRestantePrev.setTextColor(Color.parseColor("#FFEE4747"));
         }else {
             holder.item_txtTiempoRestantePrev.setText("Tiempo restante: \n"+ obtenerTiempoRestante(milisRestantes));
+            holder.item_txtTiempoRestantePrev.setTextColor(Color.parseColor("#ffffff"));
         }
 
 
@@ -147,7 +153,7 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
         if (milisRestantes>=dia){
             di = milisRestantes / dia;
             milisRestantes -= dia*di;
-            textRestante += (milisRestantes >= hora ? di+" días, " :  di+" días");
+            textRestante += (milisRestantes >= hora ? di+" días, " :  di+" días,");
         }
         if (milisRestantes>=hora){
             hor = milisRestantes / hora;
@@ -182,6 +188,45 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
             return "0" + c;
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+           List<ModelTutorias> filterList = new ArrayList<>();
+
+           if (charSequence == null || charSequence.length()==0 ){
+               filterList.addAll(mListCopy);
+           }else{
+               String filterStr = charSequence.toString().toLowerCase().trim();
+
+               for (ModelTutorias item: mListCopy){
+                   if (item.titulo.toLowerCase().contains(filterStr)){
+                       filterList.add(item);
+                   }
+               }
+           }
+
+           FilterResults filterResults = new FilterResults();
+           filterResults.values = filterList;
+
+           return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mList.clear();
+            mList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
+
 
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{
 

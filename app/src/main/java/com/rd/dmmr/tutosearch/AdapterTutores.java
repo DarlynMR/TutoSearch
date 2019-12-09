@@ -54,7 +54,8 @@ public class AdapterTutores extends RecyclerView.Adapter<AdapterTutores.ViewHold
         holder.item_txtProvincia.setText(modelTutores.provincia);
         list = modelTutores.Materias;
 
-        if (list !=null) {
+        if (list !=null && list.size()!=0) {
+            Log.i("Lista", ""+list);
             do {
                 if (!materias.equals("")) {
                     materias = materias + ", ";
@@ -98,8 +99,10 @@ public class AdapterTutores extends RecyclerView.Adapter<AdapterTutores.ViewHold
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                mListTutores = (List<ModelTutores>) results.values;
-                notifyDataSetChanged();
+                if (mListTutores!=null) {
+                    mListTutores = (List<ModelTutores>) results.values;
+                    notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -175,7 +178,7 @@ public class AdapterTutores extends RecyclerView.Adapter<AdapterTutores.ViewHold
 
                     list = modelTutores.Materias;
 
-                    if (list !=null) {
+                    if (list !=null && list.size()!=0) {
                         do {
                             if (!materias.equals("")) {
                                 materias = materias + ", ";

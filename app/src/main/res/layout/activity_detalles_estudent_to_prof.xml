@@ -89,10 +89,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_iconfinder_send_request"
+        app:srcCompat="@drawable/ic_iconfinder_send_request"
         app:backgroundTint="@color/Bluelight"
         app:layout_anchor="@+id/contenedor_detalle_item"
-        app:layout_anchorGravity="top|end" />
+        app:layout_anchorGravity="top|end"
+        />
 
 
     <androidx.core.widget.NestedScrollView

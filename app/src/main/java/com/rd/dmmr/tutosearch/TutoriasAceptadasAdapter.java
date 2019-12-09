@@ -9,6 +9,8 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,7 +28,7 @@ import java.util.List;
  * Created by Owner on 10/3/2018.
  */
 
-public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAceptadasAdapter.ViewPos> {
+public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAceptadasAdapter.ViewPos> implements Filterable {
 
 
     private static Long dia = Long.parseLong("86400000");
@@ -34,11 +37,12 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
     private static Long segundo = Long.parseLong("1000");
 
     private List<ModelTutoriasEst> mList;
-
+    private List<ModelTutoriasEst> mcopyListTutorias;
 
     public TutoriasAceptadasAdapter(List<ModelTutoriasEst> mList) {
 
         this.mList = mList;
+        this.mcopyListTutorias = mList;
     }
 
     @Override
@@ -72,6 +76,7 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
             holder.item_txtTiempoRestantePrev.setTextColor(Color.parseColor("#FFEE4747"));
         }else {
             holder.item_txtTiempoRestantePrev.setText("Tiempo restante: \n"+ obtenerTiempoRestante(milisRestantes));
+            holder.item_txtTiempoRestantePrev.setTextColor(Color.parseColor("#ffffff"));
         }
 
         String fecha = calInicial.get(Calendar.DAY_OF_MONTH)+"/"+(calInicial.get(Calendar.MONTH)+1)+"/"+calInicial.get(Calendar.YEAR);
@@ -142,17 +147,17 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
         if (milisRestantes>=dia){
             di = milisRestantes / dia;
             milisRestantes -= dia*di;
-            textRestante += (milisRestantes >= hora ? di+" días, " :  di+" días");
+            textRestante += (milisRestantes >= hora ? di+" días, " :  di+" días, ");
         }
         if (milisRestantes>=hora){
             hor = milisRestantes / hora;
             milisRestantes -= hora*hor;
-            textRestante += (milisRestantes >= minuto ? hor+" horas, " : hor+" horas");
+            textRestante += (milisRestantes >= minuto ? hor+" horas, " : hor+" horas ");
         }
         if (milisRestantes>=minuto){
             min = milisRestantes / minuto;
             milisRestantes -= minuto*min;
-            textRestante += (milisRestantes >= segundo ? min+" minutos y " : min+" minutos");
+            textRestante += (milisRestantes >= segundo ? min+" minutos y " : min+" minutos ");
         }
 
         if (milisRestantes>=segundo){
@@ -167,6 +172,49 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
 
         return mList.size();
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (mList!=null) {
+                    mList = (List<ModelTutoriasEst>) results.values;
+                    notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<ModelTutoriasEst> filteredResults = null;
+                if (constraint.length() == 0) {
+                    filteredResults = mcopyListTutorias;
+                } else {
+                    filteredResults = getFilteredResults(constraint.toString());
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+
+                return results;
+            }
+        };
+    }
+
+    protected List<ModelTutoriasEst> getFilteredResults(String constraint) {
+        List<ModelTutoriasEst> results = new ArrayList<>();
+        for (ModelTutoriasEst item : mcopyListTutorias) {
+            if (item.getMateria().contains(constraint)) {
+                Log.i("ProbandoSPN", "Entra al a la condicion 2");
+                results.add(item);
+
+            }
+        }
+        return results;
+    }
+
 
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{
 

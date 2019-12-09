@@ -130,29 +130,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@id/lySpinners">
+                android:layout_below="@id/lySpinners"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp">
 
-                <EditText
-                    android:id="@+id/txtBuscar"
-                    android:layout_width="0dp"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:hint="@string/buscar"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteY="5dp"
-                    android:layout_toStartOf="@id/btnBuscar"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="@dimen/_12sdp"/>
+                    android:elevation="10dp"
+                    app:cardBackgroundColor="#48FFFFFF"
+                    app:cardCornerRadius="15dp"
+                    android:layout_centerVertical="true">
 
-                <Button
-                    android:id="@+id/btnBuscar"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:drawableStart="@drawable/ic_search_black_24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_alignParentEnd="true"/>
+                    <SearchView
+                        android:id="@+id/txtBuscar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginBottom="@dimen/_12sdp"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+
 
 
             </RelativeLayout>

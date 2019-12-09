@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutoriasAceptadas extends AppCompatActivity {
+public class TutoriasAceptadas extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
     FirebaseFirestore fdb;
@@ -44,13 +48,19 @@ public class TutoriasAceptadas extends AppCompatActivity {
     private List<ModelTutoriasEst> mListTutoria;
     private FloatingActionButton fBack;
 
+    private boolean create = false;
+
+    private Spinner spnMateriasBuscar;
+
+    private Button btnLimpiar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorias_aceptadas);
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);
-        fBack= (FloatingActionButton) findViewById(R.id.fBackButton);
+        fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
         fBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +68,17 @@ public class TutoriasAceptadas extends AppCompatActivity {
             }
         });
 
+        spnMateriasBuscar = (Spinner) findViewById(R.id.spnMateria);
+        spnMateriasBuscar.setOnItemSelectedListener(this);
+
+        btnLimpiar = (Button) findViewById(R.id.btnLimpiar);
+        btnLimpiar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tutoriasAceptadasAdapter.getFilter().filter("");
+
+            }
+        });
 
         fdb = FirebaseFirestore.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -90,8 +111,15 @@ public class TutoriasAceptadas extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
+                final List<String> materias = new ArrayList<>();
+
+                spnMateriasBuscar = (Spinner) findViewById(R.id.spnMateria);
+                final ArrayAdapter<String> materiasAdapter = new ArrayAdapter<String>(TutoriasAceptadas.this, android.R.layout.simple_spinner_item, materias);
+                materiasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnMateriasBuscar.setAdapter(materiasAdapter);
+
                 for (DocumentChange dcList : queryDocumentSnapshots.getDocumentChanges()) {
-                    DocumentSnapshot docS = dcList.getDocument();
+                    final DocumentSnapshot docS = dcList.getDocument();
 
                     int index = -1;
                     switch (dcList.getType()) {
@@ -103,13 +131,19 @@ public class TutoriasAceptadas extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                     DocumentSnapshot docS = task.getResult();
-                                    ModelTutoriasEst modelProf = docS.toObject(ModelTutoriasEst.class);
+                                    ModelTutoriasEst modelTutoriasEst = docS.toObject(ModelTutoriasEst.class);
 
-                                    Log.i("Aceptadas", ""+docS);
-                                    if (modelProf.getTipo_tuto().equals("Live")) {
-                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub") , modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
+                                    if (modelTutoriasEst.getMateria() != null) {
+                                        if (!materias.contains(modelTutoriasEst.getMateria())) {
+                                            materias.add(modelTutoriasEst.getMateria());
+                                            materiasAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                    Log.i("Aceptadas", "" + docS);
+                                    if (modelTutoriasEst.getTipo_tuto().equals("Live")) {
+                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelTutoriasEst.getTitulo(), modelTutoriasEst.getDescripcion(), modelTutoriasEst.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelTutoriasEst.getMateria(), modelTutoriasEst.getTipo_tuto(), modelTutoriasEst.getUrl_image_portada(), modelTutoriasEst.getUrl_thumb_image_portada(), ""));
                                     } else {
-                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
+                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelTutoriasEst.getTitulo(), modelTutoriasEst.getDescripcion(), modelTutoriasEst.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelTutoriasEst.getMateria(), modelTutoriasEst.getTipo_tuto(), modelTutoriasEst.getUrl_image_portada(), modelTutoriasEst.getUrl_thumb_image_portada(), modelTutoriasEst.getLugar()));
                                     }
                                     tutoriasAceptadasAdapter.notifyDataSetChanged();
 
@@ -135,71 +169,28 @@ public class TutoriasAceptadas extends AppCompatActivity {
         });
 
 
-
-/*
-        CollectionReference ref = fdb.collection("Tutorias_institucionales");
-        Query queryTuto = ref.whereEqualTo(FieldPath.documentId(),"-LvCxM4swRgKFctKELwe");
+    }
 
 
-        queryTuto.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.i("Listen failed.", "" + e);
-                    return;
-                }
+    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+        if (!create) {
+            create = true;
+            return;
+        }
 
-
-                for (DocumentChange dc : snapshot.getDocumentChanges()) {
-                    DocumentSnapshot docS = dc.getDocument();
-
-
-                    ModelTutoriasEst modelProf = docS.toObject(ModelTutoriasEst.class);
-                    Log.i("probando", ""+docS);
-
-                    int index = -1;
-                    switch (dc.getType()) {
-                        case ADDED:
-
-
-
-                            if (modelProf.getTipo_tuto().equals("Live")) {
-                                mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub") , modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
-                            } else {
-                                mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
-                            }
-                            tutoriasAceptadasAdapter.notifyDataSetChanged();
-
-                            break;
-                        case MODIFIED:
-
-                            index = getRCIndex(docS.getId());
-
-                            if (modelProf.getTipo_tuto().equals("Live")) {
-                                mListTutoria.set(index, new ModelTutoriasEst(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(),docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
-                            } else {
-                                mListTutoria.add(index, new ModelTutoriasEst(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(),docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
-                            }
-                            tutoriasAceptadasAdapter.notifyDataSetChanged();
-
-
-                            tutoriasAceptadasAdapter.notifyItemChanged(index);
-                            break;
-                        case REMOVED:
-
-
-                            index = getRCIndex(docS.getId());
-
-                            mListTutoria.remove(index);
-                            tutoriasAceptadasAdapter.notifyItemRemoved(index);
-
-                            break;
-                    }
-                }
-
+        if (parent.getId() == R.id.spnMateria) {
+            if (spnMateriasBuscar.getSelectedItem() != null) {
+                tutoriasAceptadasAdapter.getFilter().filter(spnMateriasBuscar.getSelectedItem().toString());
+            } else {
+                tutoriasAceptadasAdapter.getFilter().filter("");
             }
-        });
-*/
+            Log.i("ProbandoSPN", "Entro a la condicion");
+        }
+        Log.i("ProbandoSPN", "Entro pero posiblemente se volo la condicion");
+
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
@@ -207,7 +198,7 @@ public class TutoriasAceptadas extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case 0:
                 return true;
 

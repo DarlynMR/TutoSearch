@@ -185,7 +185,6 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
             case R.id.spnMateriaBuscar:
                 if (spnMateriasBuscar.getSelectedItem()!=null) {
                     adapterTutores.getFilter().filter(spnMateriasBuscar.getSelectedItem().toString());
-                    spnProvinciasBuscar.setSelection(0);
                 }else {
                     adapterTutores.getFilter().filter("");
                 }
@@ -195,7 +194,7 @@ public class BuscarTutores extends AppCompatActivity implements AdapterView.OnIt
                 Log.i("ProbandoSPNProv", "Entro a la provincia");
                 if (spnProvinciasBuscar.getSelectedItem()!=null) {
                     adapterTutores.getFilter().filter(spnProvinciasBuscar.getSelectedItem().toString());
-                    spnMateriasBuscar.setSelection(0);
+
                 }else {
                     adapterTutores.getFilter().filter("");
                 }

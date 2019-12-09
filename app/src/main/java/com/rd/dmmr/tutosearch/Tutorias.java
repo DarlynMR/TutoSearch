@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -47,6 +49,8 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
     private List<ModelTutorias> mListTutoria;
     private FloatingActionButton fBack;
 
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,29 @@ public class Tutorias extends AppCompatActivity implements View.OnClickListener 
         */
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
         fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
+
+        //Para buscar tutorias por texto
+
+        searchView = (SearchView) findViewById(R.id.txtBuscar);
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                tutoriasAdapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                tutoriasAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
+
+
+        //-----------------------
 
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);

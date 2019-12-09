@@ -23,14 +23,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -126,7 +130,26 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
             collapsingToolbarLayout.setTitle(nombreC);
         }
 
+        Comprobar();
         btnFabSendRequest.setOnClickListener(this);
+
+    }
+
+    private void Comprobar(){
+
+        DocumentReference docRef = fdb.collection("Amigos").document(FUser.getUid()).collection("Aceptados").document(idProf);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot docS = task.getResult();
+
+                if (!docS.exists()){
+                    btnFabSendRequest.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
 
     }
 

@@ -121,6 +121,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     AdapterChatLive adapterChatLive;
     //---------
 
+    boolean iniChat = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -338,6 +339,7 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     }
 
     private void LeerMensajeLive() {
+        iniChat = true;
 
         Query ref = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").orderBy("timestamp", Query.Direction.ASCENDING);
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -759,7 +761,9 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
         mBroadcastPlayer = new BroadcastPlayer(this, resourceUri, APPLICATION_ID, mBroadcastPlayerObserver);
         mBroadcastPlayer.setSurfaceView(mVideoSurface);
         mBroadcastPlayer.load();
-        LeerMensajeLive();
+        if (!iniChat){
+            LeerMensajeLive();
+        }
         findViewById(R.id.progresBar).setVisibility(View.GONE);
         findViewById(R.id.lyControls).setVisibility(View.VISIBLE);
         btnAsistir.setVisibility(View.INVISIBLE);
