@@ -343,7 +343,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                 if (!docS.exists()){
                     HashMap<String, Object> hash2 = new HashMap<>();
                     hash2.put("timestamp", String.valueOf(System.currentTimeMillis()));
-                    hash2.put("tipoUser", rutaUser);
+                    hash2.put("tipoUser", "Estudiantes");
 
                     docMy.set(hash2);
                 }

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,7 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +73,7 @@ public class AdapterChatList  extends  RecyclerView.Adapter<AdapterChatList.Hold
         }
 
         DocumentReference docRef = fdb.collection(tipoU).document(id);
+        /*
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -99,7 +103,44 @@ public class AdapterChatList  extends  RecyclerView.Adapter<AdapterChatList.Hold
                 }
             }
         });
+*/
 
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException Fe) {
+                String estad = documentSnapshot.getString("estadoOnline");
+                String nom = documentSnapshot.getString("nombres")+" "+documentSnapshot.getString("apellidos");
+
+                if (!holder.txtNombre.getText().toString().equals(nom)) {
+                    holder.txtNombre.setText(nom);
+                }
+
+                if (estad.equals("En linea")){
+                    holder.imgEstado.setImageResource(R.drawable.circulo_online);
+                }else {
+                    holder.imgEstado.setImageResource(R.drawable.circulo_offline);
+                }
+
+                String img = documentSnapshot.getString("url_thumb_pic");
+                // if (!documentSnapshot.getString("url_thumb_pic").equals(img)){
+                if (!img.equals("defaultPicUser") || !img.equals("defaultPicProf")) {
+                    try {
+                        Glide.with(holder.itemView.getContext())
+                                .load(img)
+                                .fitCenter()
+                                .centerCrop()
+                                .into(holder.imgProfile);
+
+                    } catch (Exception e) {
+                        Log.i("ErrorImg", "" + e.getMessage());
+                    }
+                    // }
+                }
+
+
+
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

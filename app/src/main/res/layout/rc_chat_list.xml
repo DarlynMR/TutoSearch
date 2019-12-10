@@ -20,7 +20,10 @@
             android:id="@+id/imgEstado"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
 
             />
 
