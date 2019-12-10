@@ -28,22 +28,33 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rd.dmmr.tutosearch.notificaciones.APIService;
+import com.rd.dmmr.tutosearch.notificaciones.Client;
+import com.rd.dmmr.tutosearch.notificaciones.Data;
+import com.rd.dmmr.tutosearch.notificaciones.Response;
+import com.rd.dmmr.tutosearch.notificaciones.Sender;
+import com.rd.dmmr.tutosearch.notificaciones.Token;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ChatPriv extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,6 +76,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     FirebaseFirestore fdb;
 
     String idAmigo, tipoAmigo, myUID, rutaUser, suIMG;
+
+    APIService apiService;
+    boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +106,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         rcChat.setHasFixedSize(true);
         rcChat.setLayoutManager(linearLayoutManager);
 
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
 
         FAuth = FirebaseAuth.getInstance();
         FUser = FAuth.getCurrentUser();
@@ -104,9 +119,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         idAmigo = intent.getStringExtra("idAmigo");
         tipoAmigo = intent.getStringExtra("tipoUser");
 
-        if (tipoAmigo.equals("Profesor")) {
+        if (tipoAmigo.equals("Profesor") || tipoAmigo.equals("Profesores")) {
             rutaUser = "Profesores";
-        } else if (tipoAmigo.equals("Estudiante")) {
+        } else if (tipoAmigo.equals("Estudiante") || tipoAmigo.equals("Estudiantes")) {
             rutaUser = "Estudiantes";
         }
 
@@ -228,15 +243,15 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                            if (modelChat.receptor.equals(myUID) && modelChat.emisor.equals(idAmigo) ||
-                                    modelChat.receptor.equals(idAmigo) && modelChat.emisor.equals(myUID)){
-                                mChatList.set(finalIndex1, new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
-                                Log.i("ProbandoPrincipal", "Tamaño: "+ mChatList.size());
-                            }
+                                    if (modelChat.receptor.equals(myUID) && modelChat.emisor.equals(idAmigo) ||
+                                            modelChat.receptor.equals(idAmigo) && modelChat.emisor.equals(myUID)){
+                                        mChatList.set(finalIndex1, new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
+                                        Log.i("ProbandoPrincipal", "Tamaño: "+ mChatList.size());
+                                    }
 
-                            adapterChat = new AdapterChat(ChatPriv.this, mChatList);
-                            rcChat.setAdapter(adapterChat);
-                            adapterChat.notifyDataSetChanged();
+                                    adapterChat = new AdapterChat(ChatPriv.this, mChatList);
+                                    rcChat.setAdapter(adapterChat);
+                                    adapterChat.notifyDataSetChanged();
                                 }
                             },500);
 
@@ -247,9 +262,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                            finalIndex[0] = getRCIndex(docS.getId());
-                            mChatList.remove(finalIndex[0]);
-                            adapterChat.notifyItemRemoved(finalIndex[0]);
+                                    finalIndex[0] = getRCIndex(docS.getId());
+                                    mChatList.remove(finalIndex[0]);
+                                    adapterChat.notifyItemRemoved(finalIndex[0]);
                                 }
                             },500);
                             break;
@@ -260,7 +275,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         });
     }
 
-    private void enviarMensaje(String mensaje) {
+    private void enviarMensaje(final String mensaje) {
         String timestamp = String.valueOf(System.currentTimeMillis());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("emisor", myUID);
@@ -285,7 +300,107 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         });
 
 
+        final DocumentReference docRef = fdb.collection("Estudiantes").document(myUID);
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                if (notify){
+                    sendNotification(idAmigo, txtNombre.getText().toString(), mensaje);
+                }
+                notify =false;
+
+
+
+            }
+        });
+
+
+        DocumentReference docHis  = fdb.collection("ListChat").document(myUID).collection("lista").document(idAmigo);
+        docHis.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot docS = task.getResult();
+
+                if (!docS.exists()){
+                    HashMap<String, Object> hash1 = new HashMap<>();
+                    hash1.put("timestamp", String.valueOf(System.currentTimeMillis()));
+                    hash1.put("tipoUser", rutaUser);
+
+                    docHis.set(hash1);
+                }
+
+            }
+        });
+
+        DocumentReference docMy  = fdb.collection("ListChat").document(idAmigo).collection("lista").document(myUID);
+        docMy.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot docS = task.getResult();
+
+                if (!docS.exists()){
+                    HashMap<String, Object> hash2 = new HashMap<>();
+                    hash2.put("timestamp", String.valueOf(System.currentTimeMillis()));
+                    hash2.put("tipoUser", rutaUser);
+
+                    docMy.set(hash2);
+                }
+
+            }
+        });
+
+
+
+
+
+
     }
+
+    private void sendNotification(final String idAmigo, String toString, final String mensaje) {
+        CollectionReference allTokens = fdb.collection("Tokens");
+        Query query  = allTokens.orderBy(FieldPath.documentId()).whereEqualTo(FieldPath.documentId(), idAmigo );
+
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
+                    DocumentSnapshot docS = dc.getDocument();
+/*
+                    DataSnapshot dataSnapshot = (DataSnapshot) docS.getData();
+
+                    Token tokenp = new Token();
+                    */
+                    Token token = new Token();
+
+                    token.setToken(docS.getString("token"));
+
+                    Data data = new Data(myUID, txtNombre.getText().toString()+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile);
+
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                    Toast.makeText(ChatPriv.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+
+
+
+            }
+        });
+
+    }
+
 
     private void cargarDatosAmigo() {
 
@@ -454,6 +569,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnEnviar:
+                notify = true;
                 String mensaje = txtMensaje.getText().toString().trim();
                 txtMensaje.setText("");
 

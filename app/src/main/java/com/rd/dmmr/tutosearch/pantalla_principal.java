@@ -1,6 +1,7 @@
 package com.rd.dmmr.tutosearch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -15,10 +16,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.rd.dmmr.tutosearch.notificaciones.Token;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -47,6 +51,8 @@ public class pantalla_principal extends AppCompatActivity
     FirebaseAuth FAuth;
     FirebaseUser FUser;
     DatabaseReference DbReferenceUser;
+    String miUID;
+    FirebaseFirestore fdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +71,11 @@ public class pantalla_principal extends AppCompatActivity
         txtNamePrincipal = (TextView) findViewById(R.id.namePrincipal);
 
 
+        fdb = FirebaseFirestore.getInstance();
+
         FAuth= FirebaseAuth.getInstance();
         FUser = FAuth.getCurrentUser();
+        miUID = FUser.getUid();
         DbReferenceUser= FirebaseDatabase.getInstance().getReference().child("usuarios").child("estudiantes").child(FUser.getUid());
 
 
@@ -87,6 +96,19 @@ public class pantalla_principal extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+    }
+
+    public void updateToken(String token){
+        CollectionReference collectionReference = fdb.collection("Tokens");
+
+        Token mToken = new Token(token);
+
+        collectionReference.document(miUID).set(mToken);
+
+
     }
 
     @Override
@@ -148,12 +170,19 @@ public class pantalla_principal extends AppCompatActivity
     protected void onStart() {
         try {
             FUser = FAuth.getCurrentUser();
+            miUID = FUser.getUid();
+
+            SharedPreferences sharedPreferences = getSharedPreferences("SP_USER", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("current_userID", miUID);
+            editor.apply();
+
+
             super.onStart();
             if (FUser==null){
                 VolverInicio();
             }else{
 
-                FirebaseFirestore fdb = FirebaseFirestore.getInstance();
                 DocumentReference dc = fdb.collection("Estudiantes").document(FUser.getUid());
                 dc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
