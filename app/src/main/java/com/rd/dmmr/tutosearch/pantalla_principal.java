@@ -151,7 +151,8 @@ public class pantalla_principal extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.compartir) {
+        } else if (id == R.id.politicas_privacidad) {
+            GoClass(ScrollingActivity.class);
 
         } else if (id == R.id.acercade) {
             GoClass(Acercade.class);

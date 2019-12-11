@@ -1,14 +1,21 @@
 package com.rd.dmmr.tutosearch;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +53,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import id.zelory.compressor.Compressor;
 
-public class PerfilEstudiante extends AppCompatActivity {
+public class PerfilEstudiante extends AppCompatActivity implements View.OnClickListener {
 
 
     private FirebaseFirestore fdb;
@@ -54,18 +61,22 @@ public class PerfilEstudiante extends AppCompatActivity {
 
     private FirebaseUser mCurrentUser;
     private TextView txtNombre, txtApellido, txtFechaNacimiento, txtCorreo, txtTelefono;
+    private EditText dialog_txtNombre, dialog_txtApellido, dialog_txtFecha, dialog_txtTelefono;
+    private Button btnActualizar, btnCancelar;
     private static int currentPage = 0;
     private static final int GALERRY_PICK = 1;
     private ProgressDialog mProgressDialog;
     private ImageView img_perfil;
 
+    private  View viewLy;
+    private Dialog mDialog;
     //variables
     private String download_url, thumb_downloadUrl;
 
 
     private StorageReference mImageStorage;
 
-    private FloatingActionButton fBack;
+    private FloatingActionButton fBack, fEditarPerfil;
 
 
     @Override
@@ -74,6 +85,7 @@ public class PerfilEstudiante extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_perfil_estudiante);
 
+            mDialog = new Dialog(this);
             urlStorage = FirebaseStorage.getInstance().getReference();
 
             mImageStorage = FirebaseStorage.getInstance().getReference();
@@ -84,12 +96,16 @@ public class PerfilEstudiante extends AppCompatActivity {
             //especificando donde se buscara
 
             fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
+            fEditarPerfil = (FloatingActionButton) findViewById(R.id.fltEditarPerfil);
+
+
             fBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onBackPressed();
                 }
             });
+            fEditarPerfil.setOnClickListener(this);
 
 
             fdb = FirebaseFirestore.getInstance();
@@ -195,6 +211,9 @@ public class PerfilEstudiante extends AppCompatActivity {
 
                 }
             });
+
+            viewLy = getLayoutInflater().inflate(R.layout.dialog_ly_editar, null);
+
 
         } catch (Exception e) {
 
@@ -364,6 +383,83 @@ public class PerfilEstudiante extends AppCompatActivity {
         }
     }
 
+        @Override
+    public void onClick(View v) {
+        if (v==fEditarPerfil){
+
+
+
+
+            mDialog.setContentView(R.layout.dialog_ly_editar);
+
+            dialog_txtNombre = (EditText) mDialog.findViewById(R.id.txtNombresEditar);
+            dialog_txtApellido = (EditText) mDialog.findViewById(R.id.txtApellidosEditar);
+            dialog_txtFecha = (EditText) mDialog.findViewById(R.id.txtFechaEditar);
+            dialog_txtTelefono = (EditText) mDialog.findViewById(R.id.txtTelefonoEditar);
+            btnActualizar = (Button) mDialog.findViewById(R.id.btnActualizar);
+            btnCancelar = (Button) mDialog.findViewById(R.id.btnCancelar);
+
+
+            dialog_txtNombre.setText(txtNombre.getText().toString().trim());
+            dialog_txtApellido.setText(txtApellido.getText().toString().trim());
+            dialog_txtFecha.setText(txtFechaNacimiento.getText().toString().trim());
+            dialog_txtTelefono.setText(txtTelefono.getText().toString().trim());
+
+
+            mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mDialog.setCanceledOnTouchOutside(false);
+            mDialog.show();
+
+
+
+            btnActualizar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditarDatosPErfil();
+                }
+            });
+
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+
+
+
+
+
+        }
+    }
+
+    private void EditarDatosPErfil() {
+
+       // DocumentReference docRef =  fdb.collection("Estudiantes").document(mCurrentUser.getUid());
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("nombres", dialog_txtNombre.getText().toString().trim());
+        hashMap.put("apellidos", dialog_txtApellido.getText().toString().trim());
+        hashMap.put("fecha_nacimiento", dialog_txtFecha.getText().toString().trim());
+        hashMap.put("telefono", dialog_txtTelefono.getText().toString().trim());
+
+
+        fdb.collection("Estudiantes").document(mCurrentUser.getUid())
+                .update(hashMap)
+                .addOnSuccessListener(new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+
+                        Toast.makeText(PerfilEstudiante.this, "Se han actualizado los datos", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PerfilEstudiante.this, "Ha ocurrido un problema y no se pudo actualizar las materias", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
 }
 
 

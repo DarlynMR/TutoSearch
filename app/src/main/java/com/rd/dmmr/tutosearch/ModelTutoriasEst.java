@@ -2,13 +2,13 @@ package com.rd.dmmr.tutosearch;
 
 public class ModelTutoriasEst {
 
-    String idTuto, titulo, descripcion, broadcastId, timestampInicial,timestampFinal, timestampPub, materia, tipo_tuto, url_image_portada, url_thumb_image_portada, lugar;
+    String idTuto, titulo, descripcion, broadcastId, timestampInicial,timestampFinal, timestampPub, materia, tipo_tuto, url_image_portada, url_thumb_image_portada, lugar, nombreProf;
 
 
     public ModelTutoriasEst() {
     }
 
-    public ModelTutoriasEst(String idTuto, String titulo, String descripcion, String broadcastId, String timestampInicial, String timestampFinal, String timestampPub, String materia, String tipo_tuto, String url_image_portada, String url_thumb_image_portada, String lugar) {
+    public ModelTutoriasEst(String idTuto, String titulo, String descripcion, String broadcastId, String timestampInicial, String timestampFinal, String timestampPub, String materia, String tipo_tuto, String url_image_portada, String url_thumb_image_portada, String lugar, String nombreProf) {
         this.idTuto = idTuto;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -21,6 +21,11 @@ public class ModelTutoriasEst {
         this.url_image_portada = url_image_portada;
         this.url_thumb_image_portada = url_thumb_image_portada;
         this.lugar = lugar;
+        this.nombreProf = nombreProf;
+    }
+
+    public String getNombreProf() {
+        return nombreProf;
     }
 
     public String getTitulo() {

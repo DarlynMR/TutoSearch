@@ -82,7 +82,7 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
         String fecha = calInicial.get(Calendar.DAY_OF_MONTH)+"/"+(calInicial.get(Calendar.MONTH)+1)+"/"+calInicial.get(Calendar.YEAR);
         String hora="";
 
-
+        holder.item_txtNombreProf.setText(itemTutoria.getNombreProf());
         holder.item_txtMateriaPrev.setText(itemTutoria.materia);
         holder.item_txtTituloPrev.setText(itemTutoria.titulo);
         holder.item_txtDescripcionPrev.setText(itemTutoria.descripcion);
@@ -219,7 +219,7 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView item_imgFotoPrev, item_imgType;
-        TextView item_txtMateriaPrev, item_txtTituloPrev, item_txtDescripcionPrev, item_txtFechaPrev, item_txtHoraPrev, item_txtLugarPrev,item_txtTiempoRestantePrev, item;
+        TextView item_txtNombreProf,item_txtMateriaPrev, item_txtTituloPrev, item_txtDescripcionPrev, item_txtFechaPrev, item_txtHoraPrev, item_txtLugarPrev,item_txtTiempoRestantePrev, item;
         CardView cardView;
         private Context vcontext;
         Integer idfila;
@@ -228,6 +228,7 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
         public ViewPos(View itemView) {
             super(itemView);
             vcontext = itemView.getContext();
+            item_txtNombreProf= itemView.findViewById(R.id.txtNombreProfesorTutoria);
             item_imgFotoPrev= itemView.findViewById(R.id.imgFotoPrev);
             item_txtMateriaPrev=itemView.findViewById(R.id.txtMateria);
             item_txtTituloPrev= itemView.findViewById(R.id.txtTitulo);
@@ -260,6 +261,7 @@ public class TutoriasAceptadasAdapter extends RecyclerView.Adapter<TutoriasAcept
 
                     Intent detalles = new Intent(vcontext, clase);
                     detalles.putExtra("idTuto",mList.get(idfila).idTuto);
+                    detalles.putExtra("Profesor",mList.get(idfila).nombreProf);
                     detalles.putExtra("Materia",mList.get(idfila).materia);
                     detalles.putExtra("imgTuto",mList.get(idfila).url_image_portada);
                     detalles.putExtra("Titulo", mList.get(idfila).titulo);

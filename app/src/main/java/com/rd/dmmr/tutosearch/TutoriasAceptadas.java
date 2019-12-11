@@ -139,11 +139,11 @@ public class TutoriasAceptadas extends AppCompatActivity implements AdapterView.
                                             materiasAdapter.notifyDataSetChanged();
                                         }
                                     }
-                                    Log.i("Aceptadas", "" + docS);
+                                    Log.i("AceptadasProf", "" + docS.getString("profesor"));
                                     if (modelTutoriasEst.getTipo_tuto().equals("Live")) {
-                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelTutoriasEst.getTitulo(), modelTutoriasEst.getDescripcion(), modelTutoriasEst.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelTutoriasEst.getMateria(), modelTutoriasEst.getTipo_tuto(), modelTutoriasEst.getUrl_image_portada(), modelTutoriasEst.getUrl_thumb_image_portada(), ""));
+                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelTutoriasEst.getTitulo(), modelTutoriasEst.getDescripcion(), modelTutoriasEst.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelTutoriasEst.getMateria(), modelTutoriasEst.getTipo_tuto(), modelTutoriasEst.getUrl_image_portada(), modelTutoriasEst.getUrl_thumb_image_portada(), "", docS.getString("profesor")));
                                     } else {
-                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelTutoriasEst.getTitulo(), modelTutoriasEst.getDescripcion(), modelTutoriasEst.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelTutoriasEst.getMateria(), modelTutoriasEst.getTipo_tuto(), modelTutoriasEst.getUrl_image_portada(), modelTutoriasEst.getUrl_thumb_image_portada(), modelTutoriasEst.getLugar()));
+                                        mListTutoria.add(new ModelTutoriasEst(docS.getId(), modelTutoriasEst.getTitulo(), modelTutoriasEst.getDescripcion(), modelTutoriasEst.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelTutoriasEst.getMateria(), modelTutoriasEst.getTipo_tuto(), modelTutoriasEst.getUrl_image_portada(), modelTutoriasEst.getUrl_thumb_image_portada(), modelTutoriasEst.getLugar(),docS.getString("profesor")));
                                     }
                                     tutoriasAceptadasAdapter.notifyDataSetChanged();
 
