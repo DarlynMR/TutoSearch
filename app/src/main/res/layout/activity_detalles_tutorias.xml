@@ -70,17 +70,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/contenedor_detalle_item_DetallesTuto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="fill_vertical"
-        android:background="@color/cardview_light_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
@@ -212,7 +205,7 @@
 
 
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
 
