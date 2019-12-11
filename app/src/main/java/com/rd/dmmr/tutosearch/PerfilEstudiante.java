@@ -450,6 +450,12 @@ public class PerfilEstudiante extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onSuccess(Object o) {
 
+                        txtNombre.setText(dialog_txtNombre.getText().toString().trim());
+                        txtApellido.setText(dialog_txtApellido.getText().toString().trim());
+                        txtFechaNacimiento.setText(dialog_txtFecha.getText().toString().trim());
+                        txtTelefono.setText(dialog_txtTelefono.getText().toString().trim());
+                        mDialog.dismiss();
+
                         Toast.makeText(PerfilEstudiante.this, "Se han actualizado los datos", Toast.LENGTH_LONG).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
