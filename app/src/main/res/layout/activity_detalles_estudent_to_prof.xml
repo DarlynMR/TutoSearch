@@ -202,11 +202,12 @@
                 android:id="@+id/txtMateriasProfDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textMaterias"
+                android:layout_below="@+id/textMaterias"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:paddingLeft="20dp"
-                android:text="Materias" />
+                android:text="Materias"
+                android:layout_marginTop="-18dp"/>
 
             <TextView
                 android:id="@+id/textProvinciaProfPerfil"
