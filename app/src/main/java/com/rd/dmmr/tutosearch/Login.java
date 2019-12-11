@@ -177,12 +177,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    editor.putString("Matricula",dataSnapshot.child("Matricula").getValue(String.class));
-                                    editor.putString("Nombre",dataSnapshot.child("Nombre").getValue(String.class));
-                                    editor.putString("Correo",dataSnapshot.child("Correo").getValue(String.class));
-                                    editor.putString("Carrera",dataSnapshot.child("Carrera").getValue(String.class));
-                                    editor.putString("Telefono",dataSnapshot.child("Telefono").getValue(String.class));
-                                    editor.commit();
 
                                     Intent intent= new Intent(Login.this, pantalla_principal.class);
                                     startActivity(intent);
@@ -205,6 +199,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                                     Log.i("Prueba",  dc.getString("nombres"));
                                     editor.putString("Nombre",dc.getString("nombres"));
+                                    editor.putString("Apellido",dc.getString("apellidos"));
                                     editor.putString("Correo",dc.getString("correo"));
                                     editor.putString("Telefono",dc.getString("telefono"));
                                     editor.apply();

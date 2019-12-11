@@ -78,8 +78,8 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     private SurfaceView mVideoSurface;
     private TextView mPlayerStatusTextView, txtTitulo, txtDescripcion, txtProfesor, txtFecha, txtHora, txtTiempoRestante;
 
-    private static final String APPLICATION_ID = "joXLO734a62LomIVm3uFaQ";
-    private static final String API_KEY = "44vnkd05cgqtchmjnhko6r2ao";
+    private static final String APPLICATION_ID = "9bewjwb5KzW2i8NuP1Gzow";
+    private static final String API_KEY = "8vtj5s0cypq339ruhou1z98dx";
 
     private BroadcastPlayer mBroadcastPlayer;
 
@@ -264,8 +264,24 @@ public class TransmisionLive extends AppCompatActivity implements View.OnClickLi
     BroadcastPlayer.Observer mBroadcastPlayerObserver = new BroadcastPlayer.Observer() {
         @Override
         public void onStateChange(PlayerState playerState) {
+
+            String estado="";
+
+            if(String.valueOf(playerState).equals("PLAYING")){
+                findViewById(R.id.progresBarCenter).setVisibility(View.INVISIBLE);
+            }else if(String.valueOf(playerState).equals("BUFFERING")){
+                findViewById(R.id.progresBarCenter).setVisibility(View.VISIBLE);
+            estado = "Cargando";
+            }else if(String.valueOf(playerState).equals("COMPLETED")){
+                findViewById(R.id.progresBarCenter).setVisibility(View.INVISIBLE);
+                estado = "La transmisión ha finalizado";
+            }else if(String.valueOf(playerState).equals("ERROR")){
+                findViewById(R.id.progresBarCenter).setVisibility(View.INVISIBLE);
+                estado = "Ha ocurrido un error y se ha detenido la transmisión";
+            }
+
             if (mPlayerStatusTextView != null)
-                mPlayerStatusTextView.setText("Status: " + playerState);
+                mPlayerStatusTextView.setText(estado);
             Log.i("BroadcastError Http", "" + playerState);
             if (playerState.toString().equals("COMPLETED")) {
                 logoGif.setVisibility(View.INVISIBLE);

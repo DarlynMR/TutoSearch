@@ -45,7 +45,7 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
 
     ImageView imgPerfilProf;
     private TextView txtNombres, txtApellidos, txtMaterias, txtProvincia, txtAboutMe;
-    private FloatingActionButton btnFabSendRequest;
+    private FloatingActionButton btnFabSendRequest, fBack;
     String idProf, urlpic, nombreC, keyid;
 
     //Firebase Variables
@@ -62,20 +62,21 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_estudent_to_prof);
 
-        imgPerfilProf= (ImageView) findViewById(R.id.imgProfPerfil);
+        imgPerfilProf = (ImageView) findViewById(R.id.imgProfPerfil);
 
         txtNombres = (TextView) findViewById(R.id.txtNombreProfDetalle);
         txtApellidos = (TextView) findViewById(R.id.txtApellidosProfDetalle);
         txtMaterias = (TextView) findViewById(R.id.txtMateriasProfDetalle);
-        txtProvincia= (TextView) findViewById(R.id.txtProvinciaProfPerfil);
+        txtProvincia = (TextView) findViewById(R.id.txtProvinciaProfPerfil);
         txtAboutMe = (TextView) findViewById(R.id.txtAboutMeProfDetalle);
 
-        fdb= FirebaseFirestore.getInstance();
+        fdb = FirebaseFirestore.getInstance();
         FAuth = FirebaseAuth.getInstance();
         FUser = FAuth.getCurrentUser();
         DBRefGetid = FirebaseDatabase.getInstance().getReference();
 
         btnFabSendRequest = (FloatingActionButton) findViewById(R.id.fltSendRequest);
+        fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -95,11 +96,11 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
         Context context = this;
         collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
-        Intent intent= getIntent();
+        Intent intent = getIntent();
 
-        datosProf=intent.getExtras();
+        datosProf = intent.getExtras();
 
-        if (datosProf!=null) {
+        if (datosProf != null) {
             idProf = datosProf.getString("idProf");
             Log.i("Prueba", idProf);
 
@@ -126,16 +127,17 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
                 }
                 Log.i("ProbandoDetallesProf", "" + datosProf.getString("nombres"));
             }
-            nombreC = txtNombres.getText().toString()+" "+txtApellidos.getText().toString();
+            nombreC = txtNombres.getText().toString() + " " + txtApellidos.getText().toString();
             collapsingToolbarLayout.setTitle(nombreC);
         }
 
         Comprobar();
         btnFabSendRequest.setOnClickListener(this);
+        fBack.setOnClickListener(this);
 
     }
 
-    private void Comprobar(){
+    private void Comprobar() {
 
         DocumentReference docRef = fdb.collection("Amigos").document(FUser.getUid()).collection("Aceptados").document(idProf);
 
@@ -144,7 +146,7 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot docS = task.getResult();
 
-                if (!docS.exists()){
+                if (!docS.exists()) {
                     btnFabSendRequest.setVisibility(View.VISIBLE);
                 }
 
@@ -155,12 +157,12 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.fltSendRequest:
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Solciitud de amistad");
-                builder.setMessage("¿Está seguro que desea enviar una solicitud de amistad a "+nombreC+"?");
+                builder.setMessage("¿Está seguro que desea enviar una solicitud de amistad a " + nombreC + "?");
 
                 builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                     @Override
@@ -180,7 +182,6 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
                         mapEmisor.put("receptor", idProf);
                         mapEmisor.put("estado", "NoAcept");
                         mapEmisor.put("tipoUser", "Profesor");
-
 
 
                         fdb.collection("Solicitudes").document(idProf).collection("Recibidas").document(keyid)
@@ -226,6 +227,13 @@ public class DetallesEstudentToProf extends AppCompatActivity implements View.On
                 builder.create().show();
 
                 break;
+            case R.id.fBackButton:
+
+                onBackPressed();
+
+                break;
+
+
         }
     }
 }

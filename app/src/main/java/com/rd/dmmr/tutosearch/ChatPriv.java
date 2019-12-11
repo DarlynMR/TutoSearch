@@ -7,7 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -58,6 +60,7 @@ import retrofit2.Callback;
 
 public class ChatPriv extends AppCompatActivity implements View.OnClickListener {
 
+    Bundle datosAmigo;
 
     Toolbar toolbar;
     RecyclerView rcChat;
@@ -116,8 +119,21 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         Intent intent = getIntent();
 
         myUID= FUser.getUid();
+
+
         idAmigo = intent.getStringExtra("idAmigo");
         tipoAmigo = intent.getStringExtra("tipoUser");
+
+        datosAmigo = intent.getExtras();
+
+        if (datosAmigo!=null){
+            Log.i("Notificaciones", datosAmigo.getString("tipoUser"));
+        }
+
+        if (datosAmigo!=null){
+            Log.i("Notificaciones", "Via bundle"+datosAmigo.getString("tipoUser"));
+            Log.i("NotificacionesIntent","Via intent"+ tipoAmigo);
+        }
 
         if (tipoAmigo.equals("Profesor") || tipoAmigo.equals("Profesores")) {
             rutaUser = "Profesores";
@@ -307,7 +323,10 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
                 if (notify){
-                    sendNotification(idAmigo, txtNombre.getText().toString(), mensaje);
+                    final SharedPreferences pref = getSharedPreferences("EstudiantePref", Context.MODE_PRIVATE);
+
+                    String myName = pref.getString("Nombre", "Usuario")+" "+pref.getString("Apellido", "");
+                    sendNotification(idAmigo, myName, mensaje);
                 }
                 notify =false;
 
@@ -377,7 +396,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
                     token.setToken(docS.getString("token"));
 
-                    Data data = new Data(myUID, txtNombre.getText().toString()+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile);
+                    Data data = new Data(myUID, toString+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile, "Estudiantes");
 
                     Sender sender = new Sender(data, token.getToken());
                     apiService.sendNotification(sender)

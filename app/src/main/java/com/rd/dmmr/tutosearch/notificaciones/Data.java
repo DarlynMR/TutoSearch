@@ -3,7 +3,7 @@ package com.rd.dmmr.tutosearch.notificaciones;
 public class Data {
 
 
-    private String user, body, tittle, sent;
+    private String user, body, tittle, sent, tipoUser;
     private Integer icon;
 
 
@@ -11,12 +11,21 @@ public class Data {
 
     }
 
-    public Data(String user, String body, String tittle, String sent, Integer icon) {
+    public Data(String user, String body, String tittle, String sent, Integer icon, String tipoUser) {
         this.user = user;
         this.body = body;
         this.tittle = tittle;
         this.sent = sent;
         this.icon = icon;
+        this.tipoUser=tipoUser;
+    }
+
+    public String getTipoUser() {
+        return tipoUser;
+    }
+
+    public void setTipoUser(String tipoUser) {
+        this.tipoUser = tipoUser;
     }
 
     public String getUser() {
